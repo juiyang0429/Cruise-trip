@@ -5,9 +5,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#F4EEE2">
 <title>MSC 郵輪・沖繩跳島</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="郵輪旅行">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<script>try{var f=localStorage.getItem('cruise-fs');if(f==='1'||f==='2')document.documentElement.setAttribute('data-fs',f);}catch(e){}</script>
+<link rel="preconnect" href="https://script.google.com">
+<link rel="preconnect" href="https://script.googleusercontent.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<!-- 字型不擋畫面：先用手機內建字，字型下載好再換上（網路慢、沒網路都不會卡住） -->
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <style>
 /* ══════════ 調色盤：沖繩旅遊海報 ══════════
    天空藍 + 珊瑚紅標題 + 米白紙張 + 深海藍文字與圖示（單色） */
@@ -184,7 +195,7 @@ button{font-family:inherit}
 .info-g dd{margin:0;white-space:pre-wrap;color:var(--ink)}
 
 /* ══════════ 分帳 ══════════ */
-.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.stat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
 .stat{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 8px 11px;text-align:center}
 .stat b{display:block;font:600 19px/1.2 var(--dis);color:var(--navy);letter-spacing:.01em}
 .stat span{font-size:11px;color:var(--ink3)}
@@ -465,6 +476,53 @@ button{font-family:inherit}
 @keyframes ringPing{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.5);opacity:0}}
 @keyframes eqb{0%,100%{height:6px}50%{height:20px}}
 @keyframes tipShow{0%{opacity:0;transform:translate(-6px,-50%)}10%,85%{opacity:1;transform:translate(0,-50%)}100%{opacity:0}}
+/* 字級：內容區跟彈出視窗整塊放大（版面寬度跟著變窄 → 自動換行，不會破版） */
+html[data-fs="1"]{--z:1.15} html[data-fs="2"]{--z:1.3}
+html[data-fs] main,html[data-fs] #fm .bd,html[data-fs] #sk .bd{zoom:var(--z)}
+html[data-fs="2"] main.wrap{padding:0 11px}
+html[data-fs] .tabbar .inner{justify-content:space-around}
+html[data-fs] .tab{flex-direction:column;gap:2px;font-size:14.5px;padding:8px 3px 6px;line-height:1.25}
+html[data-fs] .tab .ic{font-size:20px}
+html[data-fs="2"] .tab{font-size:16px}
+html[data-fs] .stat-row{grid-template-columns:1fr;gap:6px}
+html[data-fs] .stat{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:9px 14px;text-align:left}
+html[data-fs] .stat b{order:2;font-size:20px}
+html[data-fs] .stat span{order:1;font-size:12.5px}
+html[data-fs] #route-info{flex-wrap:wrap}
+html[data-fs] #route-info .tx{flex:1 1 150px}
+html[data-fs] #route-info .btn{margin-left:auto}
+html[data-fs] #toast{font-size:16px;padding:13px 22px}
+html[data-fs] #fab{font-size:16px;padding:15px 21px 15px 17px}
+#sync #fsb .aa{font:900 14px/1 "Noto Sans TC",sans-serif;letter-spacing:-.03em;margin-right:1px}
+#sync #fsb .aa small{font-size:10.5px}
+#fsp{position:absolute;right:0;top:calc(100% + 6px);z-index:45;background:var(--paper);border:1px solid var(--line2);
+  border-radius:16px;padding:12px;box-shadow:0 12px 30px rgba(22,58,80,.22);display:none;width:236px;max-width:100%}
+#fsp.on{display:block;animation:fadeUp .2s ease-out}
+#fsp h6{margin:0 0 8px;font-size:13px;font-weight:900;color:var(--navy);letter-spacing:.06em}
+#fsp .row{display:flex;gap:6px}
+#fsp button{flex:1;border:1.5px solid var(--line2);background:var(--paper);color:var(--navy);border-radius:11px;padding:8px 0 6px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:3px;font-weight:800;font-size:12px;font-family:inherit}
+#fsp button b{font:900 18px/1 "Noto Sans TC",sans-serif;height:26px;display:flex;align-items:flex-end}
+#fsp button:nth-child(2) b{font-size:22px} #fsp button:nth-child(3) b{font-size:26px}
+#fsp button.on{background:var(--navy);border-color:var(--navy);color:var(--paper)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* 同步狀態列＋離線提示 */
+#sync{display:flex;align-items:center;gap:7px;margin:12px 0 -6px;font-size:12px;color:var(--ink3);min-height:30px;position:relative}
+#sync .dot{width:8px;height:8px;border-radius:50%;background:#5FB89A;flex:0 0 auto}
+#sync.busy .dot{background:var(--sky);animation:blink 1s ease-in-out infinite}
+#sync.off .dot{background:var(--coral)}
+#sync .tx{flex:1;min-width:0;line-height:1.4}
+#sync>button{flex:0 0 auto;display:inline-flex;align-items:center;gap:4px;border:1.5px solid var(--line2);background:var(--paper);color:var(--navy);
+  border-radius:99px;padding:4px 11px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit}
+#sync>button:disabled{opacity:.5}
+#sync.busy #sync-r .ic{animation:sp .8s linear infinite}
+#offl{display:none;margin:12px 0 0;padding:10px 13px;border-radius:12px;background:var(--coral-l);border:1px solid rgba(227,94,69,.3);
+  color:var(--coral-d);font-size:12.5px;line-height:1.6}
+#offl b{display:block;font-size:13.5px}
+#offl.on{display:block}
+#upd{position:fixed;left:50%;top:calc(10px + env(safe-area-inset-top));transform:translateX(-50%);z-index:270;border:0;border-radius:99px;
+  background:var(--navy);color:var(--paper);font:800 13px inherit;font-family:inherit;padding:10px 16px;display:flex;gap:6px;align-items:center;
+  box-shadow:0 8px 20px rgba(22,58,80,.3);cursor:pointer;animation:fadeUp .3s ease-out;white-space:nowrap}
 #fx{position:fixed;inset:0;pointer-events:none;z-index:250;overflow:hidden}
 /* 編輯／刪除／排序 */
 .fl2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
@@ -644,6 +702,10 @@ button{font-family:inherit}
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
 
+@media(max-width:380px){
+  .tab{padding:12px 4px 10px;font-size:13px}
+  .tab .ic{font-size:15px}
+}
 @media(max-width:400px){
   .strip .c{gap:6px;padding:4px 6px}
   .strip .c .ic{font-size:21px}
@@ -699,6 +761,7 @@ button{font-family:inherit}
 <symbol id="i-grip" viewBox="0 0 24 24"><path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01" stroke-width="3.2"/></symbol>
 <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4h4"/></symbol>
 <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/></symbol>
+<symbol id="i-sync" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3.5V8h4.5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 20.5V16h-4.5"/></symbol>
 <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></symbol>
 <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 18h7.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H16"/></symbol>
 <symbol id="i-lang" viewBox="0 0 24 24"><path d="M3.5 5.5h9M8 3.5v2M10.5 5.5c-.6 3.6-3 6.6-6.5 8.3M6 8.5c1.2 2.2 3 3.9 5.5 5"/><path d="M12.5 20.5l4-9.5 4 9.5M14 17h5"/></symbol>
@@ -851,6 +914,12 @@ button{font-family:inherit}
 </div></nav>
 
 <main class="wrap">
+  <div id="offl" role="status"></div>
+  <div id="sync" class="hide"><span class="dot"></span><span class="tx" id="sync-t"></span>
+    <button id="fsb" aria-label="調整字的大小" aria-haspopup="true" aria-expanded="false"><span class="aa">A<small>A</small></span>字級</button>
+    <button id="sync-r" aria-label="從試算表重新讀取"><svg class="ic"><use href="#i-sync"/></svg>更新</button>
+    <div id="fsp" role="dialog" aria-label="字的大小"><h6>字的大小（只影響這支手機）</h6><div class="row">
+      <button data-fs="0"><b>字</b>標準</button><button data-fs="1"><b>字</b>大</button><button data-fs="2"><b>字</b>特大</button></div></div></div>
   <div id="boot"></div>
 
   <section id="p-itin">
@@ -1167,8 +1236,10 @@ function gasQuery(action,payload){
     +'&payload='+encodeURIComponent(JSON.stringify(payload||{}));
 }
 let TRANSPORT='';   // '' 還沒試過 / 'fetch' / 'jsonp'
+const READS=['getAll','ping'];
 async function callGAS(action,payload){
   if(!GAS) throw new Error('NOCONFIG');
+  if(navigator.onLine===false) throw new Error(READS.includes(action)?'OFFLINE':'現在沒有網路，有網路時再新增或修改');
   if(TRANSPORT==='jsonp') return callGASjsonp(action,payload);
   let r;
   try{
@@ -1216,27 +1287,144 @@ function gasHelp(){
     <span class="muted">（${esc(GAS_ERR||'')}）</span></div>`;
 }
 
-/* ══════════════════ 啟動 ══════════════════ */
-(async function init(){
-  applyAccent();
-  renderCover();
-  try{
-    DB.all=await callGAS('getAll',{});
-  }catch(e){
-    GAS_ERR=e.message;
-    if(/^AUTH/.test(e.message)){
-      showLock(e.message==='AUTH_LOCKED'?'錯太多次了，請 10 分鐘後再試':'');
-      return;
-    }
-    $('#boot').innerHTML=gasHelp();
-    return;
-  }
+/* ══════════════════ 資料快取：打開先秀上次的資料，背景再跟試算表同步；沒網路也能看 ══════════════════ */
+const CKEY='cruise-cache-v1';
+const SYNC={at:0,busy:false,err:''};                       // at = 這份資料是什麼時候從試算表讀的
+let PENDING_RR=false;                                       // 拖拉排序中來了新資料 → 放開後再重畫
+function ZF(){ return [1,1.15,1.3][+(document.documentElement.getAttribute('data-fs')||0)]||1; }
+function cacheSave(){ try{ localStorage.setItem(CKEY,JSON.stringify({v:1,gas:GAS,at:SYNC.at||Date.now(),d:DB.all})); }catch(_){} }
+function cacheLoad(){ try{ const c=JSON.parse(localStorage.getItem(CKEY)||'null'); if(c&&c.d&&c.d.行程&&c.gas===GAS) return c; }catch(_){} return null; }
+let CSAVE_T=0; function cacheSoon(){ clearTimeout(CSAVE_T); CSAVE_T=setTimeout(cacheSave,300); }
+function dataSig(d){ try{ return JSON.stringify(d,(k,v)=>k==='_at'||k==='_cached'?undefined:v); }catch(_){ return String(Math.random()); } }
+function agoTxt(t){
+  const s=(Date.now()-t)/1000; if(s<60) return '剛剛'; if(s<3600) return Math.floor(s/60)+' 分鐘前';
+  const d=new Date(t), hm=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+  return (ymd(d)===ymd(new Date())?'今天 ':(d.getMonth()+1)+'/'+d.getDate()+' ')+hm;
+}
+function serverAt(d){ const t=Date.parse(d&&d._at||''); return t&&t<=Date.now()+6e4?t:Date.now(); }
+function syncUI(state,msg){
+  const el=$('#sync'), off=navigator.onLine===false;
+  if(!DB.all){ el.classList.add('hide'); return; }
+  state=state||(off?'off':SYNC.err?'off':'');
+  el.className=state; el.id='sync';
+  $('#sync-t').textContent=msg||(state==='busy'?'同步中…'
+    :off?'沒網路・'+agoTxt(SYNC.at)+' 的資料'
+    :SYNC.err?'連不上試算表・'+agoTxt(SYNC.at)+' 的資料'
+    :'已同步・'+agoTxt(SYNC.at));
+  $('#sync').title=SYNC.at?'資料是 '+new Date(SYNC.at).toLocaleString()+' 從試算表讀的':'';
+  $('#sync-r').disabled=state==='busy';
+  $('#offl').classList.toggle('on',off);
+  if(off) $('#offl').innerHTML=`<b>現在沒有網路，照樣可以看</b>顯示的是 ${esc(agoTxt(SYNC.at))} 存在這支手機的資料。新增、修改、打勾要等有網路再做。`;
+}
+/** 寫入後後端回傳「有變動的那一張表」→ 換掉那一塊就好（不用整份重讀 10 秒） */
+function mergeFresh(f){
+  if(!f||!DB.all||typeof f!=='object') return false;
+  let n=0;
+  if(Array.isArray(f.花費)){ DB.all.花費=f.花費; n++; }
+  if(Array.isArray(f.購物)){ DB.all.購物=f.購物; n++; }
+  (f.行程||[]).forEach(d=>{ if(!d||!d.sheet) return; const L=DB.all.行程||[], i=L.findIndex(x=>x&&x.sheet===d.sheet); if(i>=0){ L[i]=d; n++; } });
+  if(!n) return false;
+  cacheSave(); syncUI();
+  return true;
+}
+function renderData(){
   renderHero();
   buildDays(); renderTL();
   renderShip();
   loadExpense(); loadShop(); loadPlaces(); loadPrep();
   syncFab();
+  warmImages();
+}
+/** 背景拿到新資料 → 原地重畫，保留目前看的那一天、篩選、捲動位置 */
+function rerender(){
+  if(DRAG){ PENDING_RR=true; return; }
+  const y=scrollY, keep=['#s-store','#s-who','#s-q','#pl-area','#pl-cat','#pl-q'].map(k=>[k,($(k)||{}).value||'']);
+  curDay=Math.min(curDay,Math.max(0,(DB.all.行程||[]).length-1));
+  quiet(()=>{
+    renderHero(); renderDayTabs(); renderTL(); renderShip();
+    loadExpense(); loadShop(); loadPlaces(); loadPrep();
+    keep.forEach(([k,v])=>{ const el=$(k); if(!el||!v) return;
+      if(el.tagName==='SELECT'&&![...el.options].some(o=>o.value===v)) return; el.value=v; });
+    renderShop(); renderPlaces();
+  });
+  syncFab(); warmImages();
+  window.scrollTo(0,y);
+}
+/** manual = 按「更新」→ 跳過伺服器快取，直接讀試算表 */
+async function refresh(manual){
+  if(SYNC.busy) return;
+  if(navigator.onLine===false){ syncUI(); if(manual) toast('現在沒有網路，連上後會自動更新',true); return; }
+  SYNC.busy=true; syncUI('busy');
+  try{
+    const d=await callGAS('getAll',manual?{fresh:1}:{});
+    const first=!DB.all, changed=first||dataSig(d)!==dataSig(DB.all);
+    DB.all=d; SYNC.at=serverAt(d); SYNC.err=''; cacheSave();
+    $('#boot').innerHTML='';
+    if(first) renderData(); else if(changed) rerender();
+    SYNC.busy=false; syncUI();
+    if(manual) toast(changed?'已更新成試算表最新的內容':'已經是最新的了');
+  }catch(e){
+    SYNC.busy=false;
+    if(!DB.all){                                            // 第一次打開就失敗（也沒有存過資料）
+      GAS_ERR=e.message;
+      if(/^AUTH/.test(e.message)){ showLock(e.message==='AUTH_LOCKED'?'錯太多次了，請 10 分鐘後再試':''); return; }
+      $('#boot').innerHTML=e.message==='OFFLINE'?`<div class="err"><b>現在沒有網路</b>第一次要在有網路的時候打開，之後這支手機就會記住資料，沒網路也能看。</div>`:gasHelp();
+      return;
+    }
+    if(/^AUTH/.test(e.message)){ showLock(''); return; }
+    SYNC.err=e.message; syncUI();
+    if(manual) toast(e.message==='OFFLINE'?'現在沒有網路':'連不上試算表：'+e.message,true);
+  }
+}
+$('#sync-r').onclick=()=>refresh(true);
+addEventListener('online',()=>{ syncUI(); refresh(false); });
+addEventListener('offline',()=>syncUI());
+document.addEventListener('visibilitychange',()=>{               // 切回來超過 1 分鐘 → 背景更新
+  if(!document.hidden&&DB.all&&Date.now()-SYNC.at>6e4) refresh(false);
+});
+setInterval(()=>{ if(DB.all&&!SYNC.busy) syncUI(); },30000);
+
+/* ══════════════════ 啟動 ══════════════════ */
+(async function init(){
+  applyAccent();
+  renderCover();
+  await null;                                               // 等整支程式跑完（後面宣告的常數才都準備好）再畫
+  const c=cacheLoad();
+  if(c){                                                    // 有存過 → 馬上畫出來，不用等試算表
+    DB.all=c.d; SYNC.at=c.at||0;
+    $('#boot').innerHTML='';
+    try{ renderData(); }catch(err){ console.error(err); DB.all=null; }
+    syncUI();
+  }else{
+    $('#boot').innerHTML='<div class="loading"><div class="spin"></div>第一次打開，正在讀試算表…</div>';
+  }
+  await refresh(false);
 })();
+
+/* ══════════════════ 離線：Service Worker 把網站本身、字型、3D 程式、商品圖存在手機裡 ══════════════════ */
+function warmImages(){
+  try{
+    if(!navigator.serviceWorker||!navigator.serviceWorker.controller||navigator.onLine===false) return;
+    const urls=[...new Set((DB.all.購物||[]).filter(r=>r['圖片']).flatMap(r=>[driveImg(r['圖片'],400),driveImg(r['圖片'],1200)]))]
+      .filter(u=>/^https:\/\//.test(u));
+    if(urls.length) navigator.serviceWorker.controller.postMessage({type:'warm',urls});
+  }catch(_){}
+}
+if('serviceWorker' in navigator&&(location.protocol==='https:'||/^(localhost|127\.0\.0\.1)$/.test(location.hostname))){
+  addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').then(reg=>{
+      if(navigator.serviceWorker.controller) return;
+      navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(DB.all) warmImages(); },{once:true});
+    }).catch(()=>{});
+  });
+  navigator.serviceWorker.addEventListener('message',e=>{
+    if(!e.data||e.data.type!=='updated'||$('#upd')) return;      // 網站有新版本（下次打開也會自動換）
+    const b=document.createElement('button'); b.id='upd';
+    b.innerHTML=ic('sync')+'網站有新版本，點這裡更新';
+    b.onclick=()=>location.reload();
+    document.body.appendChild(b);
+  });
+}
 
 /* 封面上不需要資料的部分（標題、標語、印章）先畫，連線慢也不會空白 */
 function renderCover(){
@@ -1422,7 +1610,7 @@ function dragMove(e){
   if(next!==it.nextElementSibling||(!next&&list.lastElementChild!==it)) list.insertBefore(it,next||null);
   it.style.transform='none';
   const nowTop=it.getBoundingClientRect().top+scrollY;          // 移位後（沒有位移時）的位置
-  it.style.transform=`translateY(${y+scrollY-DRAG.off-nowTop}px)`; // 讓卡片黏在手指下
+  it.style.transform=`translateY(${(y+scrollY-DRAG.off-nowTop)/ZF()}px)`; // 讓卡片黏在手指下（字放大時位移要換算回去）
   if(y<70) scrollBy(0,-12); else if(y>innerHeight-70) scrollBy(0,12);
 }
 async function dragEnd(e){
@@ -1431,16 +1619,17 @@ async function dragEnd(e){
   it.style.transform=''; it.classList.remove('dragging');
   setTimeout(()=>{ DRAG=null; },0);
   const items=$$('#tl-box .tl-item');
-  if(items.map(x=>x.dataset.row).join(',')===before) return;
+  if(items.map(x=>x.dataset.row).join(',')===before){ if(PENDING_RR){ PENDING_RR=false; setTimeout(rerender,0); } return; }
   popEl(it);
   const d=(DB.all.行程||[])[curDay];
   const byRow=Object.fromEntries((d.rows||[]).map(r=>[String(r._row),r]));
   try{
-    await callGAS('reorder',{sheet:d.sheet,items:items.map(x=>({row:+x.dataset.row,expect:{行程:byRow[x.dataset.row]['行程']}}))});
+    const res=await callGAS('reorder',{sheet:d.sheet,items:items.map(x=>({row:+x.dataset.row,expect:{行程:byRow[x.dataset.row]['行程']}}))});
     toast('新順序已存到試算表');
-    DB.all=await callGAS('getAll',{});
+    if(!mergeFresh(res&&res.fresh)){ DB.all=await callGAS('getAll',{fresh:1}); SYNC.at=Date.now(); cacheSave(); }
     renderTL();
   }catch(err){ toast(errMsg(err),true); renderTL(); }
+  finally{ if(PENDING_RR){ PENDING_RR=false; rerender(); } }
 }
 window.addEventListener('pointermove',dragMove,{passive:false});
 window.addEventListener('pointerup',dragEnd);
@@ -1528,7 +1717,7 @@ $('#ex-list').onclick=async e=>{
                              value:b.dataset.v,expect:b.dataset.exp});
     const row=(DB.exp||[]).find(x=>x._row===+b.dataset.row);
     if(row) row['已結算']=b.dataset.v;
-    quiet(renderExp); toast('已更新');
+    cacheSoon(); quiet(renderExp); toast('已更新');
   }catch(err){ b.disabled=false; toast(errMsg(err),true); }
 };
 $('#ex-bulk').onclick=async e=>{
@@ -1546,7 +1735,7 @@ $('#ex-bulk').onclick=async e=>{
     const res=await callGAS('setMany',{sheet:'花費表',
       items:targets.map(r=>({row:r._row,col:'已結算',value:to,expect:to==='TRUE'?'FALSE':'TRUE'}))});
     targets.forEach(r=>r['已結算']=to);
-    quiet(renderExp);
+    cacheSoon(); quiet(renderExp);
     toast(`已更新 ${res.updated} 筆`+(res.skipped&&res.skipped.length?`，${res.skipped.length} 筆略過`:''));
   }catch(err){ renderExp(); toast(errMsg(err),true); }
 };
@@ -1624,7 +1813,7 @@ function loadShop(){
   const opt=(el,label,vals)=>$(el).innerHTML=`<option value="">${label}</option>`+
     [...new Set(vals.filter(Boolean))].map(v=>`<option>${esc(v)}</option>`).join('');
   opt('#s-store','全部店家',DB.shop.map(r=>r['店家']));
-  opt('#s-who','全部人',BAGPPL);
+  opt('#s-who','全部人',[...whoOpts(),...DB.shop.flatMap(r=>splitWho(r['誰要的']))]);
   ['#s-store','#s-who'].forEach(s=>$(s).onchange=renderShop);
   $('#s-q').oninput=renderShop;
   renderShop();
@@ -1638,7 +1827,7 @@ function renderShop(){
   $('#s-prog').style.width=all.length?(done/all.length*100)+'%':'0';
   $('#s-stat').textContent=`已買 ${done} / ${all.length} 項`+(rows.length!==all.length?`（篩出 ${rows.length}）`:'');
   if(!rows.length){ $('#sh-box').innerHTML=`<div class="empty">${ic('bag','big')}<p class="muted">沒有符合的項目</p></div>`; return; }
-  const g={}; rows.forEach(r=>{ const k=[r['第幾天'],r['店家']||'未分店'].filter(Boolean).join(' · ');
+  const g={}; rows.forEach(r=>{ const k=[r['第幾天']?shopDayLabel(r['第幾天']):'',r['店家']||'未分店'].filter(Boolean).join(' · ');
     (g[k]=g[k]||[]).push(r); });
   $('#sh-box').innerHTML=Object.entries(g).map(([k,list])=>
     `<div class="grp-h">${ic('bag')}${esc(k)}${list[0]['營業時間']?`<small>${esc(list[0]['營業時間'])}</small>`:''}</div>`
@@ -1670,7 +1859,7 @@ async function toggleShop(rowNum){
   syncSkBought(!was);
   try{
     await callGAS('setCell',{sheet:'購物清單',row:rowNum,col:'已購買',value:v,expect:was?'TRUE':'FALSE'});
-    r['已購買']=v;
+    r['已購買']=v; cacheSoon();
     quiet(renderShop);
   }catch(err){ if(cb) cb.classList.toggle('on',was); syncSkBought(was); toast(errMsg(err),true); }
 }
@@ -1934,7 +2123,7 @@ async function initShip3D(){
 function ship3D(T,stage){
   const W=()=>stage.clientWidth, Hh=()=>stage.clientHeight;
   const renderer=new T.WebGLRenderer({antialias:true,alpha:true});
-  renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+  renderer.setPixelRatio(Math.min((devicePixelRatio||1)*ZF(),2.6));
   renderer.setSize(W(),Hh());
   stage.insertBefore(renderer.domElement,stage.firstChild);
   const scene=new T.Scene();
@@ -2025,7 +2214,7 @@ function ship3D(T,stage){
   const auto=!REDUCED;
   stage.addEventListener('pointerdown',e=>{ if(e.target.closest('button')) return; drag={x:e.clientX,y:e.clientY,th:want.th,ph:want.ph,moved:0,id:e.pointerId}; stage.classList.add('drag'); });
   stage.addEventListener('pointermove',e=>{ if(!drag||e.pointerId!==drag.id) return; const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
-    drag.moved=Math.max(drag.moved,Math.abs(dx)+Math.abs(dy)); want.th=drag.th-dx*.008; want.ph=Math.min(1.25,Math.max(.04,drag.ph+dy*.004)); idle=0; });
+    drag.moved=Math.max(drag.moved,Math.abs(dx)+Math.abs(dy)); want.th=drag.th+dx*.008; want.ph=Math.min(1.25,Math.max(.04,drag.ph+dy*.004)); idle=0; });
   const end=e=>{ if(!drag) return; const tap=drag.moved<7; drag=null; stage.classList.remove('drag'); if(tap&&e.type==='pointerup') pick(e); };
   stage.addEventListener('pointerup',end); stage.addEventListener('pointercancel',end); stage.addEventListener('pointerleave',end);
   const ray=new T.Raycaster(), v2=new T.Vector2();
@@ -2073,7 +2262,7 @@ function ship3D(T,stage){
     renderer.render(scene,cam);
   }
   requestAnimationFrame(frame);
-  new ResizeObserver(()=>{ renderer.setSize(W(),Hh()); cam.aspect=W()/Hh(); cam.updateProjectionMatrix(); }).observe(stage);
+  new ResizeObserver(()=>{ renderer.setPixelRatio(Math.min((devicePixelRatio||1)*ZF(),2.6)); renderer.setSize(W(),Hh()); cam.aspect=W()/Hh(); cam.updateProjectionMatrix(); }).observe(stage);
   const io=new IntersectionObserver(es=>{ const vis=es[0].isIntersecting&&!$('#p-ship').classList.contains('hide');
     if(vis&&!running){ running=true; last=performance.now(); requestAnimationFrame(frame); } else if(!vis) running=false; });
   io.observe(stage);
@@ -2162,6 +2351,18 @@ $('#music').onclick=async()=>{
   try{ const isOn=await MUSIC.toggle(); b.classList.toggle('on',isOn); b.setAttribute('aria-label',isOn?'暫停背景音樂':'播放背景音樂'); popEl(b); }
   catch(e){ toast('沒辦法播放音樂：'+e.message,true); }
 };
+/* ── 字的大小（記在這支手機；家人各自調） ── */
+function setFs(n){
+  n=Math.max(0,Math.min(2,n|0));
+  if(n) document.documentElement.setAttribute('data-fs',String(n)); else document.documentElement.removeAttribute('data-fs');
+  LS.set('cruise-fs',String(n));
+  $$('#fsp button').forEach(b=>b.classList.toggle('on',+b.dataset.fs===n));
+}
+function fsPop(on){ $('#fsp').classList.toggle('on',on); $('#fsb').setAttribute('aria-expanded',String(on));
+  if(on) $$('#fsp button').forEach(b=>b.classList.toggle('on',+b.dataset.fs===[1,1.15,1.3].indexOf(ZF()))); }
+$('#fsb').onclick=e=>{ e.stopPropagation(); fsPop(!$('#fsp').classList.contains('on')); };
+$('#fsp').onclick=e=>{ e.stopPropagation(); const b=e.target.closest('button[data-fs]'); if(!b) return; setFs(+b.dataset.fs); popEl(b); setTimeout(()=>fsPop(false),450); };
+document.addEventListener('click',()=>{ if($('#fsp').classList.contains('on')) fsPop(false); });
 let MUSIC_WAS=false;
 document.addEventListener('visibilitychange',()=>{                         // 切到別的 App 就先停，回來再繼續
   if(document.hidden){ MUSIC_WAS=MUSIC.on; if(MUSIC.on) MUSIC.stop(); }
@@ -2190,6 +2391,18 @@ const pickHTML=(id,list,on,cls='')=>`<div class="pick ${cls}" id="${id}">${list.
 const fld=(label,inner,opt)=>`<div class="fl"><label>${label}${opt===true?' <em>*</em>':opt?` <small>${opt}</small>`:''}</label>${inner}</div>`;
 const inp=(id,v,ph,extra='')=>`<input id="${id}" value="${esc(v||'')}" placeholder="${esc(ph||'')}" autocomplete="off" ${extra}>`;
 
+/* 試算表上的下拉選單（後端讀出來的）→ 網站只給這些選項，寫進去才不會被擋 */
+const OPT=k=>(((DB.all||{}).選項||{})[k]||[]).map(x=>String(x).trim()).filter(Boolean);
+const splitWho=v=>String(v||'').split(/[、,，\s]+/).map(x=>x.trim()).filter(Boolean);
+const withCur=(list,cur)=>[...list,...(cur||[]).filter(x=>x&&!list.includes(x))];   // 舊資料的值也顯示出來
+function whoOpts(){ const o=OPT('誰要的'); return o.length?o:BAGPPL; }
+function payerOpts(){ const o=OPT('付款人'); return o.length?o:MEMBERS.map(m=>m.名稱); }
+function shopDayOpts(cur){
+  const o=OPT('第幾天'), list=o.length?o:LEGS.map((l,i)=>'D'+(i+1));
+  return withCur(list,cur?[String(cur).trim()]:[]).map(v=>({v,l:shopDayLabel(v)}));
+}
+/** 表上的「D2 (6/12)」→ 顯示成「D2 宮古島」（表上括號裡的日期不一定是這趟的） */
+function shopDayLabel(v){ const m=String(v||'').trim().match(/^D(\d)\b/i); return m?'D'+m[1]+' '+DAYNAME(+m[1]-1):String(v||'').trim(); }
 function dayTypes(){
   const fromSheet=(DB.all.類型||[]).filter(Boolean);
   if(fromSheet.length) return fromSheet;                       // 表上有下拉選單 → 只能選裡面的
@@ -2214,25 +2427,28 @@ function openForm(kind,row,dayIdx){
     const amt=edit?(jp?num(r['日幣']):num(r['台幣'])):'';
     const payer=edit?(r['付款人']||'').trim():LS.get('cruise-payer');
     const share=edit?MEMBERS.filter(m=>bool(r[m.名稱])).map(m=>m.名稱):MEMBERS.map(m=>m.名稱);
+    const payers=withCur(payerOpts(),payer&&edit?[payer]:[]);
     const wn=MEMBERS.filter(m=>(m.權重||1)>1).map(m=>esc(m.名稱)+' 算 '+m.權重+' 人').join('、');
     h=`<h4>${ic(edit?'pen':'wallet')}${edit?'修改這筆花費':'記一筆花費'}</h4>
       ${fld('項目',inp('f-item',edit?r['項目']:'','例：宮古島午餐、計程車','maxlength="80"'),true)}
       ${fld('金額',`<div class="amt">${inp('f-amt',amt||'','0','inputmode="decimal"')}
           <div class="seg" id="f-cur"><button data-c="NT">NT$</button><button data-c="JP">${esc(sym)}</button></div></div>
         <div class="hint" id="f-conv"></div>`,true)}
-      ${fld('誰先付的',pickHTML('f-payer',MEMBERS.map(m=>m.名稱),payer),true)}
+      ${fld('誰先付的',pickHTML('f-payer',payers,payers.includes(payer)?payer:''),true)}
       ${fld('誰要分',pickHTML('f-share',MEMBERS.map(m=>m.名稱),share)+'<div class="hint" id="f-split"></div>',wn?'（'+wn+'）':'')}
       ${fld('日期',`<input id="f-date" type="date" value="${edit?toISO(r['日期']):todayISO()}">`)}`;
   }else if(kind==='shop'){
     const stores=[...new Set((DB.shop||[]).map(x=>x['店家']).filter(Boolean))];
     const hasJp=(DB.all.購物||[]).some(x=>'日文' in x);
-    const who=edit?String(r['誰要的']||'').split(/[、,，\s]+/).filter(Boolean):[];
+    const who=edit?splitWho(r['誰要的']):[];
+    FM.whoSingle=OPT('誰要的').length>0;                      // 表上有下拉選單 → 只能選一個（跟表一樣）
+    const whoList=withCur(whoOpts(),who), dayList=shopDayOpts(edit?r['第幾天']:'');
     h=`<h4>${ic(edit?'pen':'bag')}${edit?'修改購物項目':'加到購物清單'}</h4>
       ${fld('商品',inp('f-item',edit?r['商品']:'','例：雪鹽餅乾、叙々苑燒肉醬','maxlength="80"'),true)}
       ${hasJp?fld('日文名稱',inp('f-jp',edit?r['日文']:'','例：雪塩ちんすこう','maxlength="80" lang="ja"'),'（選填，店員卡會用到）'):''}
       ${fld('店家',inp('f-store',edit?r['店家']:'','例：唐吉訶德、AEON','list="f-stores" maxlength="60"')+`<datalist id="f-stores">${stores.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>`)}
-      ${fld('誰要的',pickHTML('f-who',BAGPPL,who))}
-      ${fld('哪一天買',pickHTML('f-day',LEGS.map((l,i)=>({v:'D'+(i+1),l:'D'+(i+1)+' '+DAYNAME(i)})),edit?(r['第幾天']||''):''),'（選填）')}
+      ${fld('誰要的',pickHTML('f-who',whoList,FM.whoSingle?who.slice(0,1):who),FM.whoSingle?'（選一個，跟試算表的選單一樣）':'')}
+      ${fld('哪一天買',pickHTML('f-day',dayList,edit?(r['第幾天']||''):''),'（選填）')}
       ${fld('價格',inp('f-price',edit?r['價格']:'','例：¥1,280','maxlength="30"'),'（選填）')}
       ${fld('圖片網址',inp('f-img',edit?r['圖片']:'','https://… 或 Google 雲端硬碟分享連結','type="url" inputmode="url"')
         +'<div class="hint">在網路上找到商品圖 → 長按圖片「複製圖片網址」貼上，店員卡就會顯示</div>','（選填）')}
@@ -2292,7 +2508,7 @@ $('#fm').onclick=e=>{
   const pb=e.target.closest('.pick button');
   if(pb){
     const grp=pb.parentElement; grp.classList.remove('bad'); $('#f-err').textContent='';
-    const single=['f-payer','f-day','f-dayi','f-type'].includes(grp.id), must=['f-payer','f-dayi'].includes(grp.id);
+    const single=['f-payer','f-day','f-dayi','f-type'].includes(grp.id)||(grp.id==='f-who'&&FM.whoSingle), must=['f-payer','f-dayi'].includes(grp.id);
     if(single){ const was=pb.classList.contains('on'); [...grp.children].forEach(x=>x.classList.remove('on')); if(!was||must) pb.classList.add('on'); }
     else pb.classList.toggle('on');
     popEl(pb); formCalc(); return;
@@ -2314,10 +2530,10 @@ async function deleteRow(kind,row,orig,day,btn){
   const sheet=SHEET_OF(kind,day), k=KEY_OF[kind];
   if(btn){ btn.disabled=true; btn.innerHTML='刪除中…'; }
   try{
-    await callGAS('clear',{sheet,row,expect:{[k]:orig[k]}});
+    const res=await callGAS('clear',{sheet,row,expect:{[k]:orig[k]}});
     closeForm(); closeSk();
     toast('已從試算表刪除');
-    await reloadAfter(kind,0,day);
+    await reloadAfter(kind,0,day,res);
   }catch(err){
     if(btn){ btn.disabled=false; btn.classList.remove('armed'); btn.innerHTML=ic('trash')+'刪除這筆'; }
     const el=btn&&$('#f-err'); if(el) el.textContent=errMsg(err); else toast(errMsg(err),true);
@@ -2352,7 +2568,7 @@ async function submitForm(){
     if(!item) return bad($('#f-item'),'請填商品');
     if(img&&!/^https?:\/\//i.test(img)) return bad($('#f-img'),'圖片網址要 http 開頭');
     diff('商品',item,o['商品']); diff('店家',val('#f-store'),o['店家']||'');
-    const who=on('#f-who').join('、'), ow=String(o['誰要的']||'').split(/[、,，\s]+/).filter(Boolean).join('、');
+    const who=on('#f-who').join('、'), ow=splitWho(o['誰要的']).join('、');
     if(!edit||who!==ow) values.誰要的=who;
     diff('第幾天',on('#f-day')[0]||'',o['第幾天']||''); diff('價格',val('#f-price'),o['價格']||'');
     diff('圖片',img,o['圖片']||''); diff('備註',val('#f-note'),o['備註']||'');
@@ -2377,26 +2593,29 @@ async function submitForm(){
   const go=$('#f-go'); go.disabled=true;
   go.innerHTML=`<span class="spin" style="width:16px;height:16px;border-width:2px;margin:0;border-color:rgba(255,255,255,.35);border-top-color:#fff"></span>寫入試算表中…`;
   try{
-    let row=FM.row, day=FM.kind==='day'?(FM.newDay??FM.day):0;
-    if(!edit){ row=(await callGAS('append',{sheet,values})).row; }
+    let row=FM.row, day=FM.kind==='day'?(FM.newDay??FM.day):0, res=null;
+    if(!edit){ res=await callGAS('append',{sheet,values}); row=res.row; }
     else{
       const k=KEY_OF[FM.kind];
-      if(Object.keys(values).length) await callGAS('update',{sheet,row,expect:{[k]:o[k]},values});
+      if(Object.keys(values).length) res=await callGAS('update',{sheet,row,expect:{[k]:o[k]},values});
       if(moveTo!==null){
-        const r2=await callGAS('moveDay',{from:sheet,row,expect:{行程:values.行程??o['行程']},to:SHEET_OF('day',moveTo)});
-        row=r2.row; day=moveTo;
+        res=await callGAS('moveDay',{from:sheet,row,expect:{行程:values.行程??o['行程']},to:SHEET_OF('day',moveTo)});
+        row=res.row; day=moveTo;
       }
     }
     closeForm();
     toast(edit?(moveTo!==null?`已搬到 D${moveTo+1}`:'已更新試算表'):FM.kind==='exp'?'已記到花費表':FM.kind==='shop'?'已加到購物清單':`已加到 D${day+1}`);
-    await reloadAfter(FM.kind,row,day);
+    await reloadAfter(FM.kind,row,day,res);
   }catch(e2){
     err.textContent=errMsg(e2);
     go.disabled=false; go.innerHTML=ic('check')+(edit?'儲存修改':'再試一次');
   }
 }
-async function reloadAfter(kind,row,day){
-  try{ DB.all=await callGAS('getAll',{}); }catch(_){ toast('已存好，重新整理頁面就看得到',true); return; }
+async function reloadAfter(kind,row,day,res){
+  if(!mergeFresh(res&&res.fresh)){                          // 新版後端寫完會直接回傳最新那一塊，不用整份重讀
+    try{ DB.all=await callGAS('getAll',{fresh:1}); SYNC.at=Date.now(); cacheSave(); }
+    catch(_){ toast('已存好，重新整理頁面就看得到',true); return; }
+  }
   let el=null;
   if(kind==='exp'){ loadExpense(); el=row&&$(`#ex-list [data-r="${row}"]`); }
   else if(kind==='shop'){ loadShop(); el=row&&$(`#sh-box .shop[data-row="${row}"]`); }
@@ -2519,7 +2738,7 @@ $('#bag-box').onclick=async e=>{
     await callGAS('setCell',{sheet:'行前確認',row:+b.dataset.row,col:who,value:v,expect:b.dataset.exp});
     const row=(DB.all.行前.行李||[]).find(x=>x._row===+b.dataset.row);
     if(row) row[who]=v;
-    quiet(()=>{ renderWho(); renderBags(); });
+    cacheSoon(); quiet(()=>{ renderWho(); renderBags(); });
     const after=bagStats(who);
     if(after.t&&after.d===after.t&&before.d<after.t){ confetti(b,46,$('#fx')); toast(`${who} 的行李全部打包好了！`); }
   }catch(err){ b.classList.toggle('on',v!=='TRUE'); toast(errMsg(err),true); }
