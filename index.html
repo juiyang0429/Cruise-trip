@@ -345,17 +345,17 @@ button{font-family:inherit}
 .flip .back small{color:var(--sky);font-weight:800;margin-bottom:4px;font-size:11px;letter-spacing:.06em}
 .who-g{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:none}
 .who-g::-webkit-scrollbar{display:none}
-.who{flex:0 0 auto;border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;
+.pwho{flex:0 0 auto;border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;
   font-family:inherit;position:relative}
-.who>svg{width:54px;height:54px;transform:rotate(-90deg)}
-.who .av .ic{font-size:20px}
-.who .tr{fill:var(--paper);stroke:var(--line);stroke-width:3.5}
-.who .pg{fill:none;stroke:var(--sky);stroke-width:3.5;stroke-linecap:round;transition:stroke-dasharray .7s cubic-bezier(.3,.7,.3,1)}
-.who.full .pg{stroke:#5FB89A}
-.who .av{position:absolute;top:0;left:0;width:54px;height:54px;display:grid;place-items:center;font-weight:900;font-size:18px;color:var(--navy)}
-.who.on .tr{fill:var(--navy)}.who.on .av{color:var(--paper)}
-.who small{font-size:11px;color:var(--ink3);font-weight:700}
-.who.on small{color:var(--navy)}
+.pwho>svg{width:54px;height:54px;transform:rotate(-90deg)}
+.pwho .av .ic{font-size:20px}
+.pwho .tr{fill:var(--paper);stroke:var(--line);stroke-width:3.5}
+.pwho .pg{fill:none;stroke:var(--sky);stroke-width:3.5;stroke-linecap:round;transition:stroke-dasharray .7s cubic-bezier(.3,.7,.3,1)}
+.pwho.full .pg{stroke:#5FB89A}
+.pwho .av{position:absolute;top:0;left:0;width:54px;height:54px;display:grid;place-items:center;font-weight:900;font-size:18px;color:var(--navy)}
+.pwho.on .tr{fill:var(--navy)}.pwho.on .av{color:var(--paper)}
+.pwho small{font-size:11px;color:var(--ink3);font-weight:700}
+.pwho.on small{color:var(--navy)}
 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;padding:12px}
 .tile{position:relative;text-align:left;border:1.5px solid var(--line2);background:var(--paper);border-radius:14px;padding:12px 12px 12px 46px;
   min-height:64px;cursor:pointer;font-family:inherit;transition:background .25s,border-color .25s}
@@ -375,6 +375,54 @@ button{font-family:inherit}
 .todo .tt{display:block;font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;line-height:1.5;transition:color .2s}
 .todo.done .tt{color:var(--ink3);text-decoration:line-through}
 .todo a{display:inline-flex;gap:4px;align-items:center;font-size:12px;font-weight:700;margin:4px 12px 0 0;text-decoration:none;word-break:break-all}
+/* 3D 郵輪 */
+.ship3d{padding:0;overflow:hidden}
+.s3-title{display:flex;align-items:baseline;gap:8px;padding:12px 14px 10px;border-bottom:1px solid var(--line)}
+.s3-title b{font-size:16px;color:var(--navy)}.s3-title small{font:600 12px var(--dis);color:var(--ink3);letter-spacing:.08em}
+.s3-stage{position:relative;height:clamp(250px,64vw,390px);background:linear-gradient(#94D1EC,#D9EFF8 52%,#CBE8F4);
+  touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;overflow:hidden}
+.s3-stage.drag{cursor:grabbing}
+.s3-stage canvas{display:block;width:100%;height:100%}
+.s3-stage svg.s3-2d{display:block;width:100%;height:100%}
+.s3-stage.flat{cursor:default}.s3-stage.flat .s3-hint,.s3-stage.flat .s3-zoom{display:none}
+.s3-load{position:absolute;inset:0;display:flex;gap:8px;align-items:center;justify-content:center;color:var(--navy);font-weight:700;font-size:13px}
+.s3-load .spin{width:16px;height:16px;margin:0}
+.s3-hint{position:absolute;left:10px;bottom:9px;font-size:11px;font-weight:700;color:var(--navy);background:rgba(255,253,248,.85);
+  padding:4px 10px;border-radius:99px;pointer-events:none}
+.s3-zoom{position:absolute;right:10px;bottom:9px;display:flex;flex-direction:column;gap:6px}
+.s3-zoom button{width:32px;height:32px;border-radius:50%;border:0;background:rgba(255,253,248,.92);color:var(--navy);font:800 17px/1 inherit;
+  font-family:inherit;cursor:pointer;box-shadow:0 2px 8px rgba(22,58,80,.18)}
+.s3-tag{position:absolute;left:0;top:0;transform:translate(-50%,calc(-100% - 10px));background:var(--coral);color:#fff;font-weight:800;font-size:12px;
+  padding:5px 11px;border-radius:99px;white-space:nowrap;pointer-events:none;box-shadow:0 4px 12px rgba(227,94,69,.35);opacity:0;transition:opacity .25s}
+.s3-tag::after{content:'';position:absolute;left:50%;bottom:-5px;margin-left:-5px;border:5px solid transparent;border-bottom:0;border-top-color:var(--coral)}
+.s3-tag.on{opacity:1}
+.s3-specs{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.s3-specs div{padding:10px 12px;border-left:1px solid var(--line)}
+.s3-specs div:nth-child(3n+1){border-left:0}
+.s3-specs div:nth-child(n+4){border-top:1px solid var(--line)}
+.s3-specs b{display:block;font:600 21px/1.1 var(--dis);color:var(--navy)}
+.s3-specs b em{font:800 11px 'Noto Sans TC',sans-serif;font-style:normal;margin-left:3px;color:var(--ink3)}
+.s3-specs small{font-size:11px;color:var(--ink3)}
+.s3-decks{display:flex;gap:7px;overflow-x:auto;padding:12px 14px 6px;scrollbar-width:none}
+.s3-decks::-webkit-scrollbar{display:none}
+.s3-decks button{flex:0 0 auto;border:1.5px solid var(--line2);background:var(--paper);color:var(--ink2);border-radius:12px;padding:6px 11px;
+  font:700 12.5px inherit;font-family:inherit;cursor:pointer;text-align:left;line-height:1.25}
+.s3-decks button b{display:block;font:600 15px var(--dis);color:var(--coral)}
+.s3-decks button.on{background:var(--navy);border-color:var(--navy);color:var(--paper)}
+.s3-decks button.on b{color:var(--sky)}
+.s3-info{padding:6px 14px 14px}
+.s3-info h5{margin:4px 0 8px;font-size:15px;color:var(--navy);display:flex;gap:8px;align-items:baseline}
+.s3-info h5 span{font:600 20px var(--dis);color:var(--coral)}
+.s3-info ul{list-style:none;margin:0;padding:0}
+.s3-info li{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--line);font-size:13.5px;line-height:1.45}
+.s3-info li:last-child{border-bottom:0}
+.s3-info li .ic{color:var(--navy);flex:0 0 auto;margin-top:2px}
+.s3-info li div{flex:1;min-width:0}
+.s3-info li small{display:block;color:var(--ink3);font-size:11.5px}
+.tg{flex:0 0 auto;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:99px;margin-top:1px}
+.tg.free{background:#E6F5EE;color:#2E8A64}.tg.paid{background:#FDEBE7;color:var(--coral-d)}.tg.yc{background:var(--sky-l);color:var(--navy)}
+.s3-src{font-size:11px;color:var(--ink3);margin-top:10px;line-height:1.5}
+.s3-src a{color:var(--ink3)}
 /* 航線圖 */
 .mapcard{padding:0;overflow:hidden}
 #route-svg{display:block;width:100%;height:auto;background:linear-gradient(#D7EEF8,#BFE2F2)}
@@ -649,6 +697,8 @@ button{font-family:inherit}
 <symbol id="i-pen" viewBox="0 0 24 24"><path d="M14.5 5.5l4 4M4.5 19.5l1-4.5L16 4.5a1.8 1.8 0 0 1 2.5 0l1 1a1.8 1.8 0 0 1 0 2.5L9 18.5z"/></symbol>
 <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V4.8h5V7M6.5 7l.9 12.2a1.5 1.5 0 0 0 1.5 1.3h6.2a1.5 1.5 0 0 0 1.5-1.3L17.5 7M10 11v6M14 11v6"/></symbol>
 <symbol id="i-grip" viewBox="0 0 24 24"><path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01" stroke-width="3.2"/></symbol>
+<symbol id="i-reset" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4h4"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/></symbol>
 <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></symbol>
 <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 18h7.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H16"/></symbol>
 <symbol id="i-lang" viewBox="0 0 24 24"><path d="M3.5 5.5h9M8 3.5v2M10.5 5.5c-.6 3.6-3 6.6-6.5 8.3M6 8.5c1.2 2.2 3 3.9 5.5 5"/><path d="M12.5 20.5l4-9.5 4 9.5M14 17h5"/></symbol>
@@ -831,6 +881,19 @@ button{font-family:inherit}
     <div id="aboard-box"></div>
     <div class="sh"><div><span class="k">03</span><h3>航程</h3></div><div class="rl"></div><small>靠港 / 回船</small></div>
     <div class="card route" id="ports"></div>
+    <div class="sh"><div><span class="k">04</span><h3>認識榮耀號</h3></div><div class="rl"></div><small>拖曳轉船・點樓層</small></div>
+    <div class="card ship3d">
+      <div class="s3-title"><b id="s3-name">MSC 地中海榮耀號</b><small id="s3-en">MSC Bellissima</small></div>
+      <div class="s3-stage" id="s3-stage">
+        <div class="s3-load" id="s3-load"><span class="spin"></span>載入 3D 郵輪…</div>
+        <div class="s3-tag" id="s3-tag"></div>
+        <div class="s3-hint">左右拖曳轉船・點樓層看設施</div>
+        <div class="s3-zoom"><button data-z="-1" aria-label="放大">＋</button><button data-z="1" aria-label="縮小">－</button><button data-z="0" aria-label="回到全景"><svg class="ic"><use href="#i-reset"/></svg></button></div>
+      </div>
+      <div class="s3-specs" id="s3-specs"></div>
+      <div class="s3-decks" id="s3-decks"></div>
+      <div class="s3-info" id="s3-info"></div>
+    </div>
     <div id="shipinfo-box"></div>
   </section>
 
@@ -1247,6 +1310,7 @@ $('#tabbar').onclick=e=>{
   const sec=$('#p-'+b.dataset.t);
   if(!REDUCED){ sec.classList.remove('enter'); void sec.offsetWidth; sec.classList.add('enter'); }
   syncFab(b.dataset.t);
+  if(b.dataset.t==='ship'){ initShip3D(); if(S3.api) S3.api.resume(); } else if(S3.api) S3.api.pause();
   if(b.dataset.t==='money'&&!DB._counted&&DB.exp){ DB._counted=true; $$('#ex-stats .stat b').forEach(countUp); }
   const top=$('.tabbar').getBoundingClientRect().top+scrollY;
   if(scrollY>top) window.scrollTo({top,behavior:'smooth'});
@@ -1546,7 +1610,7 @@ function renderShip(){
   stagger($('#ports'),'.port',60);
   const keys=Object.keys(SHIP).filter(k=>SHIP[k]);
   $('#shipinfo-box').innerHTML=keys.length?`
-    <div class="sh"><div><span class="k">03</span><h3>船上資訊</h3></div><div class="rl"></div></div>
+    <div class="sh"><div><span class="k">05</span><h3>船上資訊</h3></div><div class="rl"></div></div>
     <div class="card"><dl class="info-g">
       ${keys.map(k=>`<dt>${ic(SHIP_IC[k]||'info')}${esc(k)}</dt><dd>${esc(SHIP[k])}</dd>`).join('')}
     </dl></div>`:'';
@@ -1787,6 +1851,251 @@ $('#route-info').addEventListener('click',e=>{
   const b=e.target.closest('[data-go]'); if(!b) return;
   curDay=+b.dataset.go; $('.tab[data-t="itin"]').click(); renderDayTabs(); renderTL();
 });
+
+/* ══════════════ 認識榮耀號：3D 郵輪＋各樓層設施
+   資料來源：MSC 台灣官方「榮耀號」介紹（設施可能依航次調整，以船上日報為準）
+   3D 模型是用程式畫的示意船（不是官方模型），點樓層會亮起來
+   ══════════════════════════════════════════════════════════════════════════ */
+const BELLA={
+  名:'MSC 地中海榮耀號', 英:'MSC Bellissima',
+  規格:[['17.2','萬噸','總噸位'],['316','公尺','船長'],['19','層','甲板'],['5,686','人','最多載客'],['2,217','間','客艙'],['2019','年','下水']],
+  甲板:[
+    {k:'19',l:'19F',t:'水上樂園',ic:'wave',v:[['亞利桑那水上樂園','','4 條滑水道'],['亞利桑那酒吧'],['遊艇會陽光甲板＆酒吧','yc']]},
+    {k:'18',l:'18F',t:'兒童俱樂部',ic:'users',v:[['Chicco 嬰兒俱樂部'],['樂高幼兒／兒童俱樂部'],['少年及青少年俱樂部'],['哆來咪影院與實驗室'],['天空酒廊'],['天際線酒吧'],['高閣俱樂部'],['遊艇會餐廳','yc']]},
+    {k:'16',l:'16F',t:'運動・遊樂',ic:'flag',v:[['天際線泳池'],['多功能運動場'],['F1 模擬賽車','paid'],['XD 互動影院','paid'],['VR 迷宮','paid'],['保齡球館','paid'],['遊戲天地']]},
+    {k:'15',l:'15F',t:'泳池・自助餐',ic:'sun',v:[['市集自助餐廳','free','早午晚都有，最好找吃的地方'],['氛圍泳池'],['大峽泳池','','室內泳池'],['氛圍冰淇淋吧'],['大峽酒吧'],['市集酒吧']]},
+    {k:'8-14',l:'8–14F',t:'客艙',ic:'bed',v:[['客艙樓層','','房號前兩碼通常就是樓層（例如 10xxx 在 10 樓），以船票為準'],['8F 兩側是救生艇','','安全演練時依船卡上的集合站集合']]},
+    {k:'7',l:'7F',t:'榮耀大道・特色餐廳',ic:'food',v:[['榮耀大道 Galleria','','約 80 公尺的 LED 星空穹頂步行街（6–7F）'],['旋轉木馬劇場','','特色表演秀'],['帝國娛樂場','','賭場'],["美式牛排屋 Butcher's Cut",'paid'],['海渡壽司吧 Kaito','paid'],['海渡鐵板燒 Kaito','paid'],['香檳吧','paid'],['老船長酒吧'],['演播廳酒廊'],['Aurea Spa 水療中心','paid']]},
+    {k:'6',l:'6F',t:'主餐廳・劇院',ic:'food',v:[['櫻桃餐廳','free','主餐廳'],['燈塔餐廳','free','主餐廳'],['墨西哥料理 Hola!','paid'],['Jean-Philippe 巧克力工坊','paid','巧克力、可麗餅、冰淇淋'],['緣雞尾酒吧'],['榮耀酒廊'],['倫敦大劇院','','5–6F，晚上的大型秀在這裡'],['榮耀大道','','6–7F 購物步行街']]},
+    {k:'5',l:'5F',t:'主餐廳・劇院',ic:'food',v:[['海王餐廳','free','主餐廳'],['無極酒廊'],['倫敦大劇院','','5–6F']]}
+  ]
+};
+const TAGTXT={free:'免費',paid:'付費',yc:'遊艇會'};
+let S3={sel:'',api:null,started:false};
+function renderShipGuide(){
+  $('#s3-name').textContent=BELLA.名; $('#s3-en').textContent=BELLA.英;
+  $('#s3-specs').innerHTML=BELLA.規格.map(([n,u,l])=>`<div><b>${esc(n)}<em>${esc(u)}</em></b><small>${esc(l)}</small></div>`).join('');
+  $('#s3-decks').innerHTML=BELLA.甲板.map(d=>`<button data-k="${d.k}"><b>${d.l}</b>${esc(d.t)}</button>`).join('');
+  if(S3.sel) selectDeck(S3.sel,true); else showShipSummary();
+}
+function showShipSummary(){
+  S3.sel=''; $$('#s3-decks button').forEach(b=>b.classList.remove('on'));
+  const pick=(tag)=>BELLA.甲板.flatMap(d=>d.v.filter(v=>v[1]===tag).map(v=>`${esc(v[0])}<small style="display:inline;color:var(--ink3)">（${d.l}）</small>`));
+  $('#s3-info').innerHTML=`<h5><span>${ic('ship')}</span>點上面的樓層，3D 船會轉過去</h5><ul>
+    <li>${ic('food')}<div>免費吃<small>${pick('free').join('、')}</small></div><span class="tg free">免費</span></li>
+    <li>${ic('star')}<div>必逛<small>榮耀大道 LED 星空穹頂（6–7F）、倫敦大劇院表演（5–6F）、亞利桑那水上樂園（19F）</small></div></li>
+    <li>${ic('bed')}<div>找房間<small>房號前兩碼通常就是樓層，例如 10xxx 在 10 樓（以船票為準）</small></div></li></ul>
+    <div class="s3-src">設施資料：<a href="https://msc-cruises.com.tw/images/MSC_CURISES_Bellissima.pdf" target="_blank" rel="noopener">MSC 台灣官方榮耀號介紹</a>。實際開放與收費以船上日報為準；3D 是示意模型。</div>`;
+  if(S3.api) S3.api.zoom(0); else if(S3.svg) S3.svg.focus('');
+}
+function selectDeck(k,quietly){
+  if(k===S3.sel&&!quietly) return showShipSummary();        // 再點一次同一層 → 回到全景
+  const d=BELLA.甲板.find(x=>x.k===k); if(!d) return;
+  S3.sel=k;
+  $$('#s3-decks button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
+  $('#s3-info').innerHTML=`<h5><span>${d.l}</span>${esc(d.t)}</h5><ul>${d.v.map(([n,tag,note])=>
+    `<li>${ic(d.ic)}<div>${esc(n)}${note?`<small>${esc(note)}</small>`:''}</div>${tag?`<span class="tg ${tag}">${TAGTXT[tag]}</span>`:''}</li>`).join('')}</ul>
+    <div class="s3-src">設施資料：<a href="https://msc-cruises.com.tw/images/MSC_CURISES_Bellissima.pdf" target="_blank" rel="noopener">MSC 台灣官方榮耀號介紹</a>。實際開放與收費以船上日報為準；3D 是示意模型。</div>`;
+  if(S3.api) S3.api.focus(k); else if(S3.svg) S3.svg.focus(k);
+  if(!quietly){ const b=$(`#s3-decks button[data-k="${k}"]`); if(b){ popEl(b); b.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); } }
+}
+$('#s3-decks').addEventListener('click',e=>{ const b=e.target.closest('button'); if(b) selectDeck(b.dataset.k); });
+$('#s3-stage').addEventListener('click',e=>{ const z=e.target.closest('[data-z]'); if(!z) return; if(+z.dataset.z===0) return showShipSummary(); if(S3.api) S3.api.zoom(+z.dataset.z); });
+
+function loadThree(){
+  if(window.THREE) return Promise.resolve(window.THREE);
+  return new Promise((ok,no)=>{
+    const sc=document.createElement('script');
+    sc.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    const t=setTimeout(()=>no(new Error('timeout')),15000);
+    sc.onload=()=>{ clearTimeout(t); window.THREE?ok(window.THREE):no(new Error('no THREE')); };
+    sc.onerror=()=>{ clearTimeout(t); no(new Error('load')); };
+    document.head.appendChild(sc);
+  });
+}
+function hasWebGL(){ try{ const c=document.createElement('canvas'); return !!(c.getContext('webgl')||c.getContext('experimental-webgl')); }catch(_){ return false; } }
+async function initShip3D(){
+  if(S3.started) return; S3.started=true;
+  renderShipGuide();
+  try{
+    if(!hasWebGL()) throw new Error('no webgl');
+    const T=await loadThree();
+    S3.api=ship3D(T,$('#s3-stage'));
+    $('#s3-load').remove();
+    if(S3.sel) S3.api.focus(S3.sel,true);
+  }catch(err){
+    $('#s3-load').remove();
+    S3.svg=ship2D($('#s3-stage'));                      // 沒有 3D（舊手機、網路擋）就用 2D 側面圖
+    if(S3.sel) S3.svg.focus(S3.sel);
+  }
+}
+
+/* ── 3D 郵輪（Three.js，全部用程式畫：船身、19 層甲板、救生艇、煙囪、泳池、滑水道、海浪） ── */
+function ship3D(T,stage){
+  const W=()=>stage.clientWidth, Hh=()=>stage.clientHeight;
+  const renderer=new T.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+  renderer.setSize(W(),Hh());
+  stage.insertBefore(renderer.domElement,stage.firstChild);
+  const scene=new T.Scene();
+  scene.fog=new T.Fog(0xCBE8F4,60,230);
+  const cam=new T.PerspectiveCamera(34,W()/Hh(),.1,400);
+  scene.add(new T.HemisphereLight(0xffffff,0x5f8fa8,.8));
+  const sun=new T.DirectionalLight(0xffffff,.75); sun.position.set(20,40,25); scene.add(sun);
+  const ship=new T.Group(); scene.add(ship);
+  const sel={};                                            // 樓層 → 網格
+  const H=.3, Y=n=>(n-3)*H, L=31.6, B=4.3;               // 1 單位≈10 公尺；水線約在 3 樓
+  const M=(c,o={})=>new T.MeshLambertMaterial(Object.assign({color:c},o));
+  const tex=(draw,w,h,rx,ry)=>{ const c=document.createElement('canvas'); c.width=w; c.height=h; draw(c.getContext('2d'),w,h);
+    const t=new T.CanvasTexture(c); t.wrapS=t.wrapT=T.RepeatWrapping; t.repeat.set(rx,ry); return t; };
+  const cabinTex=tex((x,w,h)=>{ x.fillStyle='#FBFAF6'; x.fillRect(0,0,w,h); x.fillStyle='#2D5C78'; x.fillRect(0,h*.26,w,h*.44);
+    x.fillStyle='#FBFAF6'; x.fillRect(0,h*.26,3,h*.44); x.fillRect(w/2,h*.26,3,h*.44); x.fillStyle='rgba(255,255,255,.7)'; x.fillRect(0,h*.6,w,3); },128,64,1/.6,1/H);
+  const promTex=tex((x,w,h)=>{ x.fillStyle='#FBFAF6'; x.fillRect(0,0,w,h); x.fillStyle='#3B6F8C'; for(let i=8;i<w;i+=40) x.fillRect(i,h*.22,30,h*.5); },128,64,1/1.2,1/H);
+  const portTex=tex((x,w,h)=>{ x.fillStyle='#FBFAF6'; x.fillRect(0,0,w,h); x.fillStyle='#46708A'; for(let i=10;i<w;i+=32){ x.beginPath(); x.arc(i,h/2,5,0,7); x.fill(); } },128,32,1/1.2,1/H);
+  const white=M(0xFBFAF6), navy=M(0x1E4E6A), coral=M(0xE35E45), teak=M(0xE7CFA2);
+  function outline(x0,x1,w,bow){
+    const s=new T.Shape(), hw=w/2, r=Math.min(.6,hw*.4), bw=Math.min(bow,x1-x0-r-.01);
+    s.moveTo(x0,-hw+r); s.quadraticCurveTo(x0,-hw,x0+r,-hw); s.lineTo(x1-bw,-hw);
+    s.bezierCurveTo(x1-bw*.35,-hw,x1,-hw*.3,x1,0); s.bezierCurveTo(x1,hw*.3,x1-bw*.35,hw,x1-bw,hw);
+    s.lineTo(x0+r,hw); s.quadraticCurveTo(x0,hw,x0,hw-r); return s;
+  }
+  function slab(x0,x1,w,bow,y0,y1,cap,side,key){
+    const g=new T.ExtrudeGeometry(outline(x0,x1,w,bow),{depth:y1-y0,bevelEnabled:false,curveSegments:12});
+    g.rotateX(-Math.PI/2); g.translate(0,y0,0);
+    const mats=key?[cap.clone(),side.clone()]:[cap,side];
+    const m=new T.Mesh(g,mats); ship.add(m);
+    if(key){ (sel[key]=sel[key]||[]).push(m); m.userData.deck=key; }
+    return m;
+  }
+  const sideM=t=>M(0xffffff,{map:t});
+  // 船身（水線下深藍、珊瑚色水線、白色船身）
+  slab(-L/2,L/2,B,7.5,Y(0),Y(3)+.05,navy,navy);
+  slab(-L/2-.01,L/2+.01,B+.02,7.5,Y(3)+.05,Y(3)+.13,coral,coral);
+  slab(-L/2,L/2,B,7.5,Y(3)+.13,Y(5),white,sideM(portTex));
+  [5,6,7].forEach(n=>slab(-L/2,L/2,B,7.5,Y(n),Y(n+1),white,sideM(promTex),String(n)));
+  // 客艙 8–14 樓（陽台）
+  slab(-15.3,12.8,B*.97,4.6,Y(8),Y(15),white,sideM(cabinTex),'8-14');
+  // 救生艇（8 樓兩側）
+  const boatG=new T.SphereGeometry(1,14,10), boatM=M(0xF29A3F);
+  for(let x=-10.5;x<=9;x+=1.62) [-1,1].forEach(sd=>{ const b=new T.Mesh(boatG,boatM); b.scale.set(.62,.17,.2); b.position.set(x,Y(8)+.2,sd*(B*.485+.12)); ship.add(b); });
+  // 15 樓：泳池甲板
+  slab(-14.9,12.1,B*.95,4.1,Y(15),Y(16),teak,sideM(promTex),'15');
+  const pool=(x0,x1,z,y)=>{ const p=new T.Mesh(new T.BoxGeometry(x1-x0,.04,z),M(0x3FB6E0,{emissive:0x0d4a66,emissiveIntensity:.25})); p.position.set((x0+x1)/2,y,0); ship.add(p); return p; };
+  const poolA=pool(-7.6,-1.6,2.2,Y(16)+.02);
+  // 16 樓：前段＋船尾（中間空出來是露天泳池）
+  slab(.4,11.7,B*.92,3.7,Y(16),Y(17),teak,sideM(cabinTex),'16');
+  slab(-14.5,-9.2,B*.92,.3,Y(16),Y(17),teak,sideM(promTex),'16');
+  const poolB=pool(-13.6,-10.4,1.8,Y(17)+.02);
+  // 17 樓（只有前段）
+  slab(2.4,11.2,B*.88,3.3,Y(17),Y(18),white,sideM(cabinTex));
+  // 18 樓：前段（遊艇會、酒吧）＋船尾（兒童俱樂部）
+  slab(3.4,10.8,B*.84,3,Y(18),Y(19),teak,sideM(promTex),'18');
+  slab(-14.2,-10.2,B*.88,.3,Y(17),Y(19),teak,sideM(promTex),'18');
+  // 19 樓：日光甲板＋水上樂園
+  slab(5,10.2,B*.78,2.6,Y(19),Y(20),teak,white,'19');
+  const slideCols=[0xE35E45,0xFFC14D,0x3FB6E0,0x5FB89A];
+  const tower=new T.Mesh(new T.CylinderGeometry(.42,.42,1.3,14),M(0xFFC14D)); tower.position.set(-12.2,Y(19)+.65,0); ship.add(tower);
+  (sel['19']=sel['19']||[]).push(tower); tower.userData.deck='19';
+  [[0,1],[1,-1],[2,1],[3,-1]].forEach(([i,sd])=>{
+    const pts=[]; for(let k=0;k<=24;k++){ const a=k/24, ang=a*Math.PI*(1.6+i*.35)*sd;
+      pts.push(new T.Vector3(-12.2+Math.cos(ang+i)*(.6+a*1.5)+a*(i%2?1.2:-.6), Y(19)+1.25-a*(1.25+(i%2)*.3), Math.sin(ang+i)*(.6+a*1.2)*.9)); }
+    const tube=new T.Mesh(new T.TubeGeometry(new T.CatmullRomCurve3(pts),60,.11,8,false),M(slideCols[i]));
+    ship.add(tube); sel['19'].push(tube); tube.userData.deck='19';
+  });
+  // 煙囪、桅杆
+  const fun=new T.Mesh(new T.BoxGeometry(2,2.5,1.5),white); fun.position.set(-7.2,Y(16)+1.25,0); fun.rotation.z=.1; ship.add(fun);
+  const funTop=new T.Mesh(new T.BoxGeometry(2.04,.38,1.54),navy); funTop.position.set(-7.33,Y(16)+2.42,0); funTop.rotation.z=.1; ship.add(funTop);
+  const funBand=new T.Mesh(new T.BoxGeometry(2.04,.12,1.54),coral); funBand.position.set(-7.31,Y(16)+2.18,0); funBand.rotation.z=.1; ship.add(funBand);
+  const mast=new T.Mesh(new T.CylinderGeometry(.06,.08,1.6,8),white); mast.position.set(8,Y(20)+.8,0); ship.add(mast);
+  const radar=new T.Mesh(new T.BoxGeometry(.9,.08,.18),navy); radar.position.set(8,Y(20)+1.3,0); ship.add(radar);
+  // 海面＋船邊浪花＋航跡
+  const wg=new T.PlaneGeometry(700,700,64,64); wg.rotateX(-Math.PI/2);
+  const water=new T.Mesh(wg,M(0x2C86B5,{transparent:true,opacity:.95})); water.position.y=Y(3)+.02; scene.add(water);
+  const wp=wg.attributes.position, base=Float32Array.from(wp.array);
+  const foam=new T.Mesh(new T.RingGeometry(1,1.1,72),new T.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.7,side:T.DoubleSide}));
+  foam.rotation.x=-Math.PI/2; foam.scale.set(16.9,2.6,1); foam.position.y=Y(3)+.08; scene.add(foam);
+  const wakeTex=tex((x,w,h)=>{ const g=x.createLinearGradient(0,0,w,0); g.addColorStop(0,'rgba(255,255,255,0)'); g.addColorStop(1,'rgba(255,255,255,.75)'); x.fillStyle=g; x.fillRect(0,0,w,h); },128,8,1,1);
+  const wake=new T.Mesh(new T.PlaneGeometry(26,3.4),new T.MeshBasicMaterial({map:wakeTex,transparent:true,depthWrite:false}));
+  wake.rotation.x=-Math.PI/2; wake.position.set(-L/2-13,Y(3)+.07,0); scene.add(wake);
+  // 鏡頭（拖曳轉、按鈕縮放、點樓層自動轉過去）
+  const st={th:.85,ph:.3,rad:47,ty:2.2}, want={...st};
+  const VIEW={'19':{th:2.35,ph:.42,rad:33,ty:4.6},'18':{th:2.2,ph:.4,rad:34,ty:4.4},'16':{th:1.9,ph:.45,rad:32,ty:4.1},'15':{th:1.55,ph:.5,rad:33,ty:3.8},
+              '8-14':{th:.6,ph:.22,rad:40,ty:2.6},'7':{th:.95,ph:.13,rad:27,ty:1.4},'6':{th:.95,ph:.11,rad:27,ty:1.1},'5':{th:.95,ph:.09,rad:27,ty:.8}};
+  let drag=null, last=performance.now(), idle=0, t0=0, running=true;
+  const auto=!REDUCED;
+  stage.addEventListener('pointerdown',e=>{ if(e.target.closest('button')) return; drag={x:e.clientX,y:e.clientY,th:want.th,ph:want.ph,moved:0,id:e.pointerId}; stage.classList.add('drag'); });
+  stage.addEventListener('pointermove',e=>{ if(!drag||e.pointerId!==drag.id) return; const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+    drag.moved=Math.max(drag.moved,Math.abs(dx)+Math.abs(dy)); want.th=drag.th-dx*.008; want.ph=Math.min(1.25,Math.max(.04,drag.ph+dy*.004)); idle=0; });
+  const end=e=>{ if(!drag) return; const tap=drag.moved<7; drag=null; stage.classList.remove('drag'); if(tap&&e.type==='pointerup') pick(e); };
+  stage.addEventListener('pointerup',end); stage.addEventListener('pointercancel',end); stage.addEventListener('pointerleave',end);
+  const ray=new T.Raycaster(), v2=new T.Vector2();
+  function pick(e){
+    const r=stage.getBoundingClientRect(); v2.set(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);
+    ray.setFromCamera(v2,cam);
+    const hit=ray.intersectObjects(Object.values(sel).flat(),false)[0];
+    if(hit&&hit.object.userData.deck) selectDeck(hit.object.userData.deck);
+  }
+  const tag=$('#s3-tag'); let cur='';
+  function focus(k,now){
+    cur=k; Object.assign(want,VIEW[k]||{th:.85,ph:.3,rad:47,ty:2.2}); idle=0;
+    if(now) Object.assign(st,want);
+    const d=BELLA.甲板.find(x=>x.k===k); tag.textContent=d?`${d.l} ${d.t}`:''; tag.classList.toggle('on',!!d);
+  }
+  function zoom(dir){ if(!dir){ cur=''; tag.classList.remove('on'); Object.assign(want,{th:.85,ph:.3,rad:47,ty:2.2}); return; }
+    want.rad=Math.min(80,Math.max(16,want.rad*(dir>0?1.22:.82))); idle=0; }
+  const anchor=new T.Vector3(), box=new T.Box3();
+  function frame(now){
+    if(!running) return;
+    requestAnimationFrame(frame);
+    const dt=Math.min(.05,(now-last)/1000); last=now; t0+=dt; idle+=dt;
+    if(auto&&!drag&&idle>3.5) want.th+=dt*.12;              // 放著不動會慢慢自己轉
+    for(const k of ['th','ph','rad','ty']) st[k]+=(want[k]-st[k])*Math.min(1,dt*4);
+    const R=st.rad*Math.max(1,1.62/cam.aspect);            // 手機比較窄 → 鏡頭拉遠一點，船才不會被切到
+    cam.position.set(R*Math.cos(st.ph)*Math.cos(st.th),st.ty+R*Math.sin(st.ph),R*Math.cos(st.ph)*Math.sin(st.th));
+    cam.lookAt(0,st.ty,0);
+    if(auto){
+      ship.position.y=Math.sin(t0*1.1)*.05; ship.rotation.x=Math.sin(t0*.8)*.008;
+      for(let i=0;i<wp.count;i++){ const x=base[i*3], z=base[i*3+2];
+        wp.array[i*3+1]=Math.sin(x*.22+t0*1.4)*.09+Math.cos(z*.27+t0*1.1)*.07; }
+      wp.needsUpdate=true; wg.computeVertexNormals();
+      foam.material.opacity=.45+.25*Math.sin(t0*2.2); poolA.material.emissiveIntensity=.2+.1*Math.sin(t0*3);
+    }
+    const glow=.55+.35*Math.sin(t0*4);
+    Object.entries(sel).forEach(([k,ms])=>ms.forEach(m=>(Array.isArray(m.material)?m.material:[m.material]).forEach(mt=>{
+      if(!mt._e){ mt._e=mt.emissive.clone(); }
+      if(k===cur) mt.emissive.setRGB(.95*glow,.42*glow,.3*glow); else mt.emissive.copy(mt._e);
+    })));
+    if(cur&&sel[cur]){                                     // 浮動標籤跟著那層樓
+      box.makeEmpty(); sel[cur].forEach(m=>box.expandByObject(m)); box.getCenter(anchor); anchor.y=box.max.y;
+      anchor.project(cam);
+      tag.style.left=((anchor.x+1)/2*stage.clientWidth)+'px'; tag.style.top=((1-anchor.y)/2*stage.clientHeight)+'px';
+    }
+    renderer.render(scene,cam);
+  }
+  requestAnimationFrame(frame);
+  new ResizeObserver(()=>{ renderer.setSize(W(),Hh()); cam.aspect=W()/Hh(); cam.updateProjectionMatrix(); }).observe(stage);
+  const io=new IntersectionObserver(es=>{ const vis=es[0].isIntersecting&&!$('#p-ship').classList.contains('hide');
+    if(vis&&!running){ running=true; last=performance.now(); requestAnimationFrame(frame); } else if(!vis) running=false; });
+  io.observe(stage);
+  const resume=()=>{ if(!running&&!$('#p-ship').classList.contains('hide')){ running=true; last=performance.now(); requestAnimationFrame(frame); } };
+  return {focus,zoom,resume,pause:()=>{ running=false; }};
+}
+
+/* ── 沒有 WebGL 時的 2D 側面圖（一樣可以點樓層） ── */
+function ship2D(stage){
+  const y=n=>150-(n-3)*6.2, rows=[['5',5,6],['6',6,7],['7',7,8],['8-14',8,15],['15',15,16],['16',16,17],['18',17,19],['19',19,20]];
+  const x0={'5':20,'6':20,'7':20,'8-14':34,'15':40,'16':46,'18':120,'19':150}, x1={'5':372,'6':372,'7':372,'8-14':344,'15':336,'16':326,'18':312,'19':300};
+  stage.classList.add('flat');
+  stage.insertAdjacentHTML('afterbegin',`<svg class="s3-2d" viewBox="0 0 400 190" preserveAspectRatio="xMidYMid meet">
+    <rect x="0" y="152" width="400" height="38" fill="#3FA2CF"/>
+    <path d="M14 ${y(5)}H360Q385 ${y(5)} 392 ${y(4)}L372 166H30Z" fill="#1E4E6A"/>
+    ${rows.map(([k,a,b])=>`<rect class="b2" data-deck="${k}" x="${x0[k]}" y="${y(b)}" width="${x1[k]-x0[k]}" height="${y(a)-y(b)-1}" rx="2" fill="#FBFAF6" stroke="#9BB7C7" stroke-width=".6"/>
+      <text x="${x0[k]+6}" y="${(y(a)+y(b))/2+3}" style="font:700 8px var(--dis);fill:#1E4E6A;pointer-events:none">${k}F</text>`).join('')}
+    <rect x="120" y="${y(20)-14}" width="16" height="16" fill="#FBFAF6" stroke="#9BB7C7"/></svg>`);
+  const svg=stage.querySelector('svg');
+  svg.addEventListener('click',e=>{ const r=e.target.closest('.b2'); if(r) selectDeck(r.dataset.deck); });
+  return { focus(k){ svg.querySelectorAll('.b2').forEach(r=>r.setAttribute('fill',r.dataset.deck===k?'#F7C6BA':'#FBFAF6')); } };
+}
 
 /* ══════════════ 背景音樂：原創島嶼小曲，瀏覽器即時合成（沒有版權問題）
    烏克麗麗刷弦＋鋼鼓旋律＋沙鈴＋海浪聲。想換成自己的音樂檔：config.js 加  音樂: 'music.mp3'
@@ -2172,12 +2481,12 @@ function renderWho(){
   $('#who-g').innerHTML=[{n:'',l:'全部'},...BAGPPL.map(n=>({n,l:n}))].map(x=>{
     const st=x.n?bagStats(x.n):BAGPPL.reduce((a,n)=>{ const q=bagStats(n); a.t+=q.t; a.d+=q.d; return a; },{t:0,d:0});
     const pct=st.t?st.d/st.t:0;
-    return `<button class="who${BAGWHO===x.n?' on':''}${st.t&&pct===1?' full':''}" data-who="${esc(x.n)}">
+    return `<button class="pwho${BAGWHO===x.n?' on':''}${st.t&&pct===1?' full':''}" data-who="${esc(x.n)}">
       <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" class="tr"/><circle cx="22" cy="22" r="19" class="pg" style="stroke-dasharray:${(pct*C).toFixed(1)} ${C.toFixed(1)}"/></svg>
       <span class="av">${x.n?esc(x.n):ic('users')}</span><small>${esc(x.l)} ${Math.round(pct*100)}%</small></button>`;
   }).join('');
 }
-$('#who-g').onclick=e=>{ const b=e.target.closest('.who'); if(!b) return; BAGWHO=b.dataset.who; renderWho(); renderBags(); popEl(b); };
+$('#who-g').onclick=e=>{ const b=e.target.closest('.pwho'); if(!b) return; BAGWHO=b.dataset.who; renderWho(); renderBags(); popEl(b); };
 function renderBags(){
   const p=DB.all.行前||{}, bags=p.行李||[];
   const ppl=BAGWHO?[BAGWHO]:BAGPPL;
