@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#F4EEE2">
-<title>MSC 郵輪・沖繩離島</title>
+<title>MSC 郵輪・沖繩跳島</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -275,9 +275,55 @@ button{font-family:inherit}
 #lb img{max-width:100%;max-height:86vh;border-radius:10px}
 #lb .cap{position:absolute;left:0;right:0;bottom:22px;text-align:center;color:var(--paper);
   font-size:14px;font-weight:700;padding:0 24px}
+/* 店員卡 */
+.shop{cursor:pointer}
+.shop .go{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;color:var(--navy);
+  background:var(--sky-l);border:1px solid var(--line);font-size:15px}
+#sk{position:fixed;inset:0;z-index:190;display:none}
+#sk.on{display:block}
+#sk .bk{position:absolute;inset:0;background:rgba(22,58,80,.55);animation:fadeIn .2s both}
+#sk .sheet{position:absolute;left:0;right:0;bottom:0;margin:0 auto;max-width:560px;max-height:92vh;overflow:auto;
+  background:var(--paper);border-radius:20px 20px 0 0;padding-bottom:calc(16px + env(safe-area-inset-bottom));
+  animation:skUp .34s cubic-bezier(.2,.8,.2,1) both;overscroll-behavior:contain}
+#sk .grab{width:40px;height:4px;border-radius:9px;background:var(--line2);margin:8px auto 0}
+#sk .x{position:absolute;right:10px;top:10px;width:34px;height:34px;border-radius:50%;border:0;z-index:2;
+  background:rgba(255,253,248,.92);color:var(--navy);font-size:18px;display:grid;place-items:center;cursor:pointer}
+#sk .pic{margin:10px 14px 0;border-radius:14px;overflow:hidden;background:var(--sky-l);border:1px solid var(--line)}
+#sk .pic img{display:block;width:100%;max-height:42vh;object-fit:contain;cursor:zoom-in;background:#fff}
+#sk .pic .none{padding:22px 16px;text-align:center;color:var(--ink3);font-size:12.5px;line-height:1.7}
+#sk .pic .none .ic{font-size:30px;color:var(--navy);opacity:.6}
+#sk .pic .none a{font-weight:700}
+#sk .bd{padding:14px 18px 0}
+#sk .nm{font-size:18px;font-weight:900;color:var(--navy);line-height:1.4}
+#sk .jpn{font:700 15px/1.4 "Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;color:var(--coral-d);margin-top:2px}
+#sk .jpn:empty{display:none}
+#sk .mt{font-size:12px;color:var(--ink3);margin-top:5px;display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+#sk .say{margin-top:14px;border:1.5px solid var(--coral);border-radius:14px;padding:12px 14px 12px;background:#fff;position:relative}
+#sk .say .lbl{display:inline-flex;gap:5px;align-items:center;font-size:11px;font-weight:900;letter-spacing:.14em;color:var(--coral)}
+#sk .say .ja{font:800 clamp(21px,6vw,26px)/1.5 "Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
+  color:var(--ink);margin-top:6px;word-break:keep-all;overflow-wrap:anywhere}
+#sk .say .zh{font-size:13px;color:var(--ink3);margin-top:4px}
+#sk .qty{display:none;align-items:center;gap:10px;margin-top:10px}
+#sk .qty.on{display:flex}
+#sk .qty button{width:34px;height:34px;border-radius:10px;border:1.5px solid var(--line2);background:var(--paper);
+  font-size:18px;font-weight:900;color:var(--navy);cursor:pointer}
+#sk .qty b{min-width:22px;text-align:center;font:600 20px var(--dis);color:var(--navy)}
+#sk .speak{margin-top:12px;width:100%;border:0;border-radius:11px;padding:11px;background:var(--navy);color:var(--paper);
+  font:700 14px inherit;font-family:inherit;display:flex;gap:7px;align-items:center;justify-content:center;cursor:pointer}
+#sk .speak.on{background:var(--coral)}
+#sk .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+#sk .chips button{border:1.5px solid var(--line2);background:var(--paper);color:var(--ink2);border-radius:99px;
+  padding:6px 12px;font:700 12.5px inherit;font-family:inherit;cursor:pointer}
+#sk .chips button.on{background:var(--navy);border-color:var(--navy);color:var(--paper)}
+#sk .acts{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin-top:16px;font-size:12.5px}
+#sk .acts a{text-decoration:none;font-weight:700;display:inline-flex;gap:4px;align-items:center}
+#sk .acts .bought{margin-left:auto;border:1.5px solid var(--navy);background:var(--paper);color:var(--navy);
+  border-radius:99px;padding:8px 14px;font:800 13px inherit;font-family:inherit;display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+#sk .acts .bought.on{background:var(--navy);color:var(--paper)}
+@keyframes skUp{from{transform:translateY(100%)}to{transform:none}}
 #toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
   background:var(--navy);color:var(--paper);padding:11px 20px;border-radius:99px;font-size:13.5px;
-  font-weight:700;z-index:99;opacity:0;pointer-events:none;transition:.25s;max-width:90vw}
+  font-weight:700;z-index:260;opacity:0;pointer-events:none;transition:.25s;max-width:90vw}
 #toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 #toast.bad{background:var(--coral)}
 
@@ -322,16 +368,18 @@ button{font-family:inherit}
 .art .a-birds{animation:fly 16s ease-in-out infinite alternate}
 .art .bird{transform-box:fill-box;transform-origin:center;animation:flap .7s ease-in-out infinite}
 .art .bird.b2{animation-duration:.85s;animation-delay:.2s}
-/* 全家福 */
-.family{position:relative;z-index:3;margin:-58px auto 0;text-align:center;pointer-events:none}
-.family img{display:block;width:min(88%,560px);max-height:190px;object-fit:contain;margin:0 auto;
-  filter:drop-shadow(0 6px 10px rgba(22,58,80,.18));animation:famIn .8s 1.1s cubic-bezier(.2,.8,.2,1) both}
+/* 全家福：站在海報裡的沙灘上（海報變高一點，海平線往上推，人物不會擋到郵輪） */
+.poster.with-fam{height:clamp(400px,118vw,540px)}
+.art .a-beach{display:none}
+.poster.with-fam .art .a-beach{display:inline}
+.family{position:absolute;left:0;right:0;bottom:6px;z-index:1;text-align:center;pointer-events:none}
+.family img{display:block;width:min(74%,460px);height:auto;margin:0 auto;
+  filter:drop-shadow(0 5px 6px rgba(60,40,10,.22));animation:famIn .8s 1.1s cubic-bezier(.2,.8,.2,1) both}
 .family img.idle{animation:famBob 3.6s ease-in-out infinite}
-.family .cap{font-size:11.5px;color:var(--ink3);letter-spacing:.3em;margin-top:4px;animation:fadeIn .6s 1.6s both}
-.frame.has-family .seal{bottom:70px}
+.family .cap{display:none}
+.poster.with-fam .vtext{text-shadow:0 0 6px rgba(255,255,255,.75)}
+@media (min-width:600px){ .poster.with-fam .stamp{top:22px} }
 @media (max-width:440px){
-  .family{margin-top:-44px}
-  .frame.has-family .seal{bottom:56px}
   .vtext{font-size:14px;letter-spacing:.2em}
 }
 @media (min-width:441px){ .vtext .vbr{display:none} }
@@ -396,6 +444,10 @@ button{font-family:inherit}
 <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h15M13.5 6l6 6-6 6"/></symbol>
 <symbol id="i-box" viewBox="0 0 24 24"><path d="M3.5 7.5l8.5-4 8.5 4v9l-8.5 4-8.5-4zM3.5 7.5l8.5 4 8.5-4M12 11.5v9"/></symbol>
 <symbol id="i-island" viewBox="0 0 24 24"><path d="M2.5 19.5c2.6-1.7 5.8-2.4 9.5-2.4s6.9.7 9.5 2.4M11 17.2c.1-3.2.8-5.8 2.3-7.9M13.3 9.3c-1.6-1.6-4.1-2-6.3-1.1M13.3 9.3c0-2-1.2-4-3.3-4.8M13.3 9.3c1.3-1.5 3.4-2.1 5.4-1.4M13.3 9.3c1.8.4 3.2 1.8 3.8 3.7"/></symbol>
+<symbol id="i-speak" viewBox="0 0 24 24"><path d="M4 9.5h3.2L12 5.5v13l-4.8-4H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6M18.2 6.5a8 8 0 0 1 0 11"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+<symbol id="i-lang" viewBox="0 0 24 24"><path d="M3.5 5.5h9M8 3.5v2M10.5 5.5c-.6 3.6-3 6.6-6.5 8.3M6 8.5c1.2 2.2 3 3.9 5.5 5"/><path d="M12.5 20.5l4-9.5 4 9.5M14 17h5"/></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><circle cx="9" cy="9.8" r="1.7"/><path d="M20.5 15.5l-4.8-4.6-8.2 8.6"/></symbol>
 <symbol id="i-wave" viewBox="0 0 24 24"><path d="M2.5 10c2 0 2-1.8 4.75-1.8S9.25 10 12 10s2-1.8 4.75-1.8S18.75 10 21.5 10M2.5 15c2 0 2-1.8 4.75-1.8S9.25 15 12 15s2-1.8 4.75-1.8S18.75 15 21.5 15"/></symbol>
 </defs></svg>
 
@@ -455,8 +507,15 @@ button{font-family:inherit}
         <path d="M209 254h90"/><path d="M217 245.5h76"/><path d="M227 237.5h56"/>
       </g>
       </g>
+      <!-- 沙灘（有全家福時才出現，人物站在這裡） -->
+      <g class="a-beach">
+        <path d="M0 318c56-14 120-18 190-12s140 4 210-10V400H0z" fill="#F4E3BC"/>
+        <path d="M0 318c56-14 120-18 190-12s140 4 210-10" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="2.4" stroke-linecap="round"/>
+        <path d="M0 326c60-12 122-15 190-9s138 3 210-9V334c-72 12-142 14-210 8S60 332 0 342z" fill="#E7CF9C" fill-opacity=".55"/>
+        <g fill="#D9BE86" fill-opacity=".7"><circle cx="40" cy="370" r="1.6"/><circle cx="92" cy="384" r="1.3"/><circle cx="318" cy="378" r="1.5"/><circle cx="372" cy="362" r="1.2"/><circle cx="250" cy="392" r="1.4"/></g>
+      </g>
       <!-- 椰子樹 -->
-      <path d="M352 322c-4-32-14-72-26-108" fill="none" stroke="#2B5A4E" stroke-width="7" stroke-linecap="round"/>
+      <path d="M356 350c-6-44-18-94-30-136" fill="none" stroke="#2B5A4E" stroke-width="7" stroke-linecap="round"/>
       <g class="a-palm"><g fill="#2E6A57">
         <path d="M326 214c-21-14-44-10-60 8 22-12 40-12 60-8z"/>
         <path d="M326 214c-14-24-34-32-50-28 20 6 36 14 50 28z"/>
@@ -469,7 +528,7 @@ button{font-family:inherit}
     </svg>
 
     <div class="ptop">
-      <div class="display" id="h-display">沖繩離島</div>
+      <div class="display" id="h-display">沖繩跳島</div>
       <div class="ptag" id="h-tag">MSC 郵輪假期</div>
       <div class="prule"><i></i><b id="h-title">載入中…</b><i></i></div>
     </div>
@@ -480,15 +539,15 @@ button{font-family:inherit}
         <circle cx="50" cy="50" r="47" stroke-width="1.6"/><circle cx="50" cy="50" r="26" stroke-width="1"/>
       </g>
       <g class="ring"><text fill="currentColor" font-family="Oswald, sans-serif" font-size="10" font-weight="500">
-        <textPath href="#stampPath" textLength="222" lengthAdjust="spacing" id="stampText">沖繩離島 · 郵輪假期 · 2026 ·</textPath>
+        <textPath href="#stampPath" textLength="222" lengthAdjust="spacing" id="stampText">沖繩跳島 · 郵輪假期 · 2026 ·</textPath>
       </text></g>
       <g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
         <use href="#i-hibiscus" x="36" y="36" width="28" height="28"/>
       </g>
     </svg>
+    <div class="family hide" id="fam"><img id="h-family" alt="全家福"><div class="cap" id="fam-cap"></div></div>
     <div class="seal" id="h-seal">一路順風</div>
   </div>
-  <div class="family hide" id="fam"><img id="h-family" alt="全家福"><div class="cap" id="fam-cap"></div></div>
   <div class="strip" id="h-meta"></div>
   <div class="subline" id="h-sub"></div>
 </div></header>
@@ -566,12 +625,35 @@ button{font-family:inherit}
 <div style="height:44px"></div>
 
 <div id="lock"><div class="box">
-  <div class="word" id="lock-word">沖繩離島</div>
+  <div class="word" id="lock-word">沖繩跳島</div>
   <svg class="ic"><use href="#i-lock"/></svg>
   <h2 id="lock-title">MSC 郵輪</h2><p>請輸入通行碼</p>
   <input id="lock-in" type="password" autocomplete="current-password" placeholder="通行碼">
   <button class="btn" id="lock-go">進入</button><div class="msg" id="lock-msg"></div>
 </div></div>
+<!-- 購物「店員卡」：點商品跳出，給店員看圖＋日文 -->
+<div id="sk" aria-hidden="true">
+  <div class="bk"></div>
+  <div class="sheet" role="dialog" aria-label="商品與日文">
+    <div class="grab"></div>
+    <button class="x" aria-label="關閉"><svg class="ic"><use href="#i-x"/></svg></button>
+    <div class="pic" id="sk-pic"></div>
+    <div class="bd">
+      <div class="nm" id="sk-name"></div>
+      <div class="jpn" id="sk-jpn" lang="ja"></div>
+      <div class="mt" id="sk-meta"></div>
+      <div class="say">
+        <div class="lbl"><svg class="ic"><use href="#i-lang"/></svg>給店員看</div>
+        <div class="ja" id="sk-ja" lang="ja"></div>
+        <div class="zh" id="sk-zh"></div>
+        <div class="qty" id="sk-qty"><button data-d="-1" aria-label="少一個">−</button><b id="sk-n">1</b><button data-d="1" aria-label="多一個">＋</button></div>
+        <button class="speak" id="sk-speak"><svg class="ic"><use href="#i-speak"/></svg>唸給店員聽</button>
+      </div>
+      <div class="chips" id="sk-chips"></div>
+      <div class="acts" id="sk-acts"></div>
+    </div>
+  </div>
+</div>
 <div id="lb"><img alt=""><div class="cap"></div></div>
 <div id="toast"></div>
 
@@ -817,7 +899,7 @@ function gasHelp(){
 
 /* 封面上不需要資料的部分（標題、標語、印章）先畫，連線慢也不會空白 */
 function renderCover(){
-  const word=CONF.封面標題||CONF.英文標題||'沖繩離島';
+  const word=CONF.封面標題||CONF.英文標題||'沖繩跳島';
   const latin=/^[\x00-\x7F]+$/.test(word);           // 填英文就自動換回海報那種窄體英文字
   const n=+CONF.天數||5;
   const start=parseDT(CONF.出發日,'00:00');
@@ -847,6 +929,8 @@ function renderCover(){
     $('#h-family').src=famSrc;
     $('#fam-cap').textContent=(CONF.全家福標語)||(BAGPPL.length?BAGPPL.join('・'):'一起出發');
     $('#fam').classList.remove('hide'); $('.frame').classList.add('has-family');
+    $('.poster').classList.add('with-fam');
+    $('.poster .art').setAttribute('viewBox','0 0 400 392');   // 往下多畫一塊沙灘
     $('#h-family').addEventListener('animationend',e=>{ if(e.animationName==='famIn') e.target.classList.add('idle'); });
   };
   img.src=famSrc;
@@ -1144,31 +1228,111 @@ function renderShop(){
     +list.map(r=>{
       const done=bool(r['已購買']);
       const ml=mapLink((r['店家']||'')+' '+(r['地址']||''),'');
-      return `<div class="shop${done?' done':''}">
-        <button class="cb${done?' on':''}" data-row="${r._row}" data-v="${done?'FALSE':'TRUE'}"
-          data-exp="${done?'TRUE':'FALSE'}" aria-label="打勾"></button>
+      return `<div class="shop${done?' done':''}" data-row="${r._row}">
+        <button class="cb${done?' on':''}" data-row="${r._row}" aria-label="打勾"></button>
         <div><div class="name">${esc(r['商品']||r['店家'])}</div>
           <div class="who">${r['誰要的']?ic('user')+esc(r['誰要的']):''}${r['價格']?' · '+esc(r['價格']):''}${r['備註']?' · '+esc(r['備註']):''}</div>
           <div class="links">${ml?`<a href="${esc(ml)}" target="_blank" rel="noopener">${ic('pin')}地圖</a>`:''}
             ${r['折價券']&&/^https?:/.test(r['折價券'])?`<a href="${esc(r['折價券'])}" target="_blank" rel="noopener">${ic('ticket')}折價券</a>`:''}</div></div>
-        ${r['圖片']?`<img class="thumb" src="${esc(driveImg(r['圖片'],400))}" data-full="${esc(driveImg(r['圖片'],1600))}"
-           data-cap="${esc(r['商品']||'')}" loading="lazy" alt="" onerror="this.style.display='none'">`:'<span></span>'}
+        ${r['圖片']?`<img class="thumb" src="${esc(driveImg(r['圖片'],400))}" loading="lazy" alt="" onerror="this.style.display='none'">`
+          :`<span class="go" title="看日文">${ic('lang')}</span>`}
       </div>`;
     }).join('')).join('');
   stagger($('#sh-box'),'.grp-h,.shop',30);
 }
-$('#sh-box').onclick=async e=>{
-  const im=e.target.closest('.thumb'); if(im){ openLB(im); return; }
-  const b=e.target.closest('.cb'); if(!b) return;
-  const v=b.dataset.v;
-  b.classList.toggle('on',v==='TRUE'); popEl(b);
-  try{
-    await callGAS('setCell',{sheet:'購物清單',row:+b.dataset.row,col:'已購買',value:v,expect:b.dataset.exp});
-    const row=(DB.shop||[]).find(x=>x._row===+b.dataset.row);
-    if(row) row['已購買']=v;
-    quiet(renderShop);
-  }catch(err){ b.classList.toggle('on',v!=='TRUE'); toast(errMsg(err),true); }
+$('#sh-box').onclick=e=>{
+  if(e.target.closest('a')) return;                       // 地圖、折價券連結照常開
+  const b=e.target.closest('.cb'); if(b){ toggleShop(+b.dataset.row); return; }
+  const s=e.target.closest('.shop'); if(s) openShopCard(+s.dataset.row);   // 點商品其他地方 → 店員卡
 };
+async function toggleShop(rowNum){
+  const r=(DB.shop||[]).find(x=>x._row===rowNum); if(!r) return;
+  const was=bool(r['已購買']), v=was?'FALSE':'TRUE';
+  const cb=$(`#sh-box .cb[data-row="${rowNum}"]`);
+  if(cb){ cb.classList.toggle('on',!was); popEl(cb); }
+  syncSkBought(!was);
+  try{
+    await callGAS('setCell',{sheet:'購物清單',row:rowNum,col:'已購買',value:v,expect:was?'TRUE':'FALSE'});
+    r['已購買']=v;
+    quiet(renderShop);
+  }catch(err){ if(cb) cb.classList.toggle('on',was); syncSkBought(was); toast(errMsg(err),true); }
+}
+
+/* ── 店員卡：大圖＋日文句子＋朗讀 ── */
+const JP_N=['','ひとつ','ふたつ','みっつ','よっつ','いつつ','むっつ','ななつ','やっつ','ここのつ','とお'];
+const jpN=n=>JP_N[n]||`${n}個`;
+// x = 商品日文名（沒有就用「これ」＝這個，搭配圖片指給店員看）
+const PHR=[
+  {k:'我在找', ja:x=>`すみません、${x}を探しています。`,          zh:'不好意思，我在找這個。'},
+  {k:'在哪裡', ja:x=>`${x}はどこにありますか？`,                  zh:'請問這個放在哪裡？'},
+  {k:'有貨嗎', ja:(x,j)=>j?`${x}の在庫はありますか？`:'これ、在庫はありますか？', zh:'請問還有貨嗎？'},
+  {k:'我要買', ja:(x,j,n)=>`${x}を${jpN(n)}ください。`,           zh:n=>`我要買 ${n} 個。`, qty:true},
+  {k:'免稅',   ja:()=>'免税できますか？パスポートはあります。',     zh:'可以免稅嗎？我有帶護照。'},
+  {k:'刷卡',   ja:()=>'カードで払えますか？',                      zh:'可以刷卡嗎？'},
+  {k:'要袋子', ja:()=>'袋をください。',                            zh:'請給我袋子。'},
+];
+const SK={row:0,p:0,n:1,jp:''};
+function openShopCard(rowNum){
+  const r=(DB.shop||[]).find(x=>x._row===rowNum); if(!r) return;
+  Object.assign(SK,{row:rowNum,p:0,n:1,jp:String(r['日文']||r['日文名稱']||r['日文名']||'').trim()});
+  const name=r['商品']||r['店家']||'';
+  const noPic=`<div class="none">${ic('image')}<br>還沒有圖片 —— 把圖片網址或雲端硬碟連結貼到試算表「圖片」欄就會出現<br>
+    <a href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(name)}" target="_blank" rel="noopener">${ic('ext')} 先用 Google 找圖給店員看</a></div>`;
+  $('#sk-pic').innerHTML=r['圖片']
+    ?`<img src="${esc(driveImg(r['圖片'],1200))}" data-full="${esc(driveImg(r['圖片'],1600))}" data-cap="${esc(name)}" alt="${esc(name)}">`
+    :noPic;
+  const im=$('#sk-pic img'); if(im) im.onerror=()=>{ $('#sk-pic').innerHTML=noPic; };
+  $('#sk-name').textContent=name;
+  $('#sk-jpn').textContent=SK.jp;
+  $('#sk-meta').innerHTML=[
+    r['店家']&&ic('bag')+esc(r['店家']), r['價格']&&ic('yen')+esc(r['價格']),
+    r['誰要的']&&ic('user')+esc(r['誰要的']), r['備註']&&ic('note')+esc(r['備註'])].filter(Boolean).join('<span>·</span>');
+  $('#sk-chips').innerHTML=PHR.map((p,i)=>`<button data-i="${i}">${p.k}</button>`).join('');
+  const ml=mapLink((r['店家']||'')+' '+(r['地址']||''),'');
+  $('#sk-acts').innerHTML=
+    (ml?`<a href="${esc(ml)}" target="_blank" rel="noopener">${ic('pin')}地圖</a>`:'')
+    +(r['折價券']&&/^https?:/.test(r['折價券'])?`<a href="${esc(r['折價券'])}" target="_blank" rel="noopener">${ic('ticket')}折價券</a>`:'')
+    +`<a href="https://translate.google.com/?sl=zh-TW&tl=ja&op=translate&text=${encodeURIComponent(name)}" target="_blank" rel="noopener">${ic('lang')}${SK.jp?'翻譯':'查日文名'}</a>`
+    +`<button class="bought"></button>`;
+  syncSkBought(bool(r['已購買']));
+  renderSkSay();
+  $('#sk').classList.add('on'); $('#sk').setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+}
+function renderSkSay(){
+  const ph=PHR[SK.p], x=SK.jp||'これ';
+  $('#sk-ja').textContent=ph.ja(x,SK.jp,SK.n);
+  $('#sk-zh').textContent=typeof ph.zh==='function'?ph.zh(SK.n):ph.zh;
+  $('#sk-qty').classList.toggle('on',!!ph.qty); $('#sk-n').textContent=SK.n;
+  [...$('#sk-chips').children].forEach((b,i)=>b.classList.toggle('on',i===SK.p));
+}
+function syncSkBought(on){
+  const b=$('#sk-acts .bought'); if(!b) return;
+  b.classList.toggle('on',on); b.innerHTML=ic('check')+(on?'已買到':'買到了');
+}
+function closeSk(){
+  $('#sk').classList.remove('on'); $('#sk').setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+  try{ speechSynthesis.cancel(); }catch(_){}
+}
+function sayJa(text,btn){
+  if(!('speechSynthesis' in window)){ toast('這支手機不支援朗讀，直接把畫面給店員看就好',true); return; }
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text); u.lang='ja-JP'; u.rate=.9;
+  const vs=speechSynthesis.getVoices(), v=vs.find(v=>/^ja[-_]JP/i.test(v.lang))||vs.find(v=>/^ja/i.test(v.lang));
+  if(v) u.voice=v;
+  btn.classList.add('on'); u.onend=u.onerror=()=>btn.classList.remove('on');
+  speechSynthesis.speak(u);
+}
+$('#sk').onclick=e=>{
+  if(e.target.closest('.bk')||e.target.closest('.x')) return closeSk();
+  const c=e.target.closest('#sk-chips button'); if(c){ SK.p=+c.dataset.i; renderSkSay(); return; }
+  const q=e.target.closest('#sk-qty button'); if(q){ SK.n=Math.max(1,Math.min(20,SK.n+(+q.dataset.d))); renderSkSay(); return; }
+  if(e.target.closest('#sk-speak')) return sayJa($('#sk-ja').textContent,$('#sk-speak'));
+  const im=e.target.closest('#sk-pic img'); if(im) return openLB(im);
+  if(e.target.closest('.bought')) return toggleShop(SK.row);
+};
+window.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!$('#lb').classList.contains('on')) closeSk(); },true);  // 先關燈箱，再按一次才關店員卡
 
 /* ══════════════ 5. 想去的地方 ══════════════ */
 function loadPlaces(){
