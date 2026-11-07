@@ -377,6 +377,16 @@ button{font-family:inherit}
 .tile.on{background:#EAF6F0;border-color:#5FB89A}
 .tile.on .ck{background:#5FB89A;border-color:#5FB89A;color:#fff}
 .tile.on b{text-decoration:line-through;color:var(--ink3)}
+/* 不用帶（✗）／待買 */
+.pbox.na{border-style:dashed;color:var(--ink3);background:transparent;opacity:.55;cursor:default;text-decoration:line-through}
+.pbox.buy{border-color:var(--coral);color:var(--coral-d)}
+.tile.na{opacity:.5;cursor:default;border-style:dashed}
+.tile.na b{text-decoration:line-through;color:var(--ink3)}
+.tile.na .ck{color:var(--ink3);border-style:dashed}
+.tile .bt{display:inline-block;margin-left:6px;font-size:10.5px;font-weight:800;color:var(--coral-d);background:var(--coral-l);border-radius:99px;padding:0 7px;vertical-align:1px}
+.bag-sec{display:flex;align-items:center;gap:6px;padding:12px 14px 6px;font-size:12px;font-weight:900;letter-spacing:.14em;color:var(--coral);
+  border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--sky-l) 55%,transparent)}
+.tiles .bag-sec{grid-column:1/-1;border:0;background:none;padding:6px 2px 0}
 .todos{padding:4px 0}
 .todo{display:flex;gap:12px;align-items:flex-start;padding:11px 14px;border-bottom:1px solid var(--line)}
 .todo:last-child{border-bottom:0}
@@ -2694,7 +2704,11 @@ function prepCount(){
   }else h=`<small>旅程結束</small><div class="ct" style="font-family:inherit;font-size:22px">下次再一起出發！</div>`;
   $('#prep-count').innerHTML=`<div class="go"><span class="shipi">${ic('ship')}</span><div>${h}</div></div>`;
 }
-function bagStats(name){ let t=0,d=0; (((DB.all.行前||{}).行李)||[]).forEach(b=>{ if(name in b){ t++; if(bool(b[name])) d++; } }); return {t,d}; }
+/* 打包狀態：試算表的格子是下拉選單「✓／✗／待買」（空白＝還沒打包）；舊版的 TRUE/FALSE 勾選框也照樣能用 */
+const PK=v=>{ v=String(v??'').trim(); return v==='✓'||/^true$/i.test(v)?'done':v==='✗'?'na':v==='待買'?'buy':''; };
+function packIsBool(){ return (((DB.all.行前||{}).行李)||[]).some(b=>BAGPPL.some(n=>/^(TRUE|FALSE)$/i.test(String(b[n]??'')))); }
+function packNext(cur){ const done=PK(cur)==='done'; return packIsBool()?(done?'FALSE':'TRUE'):(done?'':'✓'); }
+function bagStats(name){ let t=0,d=0; (((DB.all.行前||{}).行李)||[]).forEach(b=>{ if(name in b&&PK(b[name])!=='na'){ t++; if(PK(b[name])==='done') d++; } }); return {t,d}; }
 function renderWho(){
   const C=2*Math.PI*19;
   $('#who-g').innerHTML=[{n:'',l:'全部'},...BAGPPL.map(n=>({n,l:n}))].map(x=>{
@@ -2710,30 +2724,31 @@ function renderBags(){
   const p=DB.all.行前||{}, bags=p.行李||[];
   const ppl=BAGWHO?[BAGWHO]:BAGPPL;
   let total=0,done=0;
-  bags.forEach(b=>ppl.forEach(n=>{ if(n in b){ total++; if(bool(b[n])) done++; } }));
+  bags.forEach(b=>ppl.forEach(n=>{ if(n in b&&PK(b[n])!=='na'){ total++; if(PK(b[n])==='done') done++; } }));
   $('#b-prog').style.width=total?(done/total*100)+'%':'0';
   $('#bag-stat').textContent=total?`${BAGWHO?BAGWHO+' ':''}${done} / ${total} 已打包`:`${bags.length} 項`;
   const meta=b=>[b['數量']&&b['數量']!=='-'?'×'+esc(b['數量']):'',b['位置']?esc(b['位置']):'',esc(b['備註']||'')].filter(Boolean).join(' · ');
   if(!bags.length){ $('#bag-box').innerHTML=`<div class="empty">${ic('box','big')}<p class="muted">行李清單是空的</p></div>`; return; }
+  let sec=null;
+  const secHead=b=>{ if(!b._sec||b._sec===sec) return ''; sec=b._sec; return `<div class="bag-sec">${ic('box')}${esc(sec)}</div>`; };
+  const attrs=(b,n)=>`data-row="${b._row}" data-col="${esc(n)}" data-v="${esc(packNext(b[n]))}" data-exp="${esc(b[n]??'')}"`;
   if(BAGWHO){                                          // 只看一個人：大張的打包卡，點一下就打包
-    $('#bag-box').innerHTML=`<div class="tiles">${bags.filter(b=>BAGWHO in b).map(b=>{ const on=bool(b[BAGWHO]);
-      return `<button class="tile${on?' on':''}" data-row="${b._row}" data-col="${esc(BAGWHO)}" data-v="${on?'FALSE':'TRUE'}" data-exp="${on?'TRUE':'FALSE'}">
-        <span class="ck">${ic('check')}</span><b>${esc(b['項目'])}</b>${meta(b)?`<small>${meta(b)}</small>`:''}</button>`; }).join('')}</div>`;
+    $('#bag-box').innerHTML=`<div class="tiles">${bags.filter(b=>BAGWHO in b).map(b=>{ const st=PK(b[BAGWHO]);
+      return secHead(b)+`<button class="tile${st==='done'?' on':''}${st==='na'?' na':''}" ${attrs(b,BAGWHO)}${st==='na'?' disabled title="試算表標記不用帶"':''}>
+        <span class="ck">${ic(st==='na'?'x':'check')}</span><b>${esc(b['項目'])}${st==='buy'?'<span class="bt">待買</span>':''}</b>${meta(b)?`<small>${meta(b)}</small>`:''}</button>`; }).join('')}</div>`;
     stagger($('#bag-box'),'.tile',30);
     return;
   }
-  $('#bag-box').innerHTML=bags.map(b=>`<div class="bag">
+  $('#bag-box').innerHTML=bags.map(b=>secHead(b)+`<div class="bag">
       <div class="n">${esc(b['項目'])}${meta(b)?`<small>${meta(b)}</small>`:''}</div>
-      <div class="ppl">${ppl.map(n=>n in b
-        ? `<button class="pbox${bool(b[n])?' on':''}" data-row="${b._row}" data-col="${esc(n)}"
-             data-v="${bool(b[n])?'FALSE':'TRUE'}" data-exp="${bool(b[n])?'TRUE':'FALSE'}">${esc(n)}</button>`
-        : '').join('')}</div></div>`).join('');
+      <div class="ppl">${ppl.map(n=>{ if(!(n in b)) return ''; const st=PK(b[n]);
+        return `<button class="pbox${st==='done'?' on':''}${st==='na'?' na':''}${st==='buy'?' buy':''}" ${attrs(b,n)}${st==='na'?' disabled title="不用帶"':st==='buy'?' title="待買"':''}>${esc(n)}</button>`; }).join('')}</div></div>`).join('');
   stagger($('#bag-box'),'.bag',35);
 }
 $('#bag-box').onclick=async e=>{
   const b=e.target.closest('.pbox,.tile'); if(!b||b.disabled) return;
-  const v=b.dataset.v, who=b.dataset.col, before=bagStats(who);
-  b.classList.toggle('on',v==='TRUE'); popEl(b);
+  const v=b.dataset.v, who=b.dataset.col, before=bagStats(who), willOn=PK(v)==='done';
+  b.classList.toggle('on',willOn); popEl(b);
   try{
     await callGAS('setCell',{sheet:'行前確認',row:+b.dataset.row,col:who,value:v,expect:b.dataset.exp});
     const row=(DB.all.行前.行李||[]).find(x=>x._row===+b.dataset.row);
@@ -2741,7 +2756,7 @@ $('#bag-box').onclick=async e=>{
     cacheSoon(); quiet(()=>{ renderWho(); renderBags(); });
     const after=bagStats(who);
     if(after.t&&after.d===after.t&&before.d<after.t){ confetti(b,46,$('#fx')); toast(`${who} 的行李全部打包好了！`); }
-  }catch(err){ b.classList.toggle('on',v!=='TRUE'); toast(errMsg(err),true); }
+  }catch(err){ b.classList.toggle('on',!willOn); toast(errMsg(err),true); }
 };
 function renderTodos(){
   const lines=((DB.all.行前||{}).資料)||[], tasks=[];
