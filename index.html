@@ -1932,7 +1932,8 @@ function openForm(kind,row,dayIdx){
     const types=dayTypes(), d=FM.day;
     h=`<h4>${ic(edit?'pen':'cal')}${edit?'修改行程':'加一個行程'}</h4>
       ${fld('哪一天',pickHTML('f-dayi',LEGS.map((l,i)=>({v:String(i),l:'D'+(i+1)+' '+DAYNAME(i)})),String(d)),edit?'（換一天＝整筆搬過去）':'')}
-      ${fld('行程',inp('f-item',edit?r['行程']:'','例：宮古神社、午餐 沖繩麵','maxlength="120"'),true)}
+      ${fld('行程',`<textarea id="f-item" rows="2" maxlength="120" placeholder="例：宮古神社、午餐 沖繩麵">${esc(edit?r['行程']||'':'')}</textarea>`
+        +'<div class="hint">可以換行；用 &lt;標籤&gt; 開頭會變成卡片上的小標籤</div>',true)}
       <div class="fl2">
         ${fld('抵達',`<input id="f-t1" type="time" value="${edit?toHM(r['抵達時間']):''}">`)}
         ${fld('離開',`<input id="f-t2" type="time" value="${edit?toHM(r['離開時間']):''}">`)}
@@ -2021,7 +2022,8 @@ async function submitForm(){
   const bad=(el,msg)=>{ el.classList.add('bad'); err.textContent=msg; if(el.tagName==='INPUT') el.focus(); return null; };
   const edit=FM.mode==='edit', o=FM.orig||{};
   let sheet=SHEET_OF(FM.kind,FM.day), values={}, moveTo=null;
-  const diff=(k,v,ov)=>{ if(!edit||String(v??'')!==String(ov??'')) values[k]=v; };
+  const same=(a,b)=>String(a??'').replace(/\s+/g,' ').trim()===String(b??'').replace(/\s+/g,' ').trim();
+  const diff=(k,v,ov)=>{ if(!edit||!same(v,ov)) values[k]=v; };   // 只有空白／換行不同不算改
   if(FM.kind==='exp'){
     const item=val('#f-item'), raw=amtVal(), payer=on('#f-payer')[0], share=on('#f-share');
     if(!item) return bad($('#f-item'),'請填項目');
