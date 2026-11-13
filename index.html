@@ -581,6 +581,24 @@ html[data-fs] #fab{font-size:16px;padding:15px 21px 15px 17px}
 .seg button{border:0;background:var(--paper);padding:0 15px;font:800 15px inherit;font-family:inherit;color:var(--ink3);cursor:pointer}
 .seg button.on{background:var(--navy);color:var(--paper)}
 .hint{font-size:12px;color:var(--ink3);margin-top:6px;line-height:1.5}
+/* 商品照片：拍照／選照片上傳 */
+.upimg{display:flex;gap:12px;align-items:center}
+.upimg .pv{flex:0 0 auto;width:84px;height:84px;border-radius:12px;border:1.5px dashed var(--line2);background:var(--sky-l);
+  display:grid;place-items:center;overflow:hidden;color:var(--navy);font-size:28px;position:relative}
+.upimg .pv img{width:100%;height:100%;object-fit:cover}
+.upimg .pv .spin{position:absolute;inset:0;margin:auto;width:24px;height:24px}
+.upimg .ub{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.upimg .ub .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.upimg label.btn{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.upimg .rm{border:0;background:none;color:var(--coral-d);font:700 12.5px inherit;font-family:inherit;padding:4px 2px;cursor:pointer}
+.upimg .st{font-size:12px;color:var(--ink3);line-height:1.4}
+.upimg .st.ok{color:#2f8f6b;font-weight:700}
+.upimg .st.bad{color:var(--coral-d);font-weight:700}
+.urlbox{margin-top:8px}
+.urlbox summary{font-size:12px;color:var(--ink3);cursor:pointer}
+.urlbox input{margin-top:6px}
+#sk-pic .none .upnow{margin-top:10px;display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+#sk-pic .uping{padding:30px 16px;text-align:center;color:var(--ink3);font-size:13px}
 .hint b{color:var(--navy)}
 .pick{display:flex;flex-wrap:wrap;gap:7px}
 .pick button{border:1.5px solid var(--line2);background:var(--paper);color:var(--ink2);border-radius:99px;
@@ -816,7 +834,7 @@ html[data-fs] #fab{font-size:16px;padding:15px 21px 15px 17px}
         <circle cx="80" cy="232" r="30"/><circle cx="118" cy="226" r="36"/><circle cx="156" cy="236" r="26"/>
         <circle cx="98" cy="196" r="28"/><circle cx="132" cy="188" r="24"/><circle cx="112" cy="166" r="20"/>
         <circle cx="55" cy="246" r="20"/><circle cx="185" cy="248" r="18"/><circle cx="140" cy="212" r="22"/>
-        <rect x="38" y="238" width="168" height="24"/>
+        <rect x="55" y="238" width="130" height="24"/>
         <circle cx="300" cy="256" r="6"/><circle cx="311" cy="253" r="8"/><circle cx="322" cy="257" r="5"/><rect x="294" y="256" width="32" height="6"/>
       </g>
       </g>
@@ -857,18 +875,20 @@ html[data-fs] #fab{font-size:16px;padding:15px 21px 15px 17px}
       <!-- 郵輪（進場從右邊開進來） -->
       <g class="a-ship-in">
       <g class="a-ship">
-      <g stroke="#1E4E6A" stroke-opacity=".35" stroke-width=".8">
-        <rect x="236" y="228" width="36" height="6" fill="#FFFDF8"/>
-        <rect x="224" y="234" width="62" height="7" fill="#FFFDF8"/>
-        <rect x="214" y="241" width="82" height="9" fill="#FFFDF8"/>
-        <path d="M205 250h100l-7 13h-86z" fill="#FFFDF8"/>
+        <g transform="translate(204 199) scale(.33) translate(-104 -146)">
+          <path d="M104 300H408L388 346H128Z" fill="#1E4E6A"/>
+          <rect x="104" y="296" width="304" height="8" fill="#E35E45"/>
+          <path d="M132 296V252Q132 246 138 246H360Q376 246 384 262L398 296Z" fill="#FFFDF8"/>
+          <path d="M156 246V214Q156 208 162 208H320Q334 208 342 222L352 246Z" fill="#FFFDF8"/>
+          <path d="M184 208V186H298Q308 186 314 196L320 208Z" fill="#FFFDF8"/>
+          <path d="M206 186L212 146H246V186Z" fill="#FFFDF8"/>
+          <path d="M211.2 154L212.4 146H246V154Z" fill="#1E4E6A"/>
+          <rect x="208.6" y="166" width="37.4" height="6" fill="#E35E45"/>
+          <g fill="#1E4E6A"><rect x="146" y="264" width="226" height="8" rx="4"/><rect x="170" y="224" width="160" height="7" rx="3.5"/><rect x="196" y="194" width="104" height="6" rx="3"/></g>
+        </g>
       </g>
-      <path d="M208 257.5h94l-4 5.5h-86z" fill="#1E4E6A"/>
-      <path d="M272 228h9l-1.5-9H273.5z" fill="#E35E45"/>
-      <g stroke="#1E4E6A" stroke-width="1.3" stroke-dasharray="2.2 2.4">
-        <path d="M209 254h90"/><path d="M217 245.5h76"/><path d="M227 237.5h56"/>
+      <path d="M210 265.6h90" stroke="#fff" stroke-opacity=".55" stroke-width="1.3" stroke-linecap="round"/>
       </g>
-      </g></g>
       <!-- 沙灘（有全家福時才出現，人物站在這裡） -->
       <g class="a-beach">
         <path d="M0 318c56-14 120-18 190-12s140 4 210-10V400H0z" fill="#F4E3BC"/>
@@ -1266,6 +1286,23 @@ async function callGAS(action,payload){
   }
   if(r&&r.ok) return r.data;
   throw new Error((r&&r.error)||'未知錯誤');
+}
+/** 照片這種大資料用 POST（網址放不下）；Apps Script 會轉址一次，fetch 會自己跟過去 */
+async function callGASpost(action,payload){
+  if(!GAS) throw new Error('NOCONFIG');
+  if(navigator.onLine===false) throw new Error('現在沒有網路，有網路時再試');
+  const ac=new AbortController(), t=setTimeout(()=>ac.abort(),90000);
+  let txt='';
+  try{
+    const res=await fetch(GAS,{method:'POST',credentials:'omit',signal:ac.signal,redirect:'follow',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({token:TOKEN,auth:AUTH||'',action,payload})});
+    txt=await res.text();
+  }catch(e){ throw new Error(e&&e.name==='AbortError'?'上傳太久了，請再試一次':'連不上 Apps Script，請再試一次'); }
+  finally{ clearTimeout(t); }
+  let r=null; try{ r=JSON.parse(txt); }catch(_){}
+  if(r&&r.ok) return r.data;
+  throw new Error((r&&r.error)||'後端還沒開放上傳照片（需要重新授權）');
 }
 function callGASjsonp(action,payload){
   return new Promise((resolve,reject)=>{
@@ -1832,7 +1869,7 @@ function renderShop(){
   const all=DB.shop||[];
   const st=$('#s-store').value, w=$('#s-who').value, q=$('#s-q').value.trim().toLowerCase();
   const rows=all.filter(r=>(!st||r['店家']===st)&&(!w||(r['誰要的']||'').includes(w))
-    &&(!q||`${r['商品']} ${r['店家']} ${r['備註']}`.toLowerCase().includes(q)));
+    &&(!q||`${r['商品']} ${r['店家']} ${r['備註']} ${r['日文']||''}`.toLowerCase().includes(q)));
   const done=all.filter(r=>bool(r['已購買'])).length;
   $('#s-prog').style.width=all.length?(done/all.length*100)+'%':'0';
   $('#s-stat').textContent=`已買 ${done} / ${all.length} 項`+(rows.length!==all.length?`（篩出 ${rows.length}）`:'');
@@ -1847,7 +1884,7 @@ function renderShop(){
       return `<div class="shop${done?' done':''}" data-row="${r._row}">
         <button class="cb${done?' on':''}" data-row="${r._row}" aria-label="打勾"></button>
         <div><div class="name">${esc(r['商品']||r['店家'])}</div>
-          <div class="who">${r['誰要的']?ic('user')+esc(r['誰要的']):''}${r['價格']?' · '+esc(r['價格']):''}${r['備註']?' · '+esc(r['備註']):''}</div>
+          <div class="who">${r['誰要的']?ic('user')+esc(r['誰要的']):''}${r['價格']?' · '+esc(r['價格']):''}${noteOf(r)?' · '+esc(noteOf(r)):''}</div>
           <div class="links">${ml?`<a href="${esc(ml)}" target="_blank" rel="noopener">${ic('pin')}地圖</a>`:''}
             ${r['折價券']&&/^https?:/.test(r['折價券'])?`<a href="${esc(r['折價券'])}" target="_blank" rel="noopener">${ic('ticket')}折價券</a>`:''}</div></div>
         ${r['圖片']?`<img class="thumb" src="${esc(driveImg(r['圖片'],400))}" loading="lazy" alt="" onerror="this.style.display='none'">`
@@ -1874,6 +1911,10 @@ async function toggleShop(rowNum){
   }catch(err){ if(cb) cb.classList.toggle('on',was); syncSkBought(was); toast(errMsg(err),true); }
 }
 
+/* 試算表沒有「日文」欄 → 日文名稱存在備註裡（「日文：雪塩ちんすこう」），不用改表的結構 */
+const JP_RE=/(?:^|[｜|;；\s])日文[:：]\s*([^｜|;；\n]+)/;
+function jpOf(r){ return String(r['日文']||r['日文名稱']||r['日文名']||(String(r['備註']||'').match(JP_RE)||[])[1]||'').trim(); }
+function noteOf(r){ return String(r['備註']||'').replace(JP_RE,'').replace(/^[｜|;；\s]+|[｜|;；\s]+$/g,'').trim(); }
 /* ── 店員卡：大圖＋日文句子＋朗讀 ── */
 const JP_N=['','ひとつ','ふたつ','みっつ','よっつ','いつつ','むっつ','ななつ','やっつ','ここのつ','とお'];
 const jpN=n=>JP_N[n]||`${n}個`;
@@ -1888,12 +1929,50 @@ const PHR=[
   {k:'要袋子', ja:()=>'袋をください。',                            zh:'請給我袋子。'},
 ];
 const SK={row:0,p:0,n:1,jp:''};
+/* ── 商品照片上傳：手機先縮小（長邊 1280px、JPG），再存到試算表擁有者的 Google 雲端硬碟 ── */
+function shrinkImage(file,max=1280,q=.82){
+  return new Promise((ok,no)=>{
+    const url=URL.createObjectURL(file), img=new Image();
+    img.onload=()=>{ try{
+        const k=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight)), c=document.createElement('canvas');
+        c.width=Math.max(1,Math.round(img.naturalWidth*k)); c.height=Math.max(1,Math.round(img.naturalHeight*k));
+        const x=c.getContext('2d'); x.fillStyle='#fff'; x.fillRect(0,0,c.width,c.height); x.drawImage(img,0,0,c.width,c.height);
+        ok(c.toDataURL('image/jpeg',q));
+      }catch(e){ no(new Error('這張照片處理不了，換一張試試')); } finally{ URL.revokeObjectURL(url); } };
+    img.onerror=()=>{ URL.revokeObjectURL(url); no(new Error('這張照片讀不出來，換一張試試（或先存成 JPG）')); };
+    img.src=url;
+  });
+}
+async function uploadPhoto(file,name){
+  if(!/^image\//.test(file.type||'image/')) throw new Error('只能選照片');
+  if(navigator.onLine===false) throw new Error('現在沒有網路，有網路時再上傳照片');
+  const data=await shrinkImage(file);
+  const r=await callGASpost('upload',{name,data});
+  if(!r||!r.url) throw new Error('上傳失敗，請再試一次');
+  return r.url;
+}
+$('#sk').addEventListener('change',async e=>{
+  if(e.target.id!=='sk-file') return;
+  const file=e.target.files&&e.target.files[0]; if(!file) return;
+  const row=SK.row, r=(DB.shop||[]).find(x=>x._row===row); if(!r) return;
+  const local=URL.createObjectURL(file);
+  $('#sk-pic').innerHTML=`<div class="uping"><img src="${local}" alt="" style="max-height:30vh;margin:0 auto 10px;border-radius:10px"><span class="spin"></span>照片上傳中…</div>`;
+  try{
+    const url=await uploadPhoto(file,r['商品']||'商品');
+    const res=await callGAS('update',{sheet:'購物清單',row,expect:{商品:r['商品']},values:{圖片:url}});
+    toast('照片已存好');
+    await reloadAfter('shop',row,0,res);
+    if($('#sk').classList.contains('on')&&SK.row===row) openShopCard(row);
+  }catch(err){ toast(errMsg(err),true); if(SK.row===row) openShopCard(row); }
+  finally{ URL.revokeObjectURL(local); }
+});
 function openShopCard(rowNum){
   const r=(DB.shop||[]).find(x=>x._row===rowNum); if(!r) return;
-  Object.assign(SK,{row:rowNum,p:0,n:1,jp:String(r['日文']||r['日文名稱']||r['日文名']||'').trim()});
+  Object.assign(SK,{row:rowNum,p:0,n:1,jp:jpOf(r)});
   const name=r['商品']||r['店家']||'';
-  const noPic=`<div class="none">${ic('image')}<br>還沒有圖片 —— 把圖片網址或雲端硬碟連結貼到試算表「圖片」欄就會出現<br>
-    <a href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(name)}" target="_blank" rel="noopener">${ic('ext')} 先用 Google 找圖給店員看</a></div>`;
+  const noPic=`<div class="none">${ic('image')}<br>還沒有照片<br>
+    ${CAN_UP()?`<label class="btn sm upnow" for="sk-file">${ic('camera')}拍照／選照片</label><input type="file" id="sk-file" accept="image/*" hidden><br>`:''}
+    <a href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(name)}" target="_blank" rel="noopener">${ic('ext')} 或先用 Google 找圖給店員看</a></div>`;
   $('#sk-pic').innerHTML=r['圖片']
     ?`<img src="${esc(driveImg(r['圖片'],1200))}" data-full="${esc(driveImg(r['圖片'],1600))}" data-cap="${esc(name)}" alt="${esc(name)}">`
     :noPic;
@@ -1902,7 +1981,7 @@ function openShopCard(rowNum){
   $('#sk-jpn').textContent=SK.jp;
   $('#sk-meta').innerHTML=[
     r['店家']&&ic('bag')+esc(r['店家']), r['價格']&&ic('yen')+esc(r['價格']),
-    r['誰要的']&&ic('user')+esc(r['誰要的']), r['備註']&&ic('note')+esc(r['備註'])].filter(Boolean).join('<span>·</span>');
+    r['誰要的']&&ic('user')+esc(r['誰要的']), noteOf(r)&&ic('note')+esc(noteOf(r))].filter(Boolean).join('<span>·</span>');
   $('#sk-chips').innerHTML=PHR.map((p,i)=>`<button data-i="${i}">${p.k}</button>`).join('');
   const ml=mapLink((r['店家']||'')+' '+(r['地址']||''),'');
   $('#sk-acts').innerHTML=
@@ -2402,6 +2481,7 @@ const fld=(label,inner,opt)=>`<div class="fl"><label>${label}${opt===true?' <em>
 const inp=(id,v,ph,extra='')=>`<input id="${id}" value="${esc(v||'')}" placeholder="${esc(ph||'')}" autocomplete="off" ${extra}>`;
 
 /* 試算表上的下拉選單（後端讀出來的）→ 網站只給這些選項，寫進去才不會被擋 */
+const CAN_UP=()=>!!(DB.all&&DB.all.可上傳);                // 後端開好雲端硬碟權限才會是 true
 const OPT=k=>(((DB.all||{}).選項||{})[k]||[]).map(x=>String(x).trim()).filter(Boolean);
 const splitWho=v=>String(v||'').split(/[、,，\s]+/).map(x=>x.trim()).filter(Boolean);
 const withCur=(list,cur)=>[...list,...(cur||[]).filter(x=>x&&!list.includes(x))];   // 舊資料的值也顯示出來
@@ -2422,7 +2502,7 @@ function dayTypes(){
 
 /** kind: exp | shop | day；row 有值 = 修改那一列 */
 function openForm(kind,row,dayIdx){
-  FM.kind=kind; FM.mode=row?'edit':'add'; FM.row=row||0; FM.day=dayIdx??curDay;
+  FM.kind=kind; FM.mode=row?'edit':'add'; FM.row=row||0; FM.day=dayIdx??curDay; FM.up=null;
   const edit=FM.mode==='edit', sym=CONF.幣別符號||'¥';
   let r=null;
   if(kind==='exp') r=edit?(DB.exp||[]).find(x=>x._row===row):null;
@@ -2449,20 +2529,27 @@ function openForm(kind,row,dayIdx){
       ${fld('日期',`<input id="f-date" type="date" value="${edit?toISO(r['日期']):todayISO()}">`)}`;
   }else if(kind==='shop'){
     const stores=[...new Set((DB.shop||[]).map(x=>x['店家']).filter(Boolean))];
-    const hasJp=(DB.all.購物||[]).some(x=>'日文' in x);
+    const hasJp=(DB.all.購物||[]).some(x=>'日文' in x); FM.hasJp=hasJp;
     const who=edit?splitWho(r['誰要的']):[];
     FM.whoSingle=OPT('誰要的').length>0;                      // 表上有下拉選單 → 只能選一個（跟表一樣）
     const whoList=withCur(whoOpts(),who), dayList=shopDayOpts(edit?r['第幾天']:'');
     h=`<h4>${ic(edit?'pen':'bag')}${edit?'修改購物項目':'加到購物清單'}</h4>
       ${fld('商品',inp('f-item',edit?r['商品']:'','例：雪鹽餅乾、叙々苑燒肉醬','maxlength="80"'),true)}
-      ${hasJp?fld('日文名稱',inp('f-jp',edit?r['日文']:'','例：雪塩ちんすこう','maxlength="80" lang="ja"'),'（選填，店員卡會用到）'):''}
+      ${fld('日文名稱',inp('f-jp',edit?jpOf(r):'','例：雪塩ちんすこう','maxlength="80" lang="ja"'),'（選填，店員卡會用到）')}
       ${fld('店家',inp('f-store',edit?r['店家']:'','例：唐吉訶德、AEON','list="f-stores" maxlength="60"')+`<datalist id="f-stores">${stores.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>`)}
       ${fld('誰要的',pickHTML('f-who',whoList,FM.whoSingle?who.slice(0,1):who),FM.whoSingle?'（選一個，跟試算表的選單一樣）':'')}
       ${fld('哪一天買',pickHTML('f-day',dayList,edit?(r['第幾天']||''):''),'（選填）')}
       ${fld('價格',inp('f-price',edit?r['價格']:'','例：¥1,280','maxlength="30"'),'（選填）')}
-      ${fld('圖片網址',inp('f-img',edit?r['圖片']:'','https://… 或 Google 雲端硬碟分享連結','type="url" inputmode="url"')
-        +'<div class="hint">在網路上找到商品圖 → 長按圖片「複製圖片網址」貼上，店員卡就會顯示</div>','（選填）')}
-      ${fld('備註',inp('f-note',edit?r['備註']:'','','maxlength="100"'),'（選填）')}`;
+      ${fld('商品照片',`<div class="upimg${CAN_UP()?'':' hide'}">
+          <div class="pv" id="f-pv">${edit&&r['圖片']?`<img src="${esc(driveImg(r['圖片'],400))}" alt="" onerror="this.remove()">`:ic('image')}</div>
+          <div class="ub"><div class="row">
+              <label class="btn sm" for="f-file">${ic('camera')}拍照／選照片</label>
+              <button type="button" class="rm${edit&&r['圖片']?'':' hide'}" id="f-rmimg">移除照片</button></div>
+            <input type="file" id="f-file" accept="image/*" hidden>
+            <div class="st" id="f-upst">店員卡會顯示這張照片，拿給店員看最快</div></div></div>
+        <details class="urlbox"${!CAN_UP()||edit&&r['圖片']&&!/drive\.google|googleusercontent/.test(r['圖片'])?' open':''}><summary>${CAN_UP()?'或貼網路上的圖片網址':'圖片網址'}</summary>
+          ${inp('f-img',edit?r['圖片']:'','https://…','type="url" inputmode="url"')}</details>`,'（選填）')}
+      ${fld('備註',inp('f-note',edit?(hasJp?r['備註']:noteOf(r)):'','','maxlength="100"'),'（選填）')}`;
   }else{
     const types=dayTypes(), d=FM.day;
     h=`<h4>${ic(edit?'pen':'cal')}${edit?'修改行程':'加一個行程'}</h4>
@@ -2511,7 +2598,33 @@ function formCalc(){
   const w=sel.reduce((s,m)=>s+(m.權重||1),0);
   $('#f-split').innerHTML=!sel.length?'至少選一個人':t&&w?`${w} 人分，每人約 <b>${nt(t/w)}</b>`:`${w} 人分`;
 }
-$('#fm').addEventListener('input',e=>{ e.target.classList.remove('bad'); $('#f-err').textContent=''; formCalc(); });
+$('#fm').addEventListener('input',e=>{ e.target.classList.remove('bad'); $('#f-err').textContent=''; formCalc();
+  if(e.target.id==='f-img'){ const v=e.target.value.trim(); $('#f-rmimg').classList.toggle('hide',!v);
+    $('#f-pv').innerHTML=/^https?:\/\//.test(v)?`<img src="${esc(driveImg(v,400))}" alt="" onerror="this.remove()">`:ic('image'); } });
+$('#fm').addEventListener('change',async e=>{
+  if(e.target.id!=='f-file') return;
+  const file=e.target.files&&e.target.files[0]; e.target.value=''; if(!file) return;
+  const st=$('#f-upst'), pv=$('#f-pv'), local=URL.createObjectURL(file);
+  pv.innerHTML=`<img src="${local}" alt=""><span class="spin"></span>`;
+  st.className='st'; st.textContent='上傳中…（照片會自動縮小）';
+  const job={busy:true}; FM.up=job;
+  job.p=uploadPhoto(file,val0('#f-item')||'商品').then(url=>{
+    if(FM.up!==job) return url;                      // 又換了一張 → 以最後一張為準
+    $('#f-img').value=url; $('#f-rmimg').classList.remove('hide');
+    st.className='st ok'; st.textContent='已上傳 ✓ 按下方按鈕存起來就完成'; pv.querySelector('.spin')?.remove();
+    return url;
+  }).catch(err=>{
+    if(FM.up===job){ st.className='st bad'; st.textContent=err.message; pv.innerHTML=ic('image'); }
+    throw err;
+  }).finally(()=>{ job.busy=false; URL.revokeObjectURL(local); });
+  job.p.catch(()=>{});
+});
+$('#fm').addEventListener('click',e=>{
+  if(!e.target.closest('#f-rmimg')) return;
+  FM.up=null; $('#f-img').value=''; $('#f-pv').innerHTML=ic('image'); e.target.closest('#f-rmimg').classList.add('hide');
+  const st=$('#f-upst'); st.className='st'; st.textContent='照片已移除（存起來才會生效）';
+},true);
+const val0=id=>String(($(id)||{}).value||'').trim();
 $('#fm').onclick=e=>{
   if(e.target.closest('.bk')||e.target.closest('.x')) return closeForm();
   const cur=e.target.closest('#f-cur button'); if(cur){ FM.cur=cur.dataset.c; LS.set('cruise-cur',FM.cur); formCalc(); return; }
@@ -2574,6 +2687,7 @@ async function submitForm(){
     const d=val('#f-date'); if(!edit||d!==toISO(o['日期'])) { if(d) values.日期=d; }
     LS.set('cruise-payer',payer);
   }else if(FM.kind==='shop'){
+    if(FM.up&&FM.up.busy){ err.textContent='照片還在上傳，等一下下…'; try{ await FM.up.p; }catch(_){ return; } err.textContent=''; }
     const item=val('#f-item'), img=val('#f-img');
     if(!item) return bad($('#f-item'),'請填商品');
     if(img&&!/^https?:\/\//i.test(img)) return bad($('#f-img'),'圖片網址要 http 開頭');
@@ -2581,8 +2695,9 @@ async function submitForm(){
     const who=on('#f-who').join('、'), ow=splitWho(o['誰要的']).join('、');
     if(!edit||who!==ow) values.誰要的=who;
     diff('第幾天',on('#f-day')[0]||'',o['第幾天']||''); diff('價格',val('#f-price'),o['價格']||'');
-    diff('圖片',img,o['圖片']||''); diff('備註',val('#f-note'),o['備註']||'');
-    if($('#f-jp')) diff('日文',val('#f-jp'),o['日文']||'');
+    diff('圖片',img,o['圖片']||'');
+    if(FM.hasJp){ diff('備註',val('#f-note'),o['備註']||''); diff('日文',val('#f-jp'),o['日文']||''); }
+    else diff('備註',[val('#f-note'),val('#f-jp')&&'日文：'+val('#f-jp')].filter(Boolean).join('｜'),o['備註']||'');
   }else{
     const item=val('#f-item'), di=+(on('#f-dayi')[0]??FM.day);
     if(!item) return bad($('#f-item'),'請填行程名稱');
