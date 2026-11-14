@@ -605,6 +605,36 @@ html[data-fs] #fab{font-size:16px;padding:15px 21px 15px 17px}
   padding:7px 14px;font:700 13.5px inherit;font-family:inherit;cursor:pointer;transition:.12s}
 .pick button.on{background:var(--navy);border-color:var(--navy);color:var(--paper)}
 .pick.bad button{border-color:var(--coral)}
+.snap{display:flex;gap:12px;align-items:center;margin:2px 0 12px;padding:12px 14px;border-radius:var(--r);cursor:pointer;
+  border:1.5px dashed rgba(44,132,176,.45);background:var(--sky-l);color:var(--ink);-webkit-tap-highlight-color:transparent;transition:.15s}
+.snap:active{transform:scale(.985)}
+.snap.hide{display:none}
+.snap .si{flex:0 0 auto;width:42px;height:42px;border-radius:12px;background:var(--navy);color:var(--paper);display:grid;place-items:center}
+.snap .si .ic{font-size:21px}
+.snap .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.snap b{font-size:15px;color:var(--navy)}
+.snap small{font-size:12px;color:var(--ink2);line-height:1.4}
+.snap .go{flex:0 0 auto;font-size:18px;color:var(--navy);opacity:.7}
+.aibar{display:flex;gap:12px;align-items:flex-start;margin:-2px 0 14px;padding:11px 12px;border-radius:12px;background:var(--sky-l);border:1px solid rgba(44,132,176,.2)}
+.aibar.hide{display:none}
+.aibar[data-s="err"],.aibar[data-s="none"]{background:var(--coral-l);border-color:rgba(227,94,69,.25)}
+.aibar .th{flex:0 0 auto;width:64px;height:64px;border-radius:10px;overflow:hidden;background:var(--paper);border:1px solid var(--line)}
+.aibar .th img{width:100%;height:100%;object-fit:cover;display:block}
+.aibar .tx{flex:1;min-width:0;font-size:12.5px;color:var(--ink2);line-height:1.45}
+.aibar .tx b{display:flex;gap:6px;align-items:center;font-size:14px;color:var(--navy);margin-bottom:1px}
+.aibar[data-s="err"] .tx b,.aibar[data-s="none"] .tx b{color:var(--coral-d)}
+.aibar .tx b .spin{width:14px;height:14px;border-width:2px;margin:0}
+.aibar .tx p{margin:0}
+.aibar .q{display:inline-block;font-size:11px;font-weight:800;color:var(--paper);background:var(--navy);border-radius:99px;padding:1px 8px;margin-bottom:4px}
+.aibar .dup{margin-top:5px;color:var(--coral-d);font-weight:700}
+.aibar .carry{margin-top:4px;color:var(--ink3)}
+.aipick{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px}
+.aipick button{border:1.5px solid var(--line2);background:var(--paper);color:var(--ink2);border-radius:99px;padding:4px 10px;
+  font:700 12.5px inherit;font-family:inherit;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.aipick button.on{background:var(--navy);border-color:var(--navy);color:var(--paper)}
+.aibar .skip{margin-top:7px;border:0;background:none;padding:2px 0;color:var(--ink3);font:700 12.5px inherit;font-family:inherit;text-decoration:underline;cursor:pointer}
+.fl input.aifill{animation:aifill 1.6s ease-out}
+@keyframes aifill{0%,35%{background:#FFF1C9}100%{background:var(--paper)}}
 .fm-go{width:100%;margin-top:4px;border:0;border-radius:12px;padding:14px;background:var(--coral);color:#fff;
   font:800 15.5px inherit;font-family:inherit;display:flex;gap:7px;justify-content:center;align-items:center;cursor:pointer}
 .fm-go[disabled]{opacity:.6;cursor:wait}
@@ -788,7 +818,7 @@ html[data-fs] #fab{font-size:16px;padding:15px 21px 15px 17px}
 <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.5 7h15M9.5 7V4.8h5V7M6.5 7l.9 12.2a1.5 1.5 0 0 0 1.5 1.3h6.2a1.5 1.5 0 0 0 1.5-1.3L17.5 7M10 11v6M14 11v6"/></symbol>
 <symbol id="i-grip" viewBox="0 0 24 24"><path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01" stroke-width="3.2"/></symbol>
 <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v4h4"/></symbol>
-<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="M10 3.5l1.7 4.8 4.8 1.7-4.8 1.7L10 16.5l-1.7-4.8L3.5 10l4.8-1.7z"/><path d="M18 14l.8 2.2 2.2.8-2.2.8L18 20l-.8-2.2-2.2-.8 2.2-.8z"/></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/></symbol>
 <symbol id="i-sync" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.3-4.9L4 8"/><path d="M4 3.5V8h4.5"/><path d="M4 13a8 8 0 0 0 14.3 4.9L20 16"/><path d="M20 20.5V16h-4.5"/></symbol>
 <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></symbol>
 <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8 18h7.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H16"/></symbol>
@@ -1002,6 +1032,12 @@ html[data-fs] #fab{font-size:16px;padding:15px 21px 15px 17px}
       <select id="s-store"></select><select id="s-who"></select>
       <input id="s-q" class="full" placeholder="搜尋商品 / 店家…">
     </div>
+    <label class="snap hide" id="snap" for="snap-file">
+      <span class="si"><svg class="ic"><use href="#i-camera"/></svg></span>
+      <span class="tx"><b>拍照加商品</b><small id="snap-sub">拍包裝或價格標籤，自動填好品名、日文、價格</small></span>
+      <svg class="ic go"><use href="#i-arrow"/></svg>
+    </label>
+    <input type="file" id="snap-file" accept="image/*" multiple hidden>
     <div class="prog"><i id="s-prog"></i></div>
     <div class="card" id="sh-box" style="margin-top:12px"><div class="loading"><div class="spin"></div>載入中…</div></div>
   </section>
@@ -1863,6 +1899,8 @@ function loadShop(){
   opt('#s-who','全部人',[...whoOpts(),...DB.shop.flatMap(r=>splitWho(r['誰要的']))]);
   ['#s-store','#s-who'].forEach(s=>$(s).onchange=renderShop);
   $('#s-q').oninput=renderShop;
+  $('#snap').classList.toggle('hide',!CAN_UP());
+  $('#snap-sub').textContent=CAN_AI()?'拍包裝或價格標籤，AI 自動填好品名、日文、價格（可一次選好幾張）':'先拍照或選照片，再填品名、選誰要的（可一次選好幾張）';
   renderShop();
 }
 function renderShop(){
@@ -1946,7 +1984,10 @@ function shrinkImage(file,max=1280,q=.82){
 async function uploadPhoto(file,name){
   if(!/^image\//.test(file.type||'image/')) throw new Error('只能選照片');
   if(navigator.onLine===false) throw new Error('現在沒有網路，有網路時再上傳照片');
-  const data=await shrinkImage(file);
+  return uploadData(await shrinkImage(file),name);
+}
+async function uploadData(data,name){
+  if(navigator.onLine===false) throw new Error('現在沒有網路，有網路時再上傳照片');
   const r=await callGASpost('upload',{name,data});
   if(!r||!r.url) throw new Error('上傳失敗，請再試一次');
   return r.url;
@@ -2482,6 +2523,7 @@ const inp=(id,v,ph,extra='')=>`<input id="${id}" value="${esc(v||'')}" placehold
 
 /* 試算表上的下拉選單（後端讀出來的）→ 網站只給這些選項，寫進去才不會被擋 */
 const CAN_UP=()=>!!(DB.all&&DB.all.可上傳);                // 後端開好雲端硬碟權限才會是 true
+const CAN_AI=()=>!!(DB.all&&DB.all.可辨識);                // 後端設好 Gemini 金鑰才會是 true
 const OPT=k=>(((DB.all||{}).選項||{})[k]||[]).map(x=>String(x).trim()).filter(Boolean);
 const splitWho=v=>String(v||'').split(/[、,，\s]+/).map(x=>x.trim()).filter(Boolean);
 const withCur=(list,cur)=>[...list,...(cur||[]).filter(x=>x&&!list.includes(x))];   // 舊資料的值也顯示出來
@@ -2503,6 +2545,7 @@ function dayTypes(){
 /** kind: exp | shop | day；row 有值 = 修改那一列 */
 function openForm(kind,row,dayIdx){
   FM.kind=kind; FM.mode=row?'edit':'add'; FM.row=row||0; FM.day=dayIdx??curDay; FM.up=null;
+  FM.aiTok=(FM.aiTok||0)+1; FM.ai=null; FM.aiImg=''; FM.snap=null; FM.carried=false;
   const edit=FM.mode==='edit', sym=CONF.幣別符號||'¥';
   let r=null;
   if(kind==='exp') r=edit?(DB.exp||[]).find(x=>x._row===row):null;
@@ -2534,6 +2577,7 @@ function openForm(kind,row,dayIdx){
     FM.whoSingle=OPT('誰要的').length>0;                      // 表上有下拉選單 → 只能選一個（跟表一樣）
     const whoList=withCur(whoOpts(),who), dayList=shopDayOpts(edit?r['第幾天']:'');
     h=`<h4>${ic(edit?'pen':'bag')}${edit?'修改購物項目':'加到購物清單'}</h4>
+      <div class="aibar hide" id="f-ai" aria-live="polite"></div>
       ${fld('商品',inp('f-item',edit?r['商品']:'','例：雪鹽餅乾、叙々苑燒肉醬','maxlength="80"'),true)}
       ${fld('日文名稱',inp('f-jp',edit?jpOf(r):'','例：雪塩ちんすこう','maxlength="80" lang="ja"'),'（選填，店員卡會用到）')}
       ${fld('店家',inp('f-store',edit?r['店家']:'','例：唐吉訶德、AEON','list="f-stores" maxlength="60"')+`<datalist id="f-stores">${stores.map(x=>`<option value="${esc(x)}">`).join('')}</datalist>`)}
@@ -2598,17 +2642,24 @@ function formCalc(){
   const w=sel.reduce((s,m)=>s+(m.權重||1),0);
   $('#f-split').innerHTML=!sel.length?'至少選一個人':t&&w?`${w} 人分，每人約 <b>${nt(t/w)}</b>`:`${w} 人分`;
 }
-$('#fm').addEventListener('input',e=>{ e.target.classList.remove('bad'); $('#f-err').textContent=''; formCalc();
+$('#fm').addEventListener('input',e=>{ e.target.classList.remove('bad','aifill'); e.target.dataset.dirty='1'; $('#f-err').textContent=''; formCalc();
   if(e.target.id==='f-img'){ const v=e.target.value.trim(); $('#f-rmimg').classList.toggle('hide',!v);
     $('#f-pv').innerHTML=/^https?:\/\//.test(v)?`<img src="${esc(driveImg(v,400))}" alt="" onerror="this.remove()">`:ic('image'); } });
 $('#fm').addEventListener('change',async e=>{
   if(e.target.id!=='f-file') return;
   const file=e.target.files&&e.target.files[0]; e.target.value=''; if(!file) return;
+  if(!/^image\//.test(file.type||'image/')){ const st=$('#f-upst'); st.className='st bad'; st.textContent='只能選照片'; return; }
+  attachPhoto(file,FM.mode==='add'&&CAN_AI());
+});
+/** 表單附上照片：先縮小 → 上傳；ai=true 時同時交給 AI 辨識，把空著的欄位填好 */
+function attachPhoto(file,ai){
   const st=$('#f-upst'), pv=$('#f-pv'), local=URL.createObjectURL(file);
   pv.innerHTML=`<img src="${local}" alt=""><span class="spin"></span>`;
   st.className='st'; st.textContent='上傳中…（照片會自動縮小）';
   const job={busy:true}; FM.up=job;
-  job.p=uploadPhoto(file,val0('#f-item')||'商品').then(url=>{
+  const dataP=shrinkImage(file);
+  if(ai) aiRecognize(dataP);
+  job.p=dataP.then(data=>uploadData(data,val0('#f-item')||'商品')).then(url=>{
     if(FM.up!==job) return url;                      // 又換了一張 → 以最後一張為準
     $('#f-img').value=url; $('#f-rmimg').classList.remove('hide');
     st.className='st ok'; st.textContent='已上傳 ✓ 按下方按鈕存起來就完成'; pv.querySelector('.spin')?.remove();
@@ -2618,7 +2669,7 @@ $('#fm').addEventListener('change',async e=>{
     throw err;
   }).finally(()=>{ job.busy=false; URL.revokeObjectURL(local); });
   job.p.catch(()=>{});
-});
+}
 $('#fm').addEventListener('click',e=>{
   if(!e.target.closest('#f-rmimg')) return;
   FM.up=null; $('#f-img').value=''; $('#f-pv').innerHTML=ic('image'); e.target.closest('#f-rmimg').classList.add('hide');
@@ -2626,7 +2677,10 @@ $('#fm').addEventListener('click',e=>{
 },true);
 const val0=id=>String(($(id)||{}).value||'').trim();
 $('#fm').onclick=e=>{
-  if(e.target.closest('.bk')||e.target.closest('.x')) return closeForm();
+  if(e.target.closest('.bk')||e.target.closest('.x')) return cancelForm();
+  const ap=e.target.closest('.aipick button');
+  if(ap&&FM.ai){ FM.ai.pick=+ap.dataset.ai; aiFill(FM.ai.items[FM.ai.pick]); aiBar('ok'); return; }
+  if(e.target.closest('#f-skip')) return snapSkip();
   const cur=e.target.closest('#f-cur button'); if(cur){ FM.cur=cur.dataset.c; LS.set('cruise-cur',FM.cur); formCalc(); return; }
   const pb=e.target.closest('.pick button');
   if(pb){
@@ -2690,6 +2744,7 @@ async function submitForm(){
     if(FM.up&&FM.up.busy){ err.textContent='照片還在上傳，等一下下…'; try{ await FM.up.p; }catch(_){ return; } err.textContent=''; }
     const item=val('#f-item'), img=val('#f-img');
     if(!item) return bad($('#f-item'),'請填商品');
+    if(FM.snap&&!on('#f-who').length) return bad($('#f-who'),'請選誰要的');
     if(img&&!/^https?:\/\//i.test(img)) return bad($('#f-img'),'圖片網址要 http 開頭');
     diff('商品',item,o['商品']); diff('店家',val('#f-store'),o['店家']||'');
     const who=on('#f-who').join('、'), ow=splitWho(o['誰要的']).join('、');
@@ -2728,9 +2783,11 @@ async function submitForm(){
         row=res.row; day=moveTo;
       }
     }
+    const sn=!edit&&FM.kind==='shop'&&FM.snap?{values,ai:FM.ai}:null;
     closeForm();
-    toast(edit?(moveTo!==null?`已搬到 D${moveTo+1}`:'已更新試算表'):FM.kind==='exp'?'已記到花費表':FM.kind==='shop'?'已加到購物清單':`已加到 D${day+1}`);
+    toast(edit?(moveTo!==null?`已搬到 D${moveTo+1}`:'已更新試算表'):FM.kind==='exp'?'已記到花費表':FM.kind==='shop'?'已加到購物清單'+(sn&&SNAP.n>1?`（${SNAP.i}／${SNAP.n}）`:''):`已加到 D${day+1}`);
     await reloadAfter(FM.kind,row,day,res);
+    if(sn) snapSaved(sn);
   }catch(e2){
     err.textContent=errMsg(e2);
     go.disabled=false; go.innerHTML=ic('check')+(edit?'儲存修改':'再試一次');
@@ -2750,7 +2807,130 @@ async function reloadAfter(kind,row,day,res){
   }
   if(el){ el.classList.add('flash'); el.scrollIntoView({behavior:REDUCED?'auto':'smooth',block:'center'}); }
 }
-window.addEventListener('keydown',e=>{ if(e.key==='Escape'&&$('#fm').classList.contains('on')) closeForm(); },true);
+window.addEventListener('keydown',e=>{ if(e.key==='Escape'&&$('#fm').classList.contains('on')) cancelForm(); },true);
+
+/* ── 拍照加商品：可一次選好幾張 → 一樣一樣開表單（AI 先填好）→ 自己選誰要的／哪天買 → 按按鈕才寫進試算表 ── */
+const SNAP={on:false,q:[],n:0,i:0,done:0,last:null};
+function cancelForm(){
+  closeForm();
+  if(SNAP.on){ const left=SNAP.q.length; SNAP.on=false; SNAP.q=[];
+    if(left) toast(`已停止，剩下 ${left} 張沒加`); }
+}
+$('#snap-file').addEventListener('change',e=>{
+  const files=[...(e.target.files||[])].filter(f=>/^image\//.test(f.type||'image/')); e.target.value='';
+  if(!files.length) return;
+  if(navigator.onLine===false){ toast('現在沒有網路，有網路時再拍照加商品',true); return; }
+  if(!DB.all){ toast('資料還沒載入，等一下再試',true); return; }
+  SNAP.q=files.slice(0,20).map(file=>({file})); SNAP.n=SNAP.q.length; SNAP.i=0; SNAP.done=0; SNAP.last=null; SNAP.on=true;
+  if(files.length>20) toast('一次最多 20 張，先處理前 20 張');
+  snapNext();
+});
+function snapNext(){
+  const it=SNAP.q.shift();
+  if(!it){ snapEnd(); return; }
+  SNAP.i++;
+  openForm('shop');
+  FM.snap=it;
+  $('#fm-body h4').innerHTML=ic('camera')+'拍照加商品';
+  if(SNAP.last){                                             // 誰要的／哪天買沿用上一樣（畫面上看得到，可以改）
+    let hit=false;
+    [['#f-who',SNAP.last.who],['#f-day',SNAP.last.day]].forEach(([g,v])=>{
+      const b=v&&$$(g+' button').find(x=>x.dataset.v===v); if(b){ b.classList.add('on'); hit=true; } });
+    FM.carried=hit;
+  }
+  if(it.url){                                                // 同一張照片裡的另一樣：照片已經上傳過
+    FM.aiImg=it.data; FM.ai={items:[it.item],pick:0};
+    $('#f-img').value=it.url; $('#f-rmimg').classList.remove('hide');
+    $('#f-pv').innerHTML=`<img src="${it.data}" alt="">`;
+    const st=$('#f-upst'); st.className='st ok'; st.textContent='跟上一樣同一張照片 ✓';
+    aiFill(it.item); aiBar('ok');
+  }else if(CAN_AI()) attachPhoto(it.file,true);
+  else{
+    attachPhoto(it.file,false);
+    shrinkImage(it.file,240,.7).then(d=>{ if(FM.snap===it){ FM.aiImg=d; aiBar('photo'); } }).catch(()=>{});
+    aiBar('photo');
+  }
+}
+function snapSkip(){
+  if(SNAP.q.length){ snapNext(); return; }
+  closeForm(); snapEnd();
+}
+function snapSaved(sn){
+  SNAP.done++;
+  SNAP.last={who:sn.values.誰要的||'',day:sn.values.第幾天||''};
+  const ai=sn.ai;
+  if(ai&&ai.items.length>1&&sn.values.圖片){                  // 照片裡還有別樣 → 接著問
+    const more=ai.items.filter((_,i)=>i!==ai.pick).map(item=>({url:sn.values.圖片,data:ai.data||FM.aiImg,item}));
+    SNAP.q.unshift(...more); SNAP.n+=more.length;
+  }
+  if(!SNAP.on) return;
+  if(SNAP.q.length) setTimeout(snapNext,450); else snapEnd();
+}
+function snapEnd(){
+  if(!SNAP.on) return;
+  SNAP.on=false;
+  if(SNAP.n>1) setTimeout(()=>toast(SNAP.done?`拍照加商品完成：加了 ${SNAP.done} 樣`:'都略過了，沒有加東西'),SNAP.done?1200:0);
+}
+
+/* AI 辨識（後端轉給 Gemini）。只填「還沒自己打字」的欄位 */
+async function aiRecognize(dataP){
+  const tok=++FM.aiTok;                                      // 換一張照片或關掉表單 → 舊的結果就不填
+  aiBar('busy');
+  let data='';
+  try{
+    data=await dataP;
+    if(tok!==FM.aiTok) return;
+    FM.aiImg=data; aiBar('busy');
+    const stores=[...new Set((DB.shop||[]).map(x=>x['店家']).filter(Boolean))].slice(0,40);
+    const r=await callGASpost('recognize',{data,stores});
+    if(tok!==FM.aiTok||!$('#fm').classList.contains('on')) return;     // 表單已經關掉或換一張了
+    const items=(r&&r.items)||[];
+    if(!items.length){ aiBar('none',r&&r.msg); return; }
+    FM.ai={items,pick:0,data};
+    aiFill(items[0]); aiBar('ok');
+  }catch(e){
+    if(tok!==FM.aiTok) return;
+    const m=String(e&&e.message||e);
+    aiBar('err',m==='NO_KEY'||/不支援的 action/.test(m)?'AI 辨識還沒開通，請自己填一下名稱':
+      m==='BAD_KEY'?'AI 金鑰有問題，先自己填（請管理網站的人檢查 GEMINI_KEY）':m);
+  }
+}
+function aiFill(it){
+  if(!it) return;
+  [['#f-item',it.zh||it.ja],['#f-jp',it.ja],['#f-price',it.price],['#f-store',it.store],['#f-note',it.note]].forEach(([id,v])=>{
+    const el=$(id); if(!el||el.dataset.dirty) return;
+    el.value=v||''; el.classList.remove('aifill','bad');
+    if(v){ void el.offsetWidth; el.classList.add('aifill'); }
+  });
+}
+const normName=s=>String(s||'').toLowerCase().replace(/[\s　・·、,，.。'’"「」『』()（）\[\]【】\-－_~～!！?？:：]/g,'');
+function aiDup(it){
+  const a=[normName(it.zh),normName(it.ja)].filter(x=>x.length>=3);
+  if(!a.length) return null;
+  return (DB.shop||[]).find(r=>{ const b=[normName(r['商品']),normName(jpOf(r))].filter(x=>x.length>=3);
+    return a.some(x=>b.some(y=>x===y||x.includes(y)||y.includes(x))); })||null;
+}
+function aiBar(state,msg){
+  const el=$('#f-ai'); if(!el) return;
+  const snap=SNAP.on&&FM.snap;
+  let b='';
+  if(state==='busy') b=`<b><span class="spin"></span>AI 辨識中…</b><p>大約 5～10 秒，可以先選誰要的、哪天買</p>`;
+  else if(state==='ok'&&FM.ai){
+    const it=FM.ai.items[FM.ai.pick], n=FM.ai.items.length, d=aiDup(it);
+    b=`<b>${ic('spark')}AI 填好了，請確認一下</b><p>${it.sure?'名稱、日文、價格都可以直接改':'有些字看不太清楚，名稱請特別確認'}</p>`
+     +(n>1?`<div class="aipick">${FM.ai.items.map((x,i)=>`<button type="button" data-ai="${i}"${i===FM.ai.pick?' class="on"':''}>${esc(x.zh||x.ja)}</button>`).join('')}</div>
+        <p>照片裡有 ${n} 樣，點上面切換；${snap?'存好這樣會接著問另外 '+(n-1)+' 樣':'一次存一樣'}</p>`:'')
+     +(d?`<p class="dup">清單裡好像已經有「${esc(d['商品'])}」${d['誰要的']?'（'+esc(d['誰要的'])+'）':''}，確定要再加一筆嗎？</p>`:'');
+  }
+  else if(state==='none') b=`<b>${ic('alert')}認不出商品</b><p>${msg?esc(msg)+'。':''}請自己填一下名稱</p>`;
+  else if(state==='err') b=`<b>${ic('alert')}沒辦法自動辨識</b><p>${esc(msg||'')}</p>`;
+  else if(state==='photo') b=`<b>${ic('camera')}照片已附上</b><p>請填商品名稱、選誰要的</p>`;
+  if(snap&&FM.carried) b+=`<p class="carry">誰要的／哪天買先沿用上一樣，不對再點</p>`;
+  el.innerHTML=(FM.aiImg?`<div class="th"><img src="${FM.aiImg}" alt=""></div>`:'')
+    +`<div class="tx">${snap&&SNAP.n>1?`<span class="q">第 ${SNAP.i}／${SNAP.n} 樣</span>`:''}${b}`
+    +(snap?`<button type="button" class="skip" id="f-skip">${SNAP.q.length?'略過這樣，下一個':'略過這樣'}</button>`:'')+`</div>`;
+  el.dataset.s=state; el.classList.remove('hide');
+}
 
 /* ══════════════ 5. 想去的地方 ══════════════ */
 function loadPlaces(){
