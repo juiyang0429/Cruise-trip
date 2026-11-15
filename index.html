@@ -575,6 +575,44 @@ html[data-fs] #fab{font-size:16px;padding:15px 21px 15px 17px}
 .tl-card .more{display:none;margin-top:4px;font-size:12px;font-weight:700;color:var(--sea)}
 .tl-card.clamped .more{display:inline-flex;gap:3px;align-items:center}
 .tl-foot .att{color:var(--sea);font-weight:700}
+.tl-foot .buy{display:inline-flex;gap:5px;align-items:center;border:1.5px solid var(--coral);background:var(--coral-l);color:var(--coral-d);
+  border-radius:99px;padding:3px 10px 3px 8px;font:800 12.5px inherit;font-family:inherit;cursor:pointer}
+.tl-foot .buy .ic{color:var(--coral-d)}
+.tl-foot .buy.ok{border-color:#5FB89A;background:#E6F4EE;color:#2f8f6b}
+.tl-foot .buy.ok .ic{color:#2f8f6b}
+.tl-foot .buy b{font-size:14px;line-height:1;margin-left:1px}
+.tl.sorting .tl-foot .buy{pointer-events:none}
+/* 行程詳細：要在這裡買的 */
+#dt .buys{display:flex;flex-direction:column;gap:7px}
+#dt .bi{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;
+  padding:9px 12px;font-family:inherit;cursor:pointer;color:var(--ink)}
+#dt .bi:hover{border-color:var(--line2);background:var(--sky-l)}
+#dt .bi .ck{flex:0 0 22px;width:22px;height:22px;border-radius:50%;border:2px solid var(--line2);display:grid;place-items:center;color:transparent;font-size:12px}
+#dt .bi.done .ck{background:#5FB89A;border-color:#5FB89A;color:#fff}
+#dt .bi.done b{text-decoration:line-through;color:var(--ink3)}
+#dt .bi .t{flex:1;min-width:0}
+#dt .bi b{display:block;font-size:14px;line-height:1.4}
+#dt .bi small{display:block;font-size:11.5px;color:var(--ink3);margin-top:1px}
+#dt .bi>.ic{flex:0 0 auto;color:var(--ink3);font-size:14px}
+#dt .buy-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+#dt .buy-acts button{display:inline-flex;gap:5px;align-items:center;border:1.5px solid var(--line2);background:var(--paper);color:var(--navy);
+  border-radius:99px;padding:7px 13px;font:800 13px inherit;font-family:inherit;cursor:pointer}
+#dt .buy-acts button.pri{background:var(--coral);border-color:var(--coral);color:#fff}
+#dt .muted{font-size:13.5px;color:var(--ink3);margin:0}
+/* 購物：從行程跳過來（只看這一站） */
+.focus{margin:2px 0 12px;border-radius:var(--r);background:var(--navy);color:var(--paper);padding:12px 14px;animation:fadeIn .25s both}
+.focus.hide{display:none}
+.focus .fi{display:flex;gap:10px;align-items:flex-start}
+.focus .fi>.ic{flex:0 0 auto;font-size:20px;color:var(--sky);margin-top:2px}
+.focus small{display:block;font-size:11.5px;color:var(--sky);font-weight:700;letter-spacing:.04em}
+.focus b{display:block;font-size:16px;line-height:1.4;margin-top:1px}
+.focus span{display:block;font-size:12.5px;opacity:.85;margin-top:2px}
+.focus .fa{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.focus .fa button{display:inline-flex;gap:5px;align-items:center;border:1.5px solid rgba(255,253,248,.4);background:transparent;color:var(--paper);
+  border-radius:99px;padding:6px 12px;font:800 12.5px inherit;font-family:inherit;cursor:pointer}
+.focus .fa button.back{background:var(--paper);color:var(--navy);border-color:var(--paper)}
+.focus .fa button.back .ic{transform:scaleX(-1)}
+#p-shop.focusing .filters,#p-shop.focusing .snap{display:none}
 /* 行程詳細 */
 #dt .dt-top{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:6px;padding:10px 12px 8px;
   background:linear-gradient(var(--paper) 78%,rgba(255,253,248,0))}
@@ -1095,6 +1133,7 @@ html[data-fs] #fab{font-size:16px;padding:15px 21px 15px 17px}
 
   <section id="p-shop" class="hide">
     <div class="sh"><div><span class="k">01</span><h3>購物清單</h3></div><div class="rl"></div><small id="s-stat"></small></div>
+    <div class="focus hide" id="sh-focus"></div>
     <div class="filters">
       <select id="s-store"></select><select id="s-who"></select>
       <input id="s-q" class="full" placeholder="搜尋商品 / 店家…">
@@ -1662,6 +1701,8 @@ $('#tabbar').onclick=e=>{
   const sec=$('#p-'+b.dataset.t);
   if(!REDUCED){ sec.classList.remove('enter'); void sec.offsetWidth; sec.classList.add('enter'); }
   syncFab(b.dataset.t);
+  if(b.dataset.t==='shop'&&FOCUS.on&&e.isTrusted){ FOCUS.on=false; renderShop(); }   // 自己點「購物」分頁 → 看全部
+  if(b.dataset.t==='itin'&&TL_DIRTY&&DB.all){ TL_DIRTY=false; renderTL(); }          // 購物有變動 → 行程上的「要買 N 樣」跟著更新
   if(b.dataset.t==='ship'){ initShip3D(); if(S3.api) S3.api.resume(); } else if(S3.api) S3.api.pause();
   if(b.dataset.t==='money'&&!DB._counted&&DB.exp){ DB._counted=true; $$('#ex-stats .stat b').forEach(countUp); }
   const top=$('.tabbar').getBoundingClientRect().top+scrollY;
@@ -1726,6 +1767,8 @@ function renderTL(){
     if(num(r['交通花費'])) f.push(`<span>${ic('yen')}${esc(r['交通花費'])}</span>`);
     if(ml) f.push(`<a href="${esc(ml)}" target="_blank" rel="noopener">${ic('pin')}${esc(r['地點']||'地圖')}</a>`);
     if(r['備註']) f.push(`<span>${ic('note')}${esc(r['備註'])}</span>`);
+    const buys=shopFor(r,curDay), left=buys.filter(x=>!bool(x['已購買'])).length;
+    if(buys.length) f.unshift(`<button class="buy${left?'':' ok'}" data-act="shop" aria-label="到購物清單看這一站要買的">${ic(left?'bag':'check')}${left?`要買 ${left} 樣`:`已買齊 ${buys.length} 樣`}<b>›</b></button>`);
     const nImg=rowImages(r).length, nLink=rowLinks(r).filter(x=>!x.map).length, nNote=Object.keys(r._note||{}).length;
     if(nImg) f.push(`<span class="att">${ic('image')}${nImg} 張圖</span>`);
     if(nLink) f.push(`<span class="att">${ic('ext')}${nLink} 個連結</span>`);
@@ -1754,6 +1797,7 @@ $('#tl-box').addEventListener('click',e=>{
     if(act.dataset.act==='add') return openForm('day',0,curDay);
     if(act.dataset.act==='sort'){ SORTING=!SORTING; renderTL(); return; }
     if(act.dataset.act==='edit'&&!SORTING) return openForm('day',+act.closest('.tl-item').dataset.row,curDay);   // 小鉛筆 → 直接編輯
+    if(act.dataset.act==='shop'&&!SORTING) return gotoShop(curDay,+act.closest('.tl-item').dataset.row);          // 要買 N 樣 → 購物清單
   }
   if(SORTING||e.target.closest('a')||DRAG) return;
   const it=e.target.closest('.tl-card'); if(!it) return;
@@ -1821,6 +1865,13 @@ function openDt(row,day){
     ${(type||sp.tag||r['區域'])?`<div class="tl-tags">${type?typeTag(type):''}${sp.tag?`<span class="tag">${ic('anchor')}${esc(sp.tag)}</span>`:''}
       ${r['區域']?`<span class="tag soft">${ic('pin')}${esc(r['區域'])}</span>`:''}</div>`:''}
     <h3>${sp.rest?esc(sp.rest):richHTML(r,'行程')}</h3>`;
+  const buys=shopFor(r,day);
+  if(buys.length) h+=sec('bag',`要在這裡買的（${buys.filter(x=>!bool(x['已購買'])).length} / ${buys.length}）`,`<div class="buys">${buys.map(x=>
+      `<button class="bi${bool(x['已購買'])?' done':''}" data-buy="${x._row}"><span class="ck">${ic('check')}</span><span class="t"><b>${esc(x['商品'])}</b>
+        <small>${[x['誰要的'],x['店家'],x['價格']].filter(Boolean).map(esc).join(' · ')}</small></span>${ic('arrow')}</button>`).join('')}</div>
+      <div class="buy-acts"><button class="pri" data-dt="shopall">${ic('bag')}到購物清單看這一站</button><button data-dt="addbuy">${ic('plus')}加要買的</button></div>`);
+  else if(type==='購物') h+=sec('bag','要在這裡買的',`<p class="muted">購物清單裡還沒有這一站要買的東西</p>
+      <div class="buy-acts"><button class="pri" data-dt="addbuy">${ic('plus')}加要在這裡買的東西</button></div>`);
   if(r['說明']) h+=sec('note','說明',`<div class="txt">${richHTML(r,'說明')}</div>`);
   if(imgs.length) h+=sec('image',`圖片（${imgs.length}）`,`<div class="gal">${imgs.map((u,k)=>
     `<img src="${esc(driveImg(u,600))}" data-full="${esc(driveImg(u,1600))}" data-cap="${esc((sp.rest||r['行程']||'')+(imgs.length>1?` ${k+1}/${imgs.length}`:''))}" alt="" loading="lazy" onerror="this.remove()">`).join('')}</div>`);
@@ -1856,7 +1907,85 @@ $('#dt').addEventListener('click',e=>{
   if(b.dataset.dt==='prev') return dtStep(-1);
   if(b.dataset.dt==='next') return dtStep(1);
   if(b.dataset.dt==='edit'){ const row=DT.row, day=DT.day; closeDt(); openForm('day',row,day); }
+  if(b.dataset.dt==='shopall') return gotoShop(DT.day,DT.row);
+  if(b.dataset.dt==='addbuy') return addBuyFor(DT.day,DT.row);
 });
+$('#dt').addEventListener('click',e=>{ const b=e.target.closest('[data-buy]'); if(b) gotoShop(DT.day,DT.row,+b.dataset.buy); });
+
+/* ══ 行程 ↔ 購物：依「哪一天」＋「店名」把購物清單配到行程上 ══
+   購物清單的店家寫「超市」「藥妝店」這種類別也認得（MaxValu、AEON、松本清…都算） */
+var STORE_ALIAS=[
+  {re:/超市|スーパー|supermarket/i, keys:['maxvalu','マックスバリュ','aeon','イオン','永旺','サンエー','san-a','かねひで','ユニオン','業務スーパー','lopia','超市','スーパー']},
+  {re:/藥妝|药妆|ドラッグ|drug/i, keys:['藥妝','ドラッグ','drugstore','マツモトキヨシ','松本清','ダイコク','大國藥妝','ツルハ','サンドラッグ','ウエルシア','welcia','唐吉訶德','ドンキ','donki','ドン・キホーテ']},
+  {re:/唐吉|ドン.?キ|donki|don.?quijote|驚安/i, keys:['唐吉訶德','ドンキ','ドン・キホーテ','donki','donquijote','驚安']},
+  {re:/便利商店|超商|コンビニ/i, keys:['7-11','711','セブン','familymart','全家','ファミリーマート','lawson','ローソン','羅森']},
+  {re:/aeon|イオン|永旺/i, keys:['aeon','イオン','永旺','maxvalu','マックスバリュ']}];
+function normTx(s){ return String(s||'').normalize('NFKC').toLowerCase().replace(/[\s・·\-－_.,，、。()（）\[\]【】「」『』'’"×＆&\/]/g,''); }
+var SK_KEYS=new Map();
+function storeKeys(store){
+  if(SK_KEYS.has(store)) return SK_KEYS.get(store);
+  const s=String(store||'').normalize('NFKC'), keys=new Set(), full=normTx(s);
+  if(full.length>=2) keys.add(full);
+  (s.toLowerCase().match(/[a-z0-9][a-z0-9'-]*/g)||[]).forEach(w=>{ w=w.replace(/['-]/g,''); if(w.length>=4) keys.add(w); });
+  (s.match(/[\u3040-\u30ff\u3400-\u9fff]{3,}/g)||[]).forEach(w=>keys.add(normTx(w)));
+  STORE_ALIAS.forEach(a=>{ if(a.re.test(s)) a.keys.forEach(k=>keys.add(normTx(k))); });
+  const out=[...keys].filter(Boolean); SK_KEYS.set(store,out); return out;
+}
+function shopDayN(v){ const m=String(v||'').match(/^\s*D(\d)/i); return m?+m[1]:0; }
+/** 這個行程要買的東西：哪一天對得上（沒填天的都算）、行程名稱或地點裡有店名 */
+function shopFor(r,dayIdx){
+  const tx=normTx([r&&r['行程'],r&&r['地點']].join(' ')); if(!tx) return [];
+  return (DB.all.購物||[]).filter(x=>{
+    if(!x['商品']||!x['店家']) return false;
+    const n=shopDayN(x['第幾天']); if(n&&n!==dayIdx+1) return false;
+    return storeKeys(x['店家']).some(k=>tx.includes(k));
+  });
+}
+var FOCUS={on:false,day:0,row:0}, TL_DIRTY=false;
+function focusRows(){
+  if(!FOCUS.on) return null;
+  const r=dtRows(FOCUS.day).find(x=>x._row===FOCUS.row);
+  return r?new Set([...shopFor(r,FOCUS.day).map(x=>x._row),...(FOCUS.extra||[])]):null;
+}
+/** 從行程跳到購物清單，只顯示這一站要買的；one = 要特別標出來的那一項 */
+function gotoShop(day,row,one){
+  const r=dtRows(day).find(x=>x._row===row); if(!r) return;
+  closeDt();
+  $('.tab[data-t="shop"]').click();
+  const sp=splitTag(r['行程']);
+  Object.assign(FOCUS,{on:true,day,row,extra:[],title:String(sp.rest||r['行程']||'').split('\n')[0].trim(),t:r['抵達時間']||''});
+  renderShop();
+  requestAnimationFrame(()=>{
+    const el=one&&$(`#sh-box .shop[data-row="${one}"]`);
+    if(el){ el.scrollIntoView({block:'center',behavior:REDUCED?'auto':'smooth'}); el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+    else $('#sh-focus').scrollIntoView({block:'start',behavior:REDUCED?'auto':'smooth'});
+  });
+}
+function backToItin(){
+  const {day,row}=FOCUS; FOCUS.on=false; renderShop();
+  $('.tab[data-t="itin"]').click();
+  curDay=day; renderDayTabs(); renderTL(); TL_DIRTY=false;
+  requestAnimationFrame(()=>{ const el=$(`#tl-box .tl-item[data-row="${row}"]`);
+    if(el){ el.scrollIntoView({block:'center',behavior:REDUCED?'auto':'smooth'}); const c=el.querySelector('.tl-card'); c.classList.remove('flash'); void c.offsetWidth; c.classList.add('flash'); } });
+}
+$('#sh-focus').onclick=e=>{
+  const b=e.target.closest('[data-f]'); if(!b) return;
+  if(b.dataset.f==='back') return backToItin();
+  if(b.dataset.f==='add') return addBuyFor(FOCUS.day,FOCUS.row,true);
+  FOCUS.on=false; renderShop();
+};
+/** 「加要在這裡買的」：開新增表單，店家、哪一天先幫你填好 */
+function addBuyFor(day,row,stay){
+  const r=dtRows(day).find(x=>x._row===row); if(!r) return;
+  closeDt();
+  openForm('shop');
+  const sp=splitTag(r['行程']), name=String(sp.rest||r['行程']||'').split('\n')[0].trim()||String(r['地點']||'').trim();
+  const st=$('#f-store'); if(st&&!st.value) st.value=name.slice(0,60);
+  const db=$$('#f-day button').find(b=>shopDayN(b.dataset.v)===day+1); if(db) db.classList.add('on');
+  $('#fm-body h4').innerHTML=ic('bag')+'加要在這裡買的';
+  FM.after=stay?(newRow=>{ if(FOCUS.on&&newRow){ FOCUS.extra=[...(FOCUS.extra||[]),newRow]; renderShop(); } })
+               :(()=>{ if(!$('#p-itin').classList.contains('hide')){ renderTL(); TL_DIRTY=false; openDt(row,day); } });
+}
 window.addEventListener('keydown',e=>{
   if(!$('#dt').classList.contains('on')||$('#lb').classList.contains('on')||$('#fm').classList.contains('on')) return;
   if(e.key==='Escape') closeDt();
@@ -2092,14 +2221,24 @@ function loadShop(){
   ['#s-store','#s-who'].forEach(s=>$(s).onchange=renderShop);
   $('#s-q').oninput=renderShop;
   $('#snap').classList.toggle('hide',!CAN_UP());
+  TL_DIRTY=true;
   $('#snap-sub').textContent=CAN_AI()?'拍包裝或價格標籤，AI 自動填好品名、日文、價格（可一次選好幾張）':'先拍照或選照片，再填品名、選誰要的（可一次選好幾張）';
   renderShop();
 }
 function renderShop(){
   const all=DB.shop||[];
   const st=$('#s-store').value, w=$('#s-who').value, q=$('#s-q').value.trim().toLowerCase();
-  const rows=all.filter(r=>(!st||r['店家']===st)&&(!w||(r['誰要的']||'').includes(w))
+  const F=focusRows();
+  const rows=F?all.filter(r=>F.has(r._row)):all.filter(r=>(!st||r['店家']===st)&&(!w||(r['誰要的']||'').includes(w))
     &&(!q||`${r['商品']} ${r['店家']} ${r['備註']} ${r['日文']||''}`.toLowerCase().includes(q)));
+  $('#p-shop').classList.toggle('focusing',!!F);
+  if(F){
+    const dn=rows.filter(r=>bool(r['已購買'])).length;
+    $('#sh-focus').innerHTML=`<div class="fi">${ic('route')}<div><small>D${FOCUS.day+1} ${esc(DAYNAME(FOCUS.day))}${FOCUS.t?' · '+esc(FOCUS.t):''} 的行程</small>
+        <b>${esc(FOCUS.title)}</b><span>${rows.length?`在這裡要買 ${rows.length} 樣${dn?`，已買 ${dn} 樣`:''}`:'還沒有要在這裡買的東西'}</span></div></div>
+      <div class="fa"><button class="back" data-f="back">${ic('arrow')}回到行程</button><button data-f="add">${ic('plus')}加要買的</button><button data-f="all">看全部清單</button></div>`;
+  }
+  $('#sh-focus').classList.toggle('hide',!F);
   const done=all.filter(r=>bool(r['已購買'])).length;
   $('#s-prog').style.width=all.length?(done/all.length*100)+'%':'0';
   $('#s-stat').textContent=`已買 ${done} / ${all.length} 項`+(rows.length!==all.length?`（篩出 ${rows.length}）`:'');
@@ -2136,7 +2275,7 @@ async function toggleShop(rowNum){
   syncSkBought(!was);
   try{
     await callGAS('setCell',{sheet:'購物清單',row:rowNum,col:'已購買',value:v,expect:was?'TRUE':'FALSE'});
-    r['已購買']=v; cacheSoon();
+    r['已購買']=v; cacheSoon(); TL_DIRTY=true;
     quiet(renderShop);
   }catch(err){ if(cb) cb.classList.toggle('on',was); syncSkBought(was); toast(errMsg(err),true); }
 }
@@ -2737,7 +2876,7 @@ function dayTypes(){
 /** kind: exp | shop | day；row 有值 = 修改那一列 */
 function openForm(kind,row,dayIdx){
   FM.kind=kind; FM.mode=row?'edit':'add'; FM.row=row||0; FM.day=dayIdx??curDay; FM.up=null;
-  FM.aiTok=(FM.aiTok||0)+1; FM.ai=null; FM.aiImg=''; FM.snap=null; FM.carried=false;
+  FM.aiTok=(FM.aiTok||0)+1; FM.ai=null; FM.aiImg=''; FM.snap=null; FM.carried=false; FM.after=null;
   const edit=FM.mode==='edit', sym=CONF.幣別符號||'¥';
   let r=null;
   if(kind==='exp') r=edit?(DB.exp||[]).find(x=>x._row===row):null;
@@ -2975,11 +3114,12 @@ async function submitForm(){
         row=res.row; day=moveTo;
       }
     }
-    const sn=!edit&&FM.kind==='shop'&&FM.snap?{values,ai:FM.ai}:null;
+    const sn=!edit&&FM.kind==='shop'&&FM.snap?{values,ai:FM.ai}:null, after=FM.after;
     closeForm();
     toast(edit?(moveTo!==null?`已搬到 D${moveTo+1}`:'已更新試算表'):FM.kind==='exp'?'已記到花費表':FM.kind==='shop'?'已加到購物清單'+(sn&&SNAP.n>1?`（${SNAP.i}／${SNAP.n}）`:''):`已加到 D${day+1}`);
     await reloadAfter(FM.kind,row,day,res);
     if(sn) snapSaved(sn);
+    if(after) after(row);
   }catch(e2){
     err.textContent=errMsg(e2);
     go.disabled=false; go.innerHTML=ic('check')+(edit?'儲存修改':'再試一次');
