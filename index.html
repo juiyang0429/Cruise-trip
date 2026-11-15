@@ -255,8 +255,8 @@ button{font-family:inherit}
 .place .mi{font-size:11.5px;color:var(--ink3);margin-top:4px;display:flex;gap:4px;align-items:center;flex-wrap:wrap}
 .bag{display:grid;grid-template-columns:1fr auto;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line);align-items:center}
 .bag:last-child{border-bottom:0}
-.bag .n{font-size:14px;font-weight:700}
-.bag .n small{display:flex;gap:4px;align-items:center;color:var(--ink3);font-size:11.5px;font-weight:400}
+.bag .n{font-size:14px;font-weight:700;min-width:0}
+.bag .nt{grid-column:1/-1;margin-top:-4px;font-size:12.5px;line-height:1.55;color:var(--ink2);font-weight:500}
 .bag .ppl{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
 .pbox{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--line2);background:var(--paper);
   font-size:11.5px;font-weight:900;color:var(--ink3);cursor:pointer;transition:.15s;padding:0}
@@ -344,6 +344,11 @@ button{font-family:inherit}
 #prep-count .sub{font-size:12px;opacity:.85;margin-top:3px}
 @keyframes bobY{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-4px) rotate(2deg)}}
 .flip-g{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tips{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:2px 14px;margin:4px 0 18px}
+.tip{display:flex;gap:9px;align-items:flex-start;padding:9px 0;font-size:13px;line-height:1.55;color:var(--ink2);border-bottom:1px dashed var(--line)}
+.tip:last-child{border-bottom:0}
+.tip .ic{flex:0 0 auto;color:var(--coral);font-size:15px;margin-top:2px}
+.tip b{flex:0 0 auto;color:var(--navy);font-size:13px}
 .flip{position:relative;height:122px;border:0;padding:0;background:none;perspective:800px;cursor:pointer;font-family:inherit;text-align:left}
 .flip .fc{position:absolute;inset:0;border-radius:var(--r);border:1px solid var(--line);background:var(--paper);display:flex;flex-direction:column;
   justify-content:center;padding:12px 14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .6s cubic-bezier(.3,.7,.25,1)}
@@ -367,13 +372,25 @@ button{font-family:inherit}
 .pwho.on .tr{fill:var(--navy)}.pwho.on .av{color:var(--paper)}
 .pwho small{font-size:11px;color:var(--ink3);font-weight:700}
 .pwho.on small{color:var(--navy)}
-.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;padding:12px}
-.tile{position:relative;text-align:left;border:1.5px solid var(--line2);background:var(--paper);border-radius:14px;padding:12px 12px 12px 46px;
-  min-height:64px;cursor:pointer;font-family:inherit;transition:background .25s,border-color .25s}
-.tile .ck{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;border:2px solid var(--line2);
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));grid-auto-flow:row dense;gap:8px;padding:12px}
+.tile{display:flex;align-items:center;gap:11px;text-align:left;border:1.5px solid var(--line2);background:var(--paper);border-radius:14px;
+  padding:11px 12px;min-height:58px;cursor:pointer;font-family:inherit;transition:background .25s,border-color .25s}
+.tile .ck{flex:0 0 24px;width:24px;height:24px;border-radius:50%;border:2px solid var(--line2);
   display:grid;place-items:center;color:transparent;font-size:14px;transition:.2s}
-.tile b{display:block;font-size:14px;color:var(--navy);transition:color .2s}
-.tile small{display:block;font-size:11px;color:var(--ink3);margin-top:2px}
+.tile .tx{flex:1;min-width:0}
+.tile b{display:block;font-size:14px;line-height:1.4;color:var(--navy);transition:color .2s}
+.tile .nt{display:block;margin-top:3px;font-size:12px;line-height:1.5;color:var(--ink2);font-weight:500}
+.tile.wide{grid-column:1/-1;align-items:flex-start}
+.tile.wide .ck{margin-top:1px}
+.tile.wide .nt{font-size:12.5px;line-height:1.55;margin-top:4px}
+@media (min-width:700px){ .tile.wide{grid-column:span 2} }
+.chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.chips i{font-style:normal;display:inline-flex;gap:3px;align-items:center;font-size:11px;font-weight:800;line-height:1.6;
+  padding:0 7px;border-radius:99px;background:var(--sky-l);color:var(--navy);white-space:nowrap}
+.chips i .ic{font-size:11px}
+.chips i.ok{background:#E6F4EE;color:#2f8f6b}
+.chips i.no{background:var(--coral-l);color:var(--coral-d)}
+.tile.on .chips,.tile.on .nt{opacity:.55}
 .tile.on{background:#EAF6F0;border-color:#5FB89A}
 .tile.on .ck{background:#5FB89A;border-color:#5FB89A;color:#fff}
 .tile.on b{text-decoration:line-through;color:var(--ink3)}
@@ -387,6 +404,7 @@ button{font-family:inherit}
 .bag-sec{display:flex;align-items:center;gap:6px;padding:12px 14px 6px;font-size:12px;font-weight:900;letter-spacing:.14em;color:var(--coral);
   border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--sky-l) 55%,transparent)}
 .tiles .bag-sec{grid-column:1/-1;border:0;background:none;padding:6px 2px 0}
+.tiles+.tiles{padding-top:2px}
 .todos{padding:4px 0}
 .todo{display:flex;gap:12px;align-items:flex-start;padding:11px 14px;border-bottom:1px solid var(--line)}
 .todo:last-child{border-bottom:0}
@@ -1102,9 +1120,8 @@ html[data-fs] #fab{font-size:16px;padding:15px 21px 15px 17px}
 
   <section id="p-prep" class="hide">
     <div id="prep-count"></div>
-    <div class="sh"><div><span class="k">01</span><h3>旅程資訊</h3></div><div class="rl"></div><small>點卡片翻面</small></div>
-    <div class="flip-g" id="prep-info"></div>
-    <div class="sh"><div><span class="k">02</span><h3>行李清單</h3></div><div class="rl"></div><small id="bag-stat"></small></div>
+    <div class="tips" id="prep-info"></div>
+    <div class="sh"><div><span class="k">01</span><h3>行李清單</h3></div><div class="rl"></div><small id="bag-stat"></small></div>
     <div class="who-g" id="who-g"></div>
     <div class="prog"><i id="b-prog"></i></div>
     <div class="card" id="bag-box" style="margin-top:12px"></div>
@@ -3141,6 +3158,10 @@ function renderPlaces(){
 
 /* ══════════════ 6. 行前確認 ══════════════ */
 let BAGWHO='', PREP_T=null;
+const PREP_TIPS=[
+  {i:'sun',  k:'天氣', v:'12 月約 17–23°C，白天舒服、早晚和海風偏涼，帶件薄外套'},
+  {i:'clock',k:'時差', v:'比台灣快 1 小時'},
+  {i:'phone',k:'插座', v:'100V、兩孔扁頭，跟台灣一樣，不用轉接頭'}];
 const INFO_TIP={
   '前往國家':()=>'時差：比台灣快 1 小時<br>電壓 100V，插頭跟台灣一樣（兩孔扁頭）',
   '當地天氣':()=>'12 月平均氣溫（參考）<br>那霸約 16–21°C、石垣約 18–23°C<br>海風大，帶件薄外套',
@@ -3149,11 +3170,8 @@ const INFO_TIP={
 };
 function loadPrep(){
   const p=DB.all.行前||{};
-  // 表裡的 emoji 圖示（🇯🇵 😎…）不顯示，統一換成單色圖示；點一下翻面看小提醒
-  $('#prep-info').innerHTML=(p.info||[]).length?p.info.map(x=>`<button class="flip" aria-label="${esc(x.項目)}">
-      <span class="fc front">${ic(INFO_IC[x.項目]||'info')}<small>${esc(x.項目)}</small><b>${esc(x.值)}</b><i class="turn">${ic('arrow')}</i></span>
-      <span class="fc back"><small>${esc(x.項目)}・小提醒</small><span>${(INFO_TIP[x.項目]||(()=>esc(x.值)))()}</span></span></button>`).join('')
-    :'<div class="loading">沒有基本資訊</div>';
+  // 天數、旅伴、去回程封面都有了 → 這裡只留打包用得到的三個小提醒
+  $('#prep-info').innerHTML=PREP_TIPS.map(t=>`<div class="tip">${ic(t.i)}<b>${t.k}</b><span>${t.v}</span></div>`).join('');
   renderWho(); renderBags(); renderTodos(); prepCount();
   clearInterval(PREP_T); PREP_T=setInterval(()=>{ if(!$('#p-prep').classList.contains('hide')) prepCount(); },1000);
 }
@@ -3190,6 +3208,17 @@ function renderWho(){
   }).join('');
 }
 $('#who-g').onclick=e=>{ const b=e.target.closest('.pwho'); if(!b) return; BAGWHO=b.dataset.who; renderWho(); renderBags(); popEl(b); };
+/** 行李的補充資訊拆開排：數量、「有提供／不提供」、位置 → 小標籤；備註 → 名稱下面一整行 */
+function bagMeta(b){
+  const q=String(b['數量']??'').trim(), pos=String(b['位置']??'').trim();
+  let nt=String(b['備註']??'').trim().replace(/^[*＊]\s*/,''), pv='';
+  const m=nt.match(/^(有提供|不提供)[，,。.、\s]*/); if(m){ pv=m[1]; nt=nt.slice(m[0].length).trim(); }
+  const c=[];
+  if(q&&!/^[-－0]$/.test(q)) c.push(`<i>${/^[x×＊*]/i.test(q)?esc(q.replace(/^[xX＊*]/,'×')):'×'+esc(q)}</i>`);
+  if(pv) c.push(`<i class="${pv==='有提供'?'ok':'no'}">${pv}</i>`);
+  if(pos) c.push(`<i>${ic('pin')}${esc(pos)}</i>`);
+  return {chips:c.length?`<span class="chips">${c.join('')}</span>`:'', note:nt, wide:nt.length>8};
+}
 function renderBags(){
   const p=DB.all.行前||{}, bags=p.行李||[];
   const ppl=BAGWHO?[BAGWHO]:BAGPPL;
@@ -3197,22 +3226,27 @@ function renderBags(){
   bags.forEach(b=>ppl.forEach(n=>{ if(n in b&&PK(b[n])!=='na'){ total++; if(PK(b[n])==='done') done++; } }));
   $('#b-prog').style.width=total?(done/total*100)+'%':'0';
   $('#bag-stat').textContent=total?`${BAGWHO?BAGWHO+' ':''}${done} / ${total} 已打包`:`${bags.length} 項`;
-  const meta=b=>[b['數量']&&b['數量']!=='-'?'×'+esc(b['數量']):'',b['位置']?esc(b['位置']):'',esc(b['備註']||'')].filter(Boolean).join(' · ');
+  const meta=bagMeta;
   if(!bags.length){ $('#bag-box').innerHTML=`<div class="empty">${ic('box','big')}<p class="muted">行李清單是空的</p></div>`; return; }
   let sec=null;
   const secHead=b=>{ if(!b._sec||b._sec===sec) return ''; sec=b._sec; return `<div class="bag-sec">${ic('box')}${esc(sec)}</div>`; };
   const attrs=(b,n)=>`data-row="${b._row}" data-col="${esc(n)}" data-v="${esc(packNext(b[n]))}" data-exp="${esc(b[n]??'')}"`;
   if(BAGWHO){                                          // 只看一個人：大張的打包卡，點一下就打包
+    // 每個分類一個格子區（長備註的卡片佔整行，空位只會用同一類的卡片補，不會跑到別的分類）
+    let nSec=0;
     $('#bag-box').innerHTML=`<div class="tiles">${bags.filter(b=>BAGWHO in b).map(b=>{ const st=PK(b[BAGWHO]);
-      return secHead(b)+`<button class="tile${st==='done'?' on':''}${st==='na'?' na':''}" ${attrs(b,BAGWHO)}${st==='na'?' disabled title="試算表標記不用帶"':''}>
-        <span class="ck">${ic(st==='na'?'x':'check')}</span><b>${esc(b['項目'])}${st==='buy'?'<span class="bt">待買</span>':''}</b>${meta(b)?`<small>${meta(b)}</small>`:''}</button>`; }).join('')}</div>`;
+      const m=meta(b);
+      const hd=secHead(b), brk=hd&&nSec++>0;
+      return (brk?'</div><div class="tiles">':'')+hd+`<button class="tile${m.wide?' wide':''}${st==='done'?' on':''}${st==='na'?' na':''}" ${attrs(b,BAGWHO)}${st==='na'?' disabled title="試算表標記不用帶"':''}>
+        <span class="ck">${ic(st==='na'?'x':'check')}</span><span class="tx"><b>${esc(b['項目'])}${st==='buy'?'<span class="bt">待買</span>':''}</b>${m.chips}${m.note?`<span class="nt">${esc(m.note)}</span>`:''}</span></button>`; }).join('')}</div>`;
     stagger($('#bag-box'),'.tile',30);
     return;
   }
-  $('#bag-box').innerHTML=bags.map(b=>secHead(b)+`<div class="bag">
-      <div class="n">${esc(b['項目'])}${meta(b)?`<small>${meta(b)}</small>`:''}</div>
+  $('#bag-box').innerHTML=bags.map(b=>{ const m=meta(b); return secHead(b)+`<div class="bag">
+      <div class="n">${esc(b['項目'])}${m.chips}</div>
       <div class="ppl">${ppl.map(n=>{ if(!(n in b)) return ''; const st=PK(b[n]);
-        return `<button class="pbox${st==='done'?' on':''}${st==='na'?' na':''}${st==='buy'?' buy':''}" ${attrs(b,n)}${st==='na'?' disabled title="不用帶"':st==='buy'?' title="待買"':''}>${esc(n)}</button>`; }).join('')}</div></div>`).join('');
+        return `<button class="pbox${st==='done'?' on':''}${st==='na'?' na':''}${st==='buy'?' buy':''}" ${attrs(b,n)}${st==='na'?' disabled title="不用帶"':st==='buy'?' title="待買"':''}>${esc(n)}</button>`; }).join('')}</div>
+      ${m.note?`<div class="nt">${esc(m.note)}</div>`:''}</div>`; }).join('');
   stagger($('#bag-box'),'.bag',35);
 }
 $('#bag-box').onclick=async e=>{
@@ -3237,7 +3271,7 @@ function renderTodos(){
   let st={}; try{ st=JSON.parse(LS.get('cruise-todo')||'{}'); }catch(_){}
   const real=tasks.filter(x=>x.t), done=real.filter(x=>st[x.t]).length;
   const link=u=>`<a href="${esc(u)}" target="_blank" rel="noopener">${ic('ext')}${esc(u.replace(/^https?:\/\//,'').slice(0,42))}</a>`;
-  $('#refs-box').innerHTML=`<div class="sh"><div><span class="k">03</span><h3>出發前待辦</h3></div><div class="rl"></div><small>${done} / ${real.length} 完成</small></div>
+  $('#refs-box').innerHTML=`<div class="sh"><div><span class="k">02</span><h3>出發前待辦</h3></div><div class="rl"></div><small>${done} / ${real.length} 完成</small></div>
     <div class="card todos">${tasks.map(x=>x.t
       ?`<div class="todo${st[x.t]?' done':''}"><button class="tk" data-t="${esc(x.t)}" aria-label="完成">${ic('check')}</button>
          <div><span class="tt" data-t="${esc(x.t)}">${esc(x.t)}</span>${x.links.map(link).join('')}</div></div>`
