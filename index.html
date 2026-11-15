@@ -475,8 +475,11 @@ button{font-family:inherit}
 #route-svg .pin circle.dot{fill:var(--navy);stroke:#fff;stroke-width:1.6;transition:.2s}
 #route-svg .pin.on circle.dot{fill:var(--coral)}
 #route-svg .pin .hit{fill:transparent}
-#route-svg .pin text{font:800 7.5px 'Noto Sans TC',sans-serif;fill:var(--navy);paint-order:stroke;stroke:#fff;stroke-width:2.6px;stroke-linejoin:round}
-#route-svg .pin text.d{font:600 7px var(--dis);fill:var(--coral-d)}
+#route-svg .pl text{cursor:pointer;paint-order:stroke;stroke:#fff;stroke-width:.32em;stroke-linejoin:round}
+#route-svg .pn{font:800 7.5px 'Noto Sans TC',sans-serif;fill:var(--navy)}
+#route-svg .pd{font:600 7px var(--dis);fill:var(--coral-d);letter-spacing:.02em}
+#route-svg .pl.on .pn{fill:var(--coral-d)}
+#route-svg .km{font:600 7px var(--dis);fill:#1E4E6A}
 #route-svg .pulse{fill:none;stroke:var(--coral);stroke-width:1.5;transform-box:fill-box;transform-origin:center;animation:pinPulse 1.8s ease-out infinite}
 #route-svg .wv{fill:none;stroke:#fff;stroke-opacity:.55;stroke-width:.8;stroke-linecap:round}
 #route-svg .cmp text{font:700 7px var(--dis);fill:var(--navy)}
@@ -1703,7 +1706,8 @@ $('#tabbar').onclick=e=>{
   syncFab(b.dataset.t);
   if(b.dataset.t==='shop'&&FOCUS.on&&e.isTrusted){ FOCUS.on=false; renderShop(); }   // 自己點「購物」分頁 → 看全部
   if(b.dataset.t==='itin'&&TL_DIRTY&&DB.all){ TL_DIRTY=false; renderTL(); }          // 購物有變動 → 行程上的「要買 N 樣」跟著更新
-  if(b.dataset.t==='ship'){ initShip3D(); if(S3.api) S3.api.resume(); } else if(S3.api) S3.api.pause();
+  if(b.dataset.t==='ship'){ initShip3D(); if(S3.api) S3.api.resume(); requestAnimationFrame(()=>{ const sv=$('#route-svg');
+    if(sv&&Math.abs(sv.getBoundingClientRect().width-MAP_W)>2) layoutMapLabels(); }); } else if(S3.api) S3.api.pause();
   if(b.dataset.t==='money'&&!DB._counted&&DB.exp){ DB._counted=true; $$('#ex-stats .stat b').forEach(countUp); }
   const top=$('.tabbar').getBoundingClientRect().top+scrollY;
   if(scrollY>top) window.scrollTo({top,behavior:'smooth'});
@@ -2452,24 +2456,21 @@ function renderMap(){
     const cx=(x1+x2)/2+(-dy/L)*b, cy=(y1+y2)/2+(dx/L)*b;
     route+=(k===1?`M${x1.toFixed(1)} ${y1.toFixed(1)}`:'')+`Q${cx.toFixed(1)} ${cy.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`;
   });
-  const seen={};
-  const pins=pts.map(p=>{
-    const [x,y]=PJ(p.g), key=p.g.join(), again=seen[key]; seen[key]=(seen[key]||0)+1;
-    const dt=parseDT(p.l.日期,'00:00'), on=p.i===MAP_SEL;
-    const name=String(p.l.港口||'').split(/\s/)[0].replace(/港$/,'');
-    const right=x<300, tx=right?x+7:x-7, anchor=right?'start':'end', dy=again?11:0;
-    return `<g class="pin${on?' on':''}" data-i="${p.i}">
-      ${p.i===ti?`<circle class="pulse" cx="${x}" cy="${y}" r="5"/>`:''}
-      <circle class="hit" cx="${x}" cy="${y}" r="13"/>
-      ${again?'':`<circle class="dot" cx="${x}" cy="${y}" r="3.6"/>`}
-      <text x="${tx}" y="${y-2+dy}" text-anchor="${anchor}">${esc(again?'':name)}</text>
-      <text class="d" x="${tx}" y="${y+7+dy}" text-anchor="${anchor}">${esc(p.l.key||('D'+(p.i+1)))}${dt?' '+md(dt):''}</text></g>`;
-  }).join('');
+  // 同一個港口（基隆去、回）合成一組標籤；字的位置交給 layoutMapLabels() 依字級排
+  MAP_PTS=[];
+  pts.forEach(p=>{
+    const [x,y]=PJ(p.g), dt=parseDT(p.l.日期,'00:00');
+    const date={i:p.i,t:`${p.l.key||('D'+(p.i+1))}${dt?' '+md(dt):''}`};
+    const g=MAP_PTS.find(q=>q.x===x&&q.y===y);
+    if(g) g.dates.push(date);
+    else MAP_PTS.push({x,y,i:p.i,name:String(p.l.港口||'').split(/\s/)[0].replace(/港$/,''),dates:[date]});
+  });
+  const pins=MAP_PTS.map(q=>`<g class="pin${q.dates.some(d=>d.i===MAP_SEL)?' on':''}" data-i="${q.i}">
+      ${q.dates.some(d=>d.i===ti)?`<circle class="pulse" cx="${q.x}" cy="${q.y}" r="5"/>`:''}
+      <circle class="hit" cx="${q.x}" cy="${q.y}" r="13"/><circle class="dot" cx="${q.x}" cy="${q.y}" r="3.6"/></g>`).join('');
   svg.innerHTML=`
     <g class="wv"><path d="M300 22q6-3 12 0t12 0M250 186q6-3 12 0t12 0M60 176q6-3 12 0t12 0M140 70q6-3 12 0t12 0M330 120q6-3 12 0t12 0"/></g>
-    <text class="sea" x="104" y="40">東　海</text><text class="sea" x="292" y="168">太 平 洋</text>
     ${LANDS.map(l=>`<path class="land${l.cls?' '+l.cls:''}" d="${smoothPath(l.p,true)}"/>`).join('')}
-    ${LANDS.filter(l=>l.n).map(l=>{const [x,y]=PJ(l.lp);return `<text class="lbl" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle">${l.n}</text>`;}).join('')}
     <path class="rt-halo" d="${route}"/><path class="rt" id="rt" d="${route}"/>
     ${pins}
     <g class="ship-m">
@@ -2479,10 +2480,87 @@ function renderMap(){
     <g class="cmp" transform="translate(22 24)"><circle r="10" fill="#fff" fill-opacity=".7" stroke="#1E4E6A" stroke-opacity=".4"/>
       <path d="M0-8l2.6 8h-5.2z" fill="#E35E45"/><path d="M0 8l2.6-8h-5.2z" fill="#1E4E6A" fill-opacity=".5"/><text y="-12" text-anchor="middle">N</text></g>
     <g transform="translate(330 188)"><path d="M0 0h50.6" stroke="#1E4E6A" stroke-width="1.2"/><path d="M0-2v4M50.6-2v4" stroke="#1E4E6A" stroke-width="1.2"/>
-      <text x="25" y="-4" text-anchor="middle" style="font:600 7px var(--dis);fill:#1E4E6A">100 km</text></g>`;
+      <text class="km" x="25" y="-4" text-anchor="middle">100 km</text></g>
+    <g id="map-lbl"></g>`;
   if(REDUCED){ const sh=svg.querySelector('.ship-m'), p0=pts[0]&&PJ(pts[0].g); if(sh&&p0) sh.setAttribute('transform',`translate(${p0[0]} ${p0[1]})`); }
+  layoutMapLabels();
   renderMapInfo();
 }
+
+/* ── 地圖上的字：跟著「字級」變大，而且自動挑不會互相蓋到的位置 ──
+   手機上地圖只有 ~360px 寬，字如果照地圖比例縮會太小 → 依實際螢幕寬度換算，讓字在螢幕上固定是「看得清楚」的大小。
+   每個港口的標籤試 8 個方位（右、左、下、上、四個斜角），全部組合挑「最少重疊、不出框」的那組；
+   島名、海名放得下才放，放不下就先不顯示（不硬擠）。 */
+var MAP_PTS=[], MAP_W=0;
+const SEA_LBL=[{t:'東　海',x:104,y:36},{t:'太 平 洋',x:292,y:166}];
+const LAND_LBL={台灣:[[121.22,24.5],[121.18,24.1],[121.18,23.72]],沖繩本島:[[128.0,26.25],[128.35,26.5],[128.05,26.95],[127.75,26.75]],
+                西表島:[[123.82,24.13],[123.82,24.02],[123.45,24.35]]};
+function layoutMapLabels(){
+  const svg=$('#route-svg'), lay=svg&&svg.querySelector('#map-lbl'); if(!lay) return;
+  const W=svg.getBoundingClientRect().width; if(!W) return;                 // 分頁還沒打開（量不到寬度）→ 打開時再排
+  MAP_W=W;
+  const k=W/400, Z=ZF();
+  const f=Math.max(7.5,11.5*Z/k), fd=f*.86, gap=4.5;                          // f：港口名（地圖單位）；手機約 11.5px × 字級
+  const NS='http://www.w3.org/2000/svg';
+  lay.innerHTML='';
+  const meas=(t,cls,size)=>{ const el=document.createElementNS(NS,'text'); el.setAttribute('class',cls); el.style.fontSize=size+'px';
+    el.textContent=t; lay.appendChild(el); const w=el.getComputedTextLength(); el.remove(); return w; };
+  const ov=(a,b)=>Math.max(0,Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x))*Math.max(0,Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y));
+  const out=a=>a.w*a.h-ov(a,{x:2,y:2,w:396,h:196});
+  const fixed=[{x:9,y:3,w:26,h:34},{x:324,y:174,w:62,h:20}];                  // 指北針、比例尺
+  MAP_PTS.forEach(q=>fixed.push({x:q.x-5,y:q.y-5,w:10,h:10}));                 // 港口的點
+  // 每個港口的標籤大小
+  const L=MAP_PTS.map(q=>{
+    const wn=meas(q.name,'pn',f), wd=Math.max(...q.dates.map(d=>meas(d.t,'pd',fd)));
+    return {q,w:Math.max(wn,wd)+2,h:f*1.02+q.dates.length*fd*1.12};
+  });
+  const CAND=[['R',0],['L',.4],['B',.8],['T',.9],['BR',1.2],['TR',1.3],['BL',1.5],['TL',1.6]];
+  const boxAt=(l,c)=>{ const {x,y}=l.q, w=l.w, h=l.h, d=gap*.75;
+    return {R:{x:x+gap,y:y-h/2},L:{x:x-gap-w,y:y-h/2},B:{x:x-w/2,y:y+gap},T:{x:x-w/2,y:y-gap-h},
+            BR:{x:x+d,y:y+d},TR:{x:x+d,y:y-d-h},BL:{x:x-d-w,y:y+d},TL:{x:x-d-w,y:y-d-h}}[c]; };
+  // 全部組合試一遍（港口不多，很快）
+  let best=null, bestS=Infinity;
+  const pick=new Array(L.length);
+  (function go(n,score,boxes){
+    if(score>=bestS) return;
+    if(n===L.length){ bestS=score; best=pick.slice(); return; }
+    for(const [c,pen] of CAND){
+      const b=Object.assign(boxAt(L[n],c),{w:L[n].w,h:L[n].h});
+      let s=pen+out(b)*50;
+      fixed.forEach(o=>s+=ov(b,o)*40);
+      boxes.forEach(o=>s+=ov(b,o)*60);
+      pick[n]={c,b}; go(n+1,score+s,boxes.concat([b]));
+    }
+  })(0,0,[]);
+  const taken=fixed.slice(), html=[];
+  L.forEach((l,n)=>{
+    const {c,b}=best[n]; taken.push(b);
+    const al=/L$/.test(c)?'end':/R$/.test(c)?'start':'middle', tx=al==='start'?b.x+1:al==='end'?b.x+b.w-1:b.x+b.w/2;
+    let y=b.y+f*.88;
+    let t=`<text class="pn" x="${tx.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="${al}" style="font-size:${f.toFixed(2)}px" data-i="${l.q.i}">${esc(l.q.name)}</text>`;
+    l.q.dates.forEach(d=>{ y+=fd*1.12; t+=`<text class="pd" x="${tx.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="${al}" style="font-size:${fd.toFixed(2)}px" data-i="${d.i}">${esc(d.t)}</text>`; });
+    html.push(`<g class="pl${l.q.dates.some(d=>d.i===MAP_SEL)?' on':''}">${t}</g>`);
+  });
+  // 島名、海名：有空位才放
+  const lf=Math.max(7,f*.82), sf=Math.max(7.5,f*.8);
+  LANDS.filter(l=>l.n).forEach(l=>{
+    const w=meas(l.n,'lbl',lf), h=lf;
+    for(const g of (LAND_LBL[l.n]||[l.lp])){
+      const [x,y]=PJ(g), b={x:x-w/2,y:y-h*.85,w,h};
+      if(out(b)<1&&!taken.some(o=>ov(b,o)>1)){ taken.push(b);
+        html.unshift(`<text class="lbl" x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" style="font-size:${lf.toFixed(2)}px">${l.n}</text>`); break; }
+    }
+  });
+  SEA_LBL.forEach(z=>{
+    const w=meas(z.t,'sea',sf), b={x:z.x-2,y:z.y-sf*.85,w:w+4,h:sf};
+    if(out(b)<1&&!taken.some(o=>ov(b,o)>1)){ taken.push(b); html.unshift(`<text class="sea" x="${z.x}" y="${z.y}" style="font-size:${sf.toFixed(2)}px">${z.t}</text>`); }
+  });
+  lay.innerHTML=html.join('');
+  const km=svg.querySelector('.km'); if(km) km.style.fontSize=Math.max(7,f*.7).toFixed(2)+'px';
+  svg.querySelectorAll('.pin .hit').forEach(c=>c.setAttribute('r',Math.max(13,22/k).toFixed(1)));   // 手指好點
+}
+window.addEventListener('resize',()=>{ clearTimeout(window.__mapT); window.__mapT=setTimeout(()=>{
+  const svg=$('#route-svg'); if(svg&&!$('#p-ship').classList.contains('hide')&&Math.abs(svg.getBoundingClientRect().width-MAP_W)>2) layoutMapLabels(); },150); });
 function renderMapInfo(){
   const l=LEGS[MAP_SEL]; if(!l){ $('#route-info').innerHTML=''; return; }
   const dt=parseDT(l.日期,'00:00');
@@ -2492,9 +2570,10 @@ function renderMapInfo(){
     <button class="btn sm ghost" data-go="${MAP_SEL}">${ic('cal')}看行程</button>`;
 }
 $('#route-svg').addEventListener('click',e=>{
-  const p=e.target.closest('.pin'); if(!p) return;
+  const p=e.target.closest('[data-i]'); if(!p) return;
   MAP_SEL=+p.dataset.i;
-  $$('#route-svg .pin').forEach(x=>x.classList.toggle('on',+x.dataset.i===MAP_SEL));
+  $$('#route-svg .pin').forEach(x=>x.classList.toggle('on',MAP_PTS.some(q=>q.i===+x.dataset.i&&q.dates.some(d=>d.i===MAP_SEL))));
+  $$('#route-svg .pl').forEach(x=>x.classList.toggle('on',[...x.querySelectorAll('[data-i]')].some(t=>+t.dataset.i===MAP_SEL)));
   renderMapInfo(); popEl($('#route-info .dn'));
 });
 $('#route-info').addEventListener('click',e=>{
@@ -2818,6 +2897,7 @@ function setFs(n){
   if(n) document.documentElement.setAttribute('data-fs',String(n)); else document.documentElement.removeAttribute('data-fs');
   LS.set('cruise-fs',String(n));
   $$('#fsp button').forEach(b=>b.classList.toggle('on',+b.dataset.fs===n));
+  if(!$('#p-ship').classList.contains('hide')) requestAnimationFrame(layoutMapLabels);   // 航線圖的字也跟著變
 }
 function fsPop(on){ $('#fsp').classList.toggle('on',on); $('#fsb').setAttribute('aria-expanded',String(on));
   if(on) $$('#fsp button').forEach(b=>b.classList.toggle('on',+b.dataset.fs===[1,1.15,1.3].indexOf(ZF()))); }
